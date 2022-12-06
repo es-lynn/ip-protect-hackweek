@@ -17,6 +17,7 @@ async function bootstrap(): Promise<void> {
     nest.useSwagger(app, cfg.swagger)
   }
 
+  app.enableCors({ origin: '*' })
   await app.listen(cfg.app.port)
 }
 bootstrap()

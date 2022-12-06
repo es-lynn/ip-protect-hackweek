@@ -8,6 +8,7 @@
   "private": true,
   "scripts": {
     "setup": "yarn install && lerna bootstrap",
+    "build:all": "lerna run build",
     "compile:all": "lerna run compile",
     "compile:fix:all": "lerna run compile:fix",
     "prepare": "husky install"
@@ -26,8 +27,5 @@
     "lerna": "^5.6.2",
     "prettier": "^2.6.2",
     "typescript": "^4.7.3"
-  },
-  "workspaces": [
-    "modules/backend"
-  ]
+  }
 }

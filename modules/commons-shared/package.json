@@ -1,0 +1,8 @@
+{
+  "name": "@commons/shared",
+  "version": "0.0.0",
+  "main": "index.ts",
+  "author": "es-lynn",
+  "license": "MIT",
+  "private": false
+}
