@@ -4,6 +4,8 @@ import { Card, List, Text, Title } from 'react-native-paper'
 
 import { Api } from '../../../lib/api.ts/Api'
 import { api } from '../../config/config'
+import { nav } from '../../router/nav'
+import { route } from '../../router/route'
 import { ipify } from '../../services/ipify'
 import { sp } from '../../styles/space'
 
@@ -63,7 +65,11 @@ export const HomePage = () => {
             key={project.id}
             title={project.friendlyId}
             description={project.id}
-            onPress={() => {}}
+            onPress={() =>
+              nav.navigate('project/:projectFriendlyId', {
+                projectFriendlyId: project.friendlyId
+              })
+            }
             left={props => <List.Icon {...props} icon="folder" />}
             right={() => <List.Icon icon={'chevron-right'} />}
           />
