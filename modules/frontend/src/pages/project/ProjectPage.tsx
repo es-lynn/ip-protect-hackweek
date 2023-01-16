@@ -32,8 +32,14 @@ import {
 } from './ProjectPage.context'
 
 export const _ProjectPage = () => {
-  const { webpages, users, ipAddresses, projectFriendlyId, deleteWebpage } =
-    useContext(ProjectPageContext)
+  const {
+    webpages,
+    users,
+    ipAddresses,
+    projectFriendlyId,
+    deleteWebpage,
+    addWebpage
+  } = useContext(ProjectPageContext)
 
   const [segmentedButtonValue, setSegmentedButtonValue] =
     useState<string>('ip-address')
@@ -59,6 +65,7 @@ export const _ProjectPage = () => {
         <WebpageView
           webpages={webpages}
           projectFriendlyId={projectFriendlyId}
+          addWebpage={addWebpage}
           deleteWebpage={deleteWebpage}
         />
       )}

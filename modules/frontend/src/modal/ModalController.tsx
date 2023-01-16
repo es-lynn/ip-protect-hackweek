@@ -1,4 +1,4 @@
-import { AlertDialog, Button } from 'native-base'
+import { AlertDialog, Button, Modal as NativeBaseModal } from 'native-base'
 import React, { ReactElement } from 'react'
 
 /**
@@ -44,7 +44,7 @@ class ModalController {
 }
 
 export class MyModalController extends ModalController {
-  dialog<T>(
+  confirm<T>(
     element:
       | ReactElement
       | ((p: {
@@ -62,6 +62,27 @@ export class MyModalController extends ModalController {
         >
           {p.children}
         </AlertDialog>
+      )
+    }, element)
+  }
+  dialog<T>(
+    element:
+      | ReactElement
+      | ((p: {
+          modal: { ok: (result: T) => void; cancel: () => void }
+        }) => ReactElement)
+  ): Promise<T> {
+    return this.render(p => {
+      return (
+        <NativeBaseModal
+          key={new Date().getTime()}
+          isOpen={p.visibility}
+          onClose={p.close}
+          initialFocusRef={{} as any}
+          finalFocusRef={{} as any}
+        >
+          {p.children}
+        </NativeBaseModal>
       )
     }, element)
   }

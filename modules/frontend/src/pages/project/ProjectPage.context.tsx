@@ -17,6 +17,7 @@ import {
   ListResIpAddress,
   User,
   Webpage,
+  WebpageAddBody,
   WebpageListRes
 } from '../../../lib/api/Api'
 import { api } from '../../config/config'
@@ -30,6 +31,10 @@ export interface ProjectPageContextType {
   users?: User[]
   projectFriendlyId: string
   deleteWebpage: (projectFriendlyId: string, webpageId: string) => Promise<void>
+  addWebpage: (
+    projectFriendlyId: string,
+    webpage: { url: string; name: string }
+  ) => Promise<void>
 }
 
 export const ProjectPageContext = createContext<ProjectPageContextType>(
@@ -69,6 +74,19 @@ export const ProjectPageContextProvider = ({ children, route }: any) => {
       .then(data => setWebpages(data.data.webpages))
   }
 
+  async function addWebpage(
+    projectFriendlyId: string,
+    webpage: {
+      url: string
+      name: string
+    }
+  ): Promise<void> {
+    await api.project.webpageAdd(projectFriendlyId, webpage)
+    await api.project
+      .webpageList(projectFriendlyId)
+      .then(data => setWebpages(data.data.webpages))
+  }
+
   return (
     <ProjectPageContext.Provider
       value={{
@@ -76,7 +94,8 @@ export const ProjectPageContextProvider = ({ children, route }: any) => {
         webpages,
         users,
         projectFriendlyId,
-        deleteWebpage
+        deleteWebpage,
+        addWebpage
       }}
     >
       {children}
