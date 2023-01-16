@@ -1,6 +1,15 @@
 import { A } from '@expo/html-elements'
-import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, SafeAreaView, View } from 'react-native'
+import {
+  ArrowForwardIcon,
+  Button,
+  Icon,
+  IconButton,
+  Menu,
+  Pressable,
+  ThreeDotsIcon
+} from 'native-base'
+import React, { useContext, useEffect, useState } from 'react'
+import { ActivityIndicator, FlatList, SafeAreaView, View } from 'react-native'
 import { Chip, List, SegmentedButtons, Text } from 'react-native-paper'
 
 import {
@@ -10,31 +19,20 @@ import {
   WebpageListRes
 } from '../../../lib/api/Api'
 import { api } from '../../config/config'
+import { withContext } from '../../hoc/withContext'
 import { nav } from '../../router/nav'
 import { sp } from '../../styles/space'
+import {
+  ProjectPageContext,
+  ProjectPageContextProvider
+} from './ProjectPage.context'
 
-export const ProjectPage = ({ route }: { route: any }) => {
-  const projectFriendlyId = route.params.projectFriendlyId
+export const _ProjectPage = () => {
+  const { webpages, users, ipAddresses, projectFriendlyId } =
+    useContext(ProjectPageContext)
+
   const [segmentedButtonValue, setSegmentedButtonValue] =
     useState<string>('ip-address')
-
-  const [ipAddresses, setIpAddresses] = useState<ListResIpAddress[]>()
-  const [webpages, setWebpages] = useState<Webpage[]>()
-  const [users, setUsers] = useState<User[]>()
-
-  useEffect(() => {
-    api.project
-      .ipaddressList(projectFriendlyId)
-      .then(data => setIpAddresses(data.data.ipAddresses))
-
-    api.project
-      .webpageList(projectFriendlyId)
-      .then(data => setWebpages(data.data.webpages))
-
-    api.project
-      .userList(projectFriendlyId)
-      .then(data => setUsers(data.data.users))
-  }, [])
 
   return (
     <SafeAreaView style={{ padding: sp._24 }}>
@@ -53,16 +51,50 @@ export const ProjectPage = ({ route }: { route: any }) => {
           <List.Item key={ip.id} title={ip.ip} description={ip.tag} />
         )) ?? <ActivityIndicator size={'large'} />)}
 
-      {segmentedButtonValue === 'websites' &&
-        (webpages?.map(webpage => (
-          <A href={webpage.url}>
-            <List.Item
-              key={webpage.id}
-              title={webpage.url}
-              description={webpage.name}
+      {segmentedButtonValue === 'websites' && (
+        <View>
+          {webpages ? (
+            <FlatList<Webpage>
+              data={webpages}
+              renderItem={({ item: webpage }) => (
+                <View
+                  key={webpage.id}
+                  style={{
+                    padding: sp._8,
+                    flexDirection: 'row',
+                    width: '100%',
+                    alignItems: 'center'
+                  }}
+                >
+                  <A href={webpage.url}>
+                    <View style={{ flexDirection: 'column' }}>
+                      <Text>{webpage.url}</Text>
+                      <Text>{webpage.name}</Text>
+                    </View>
+                  </A>
+                  <View style={{ marginLeft: 'auto' }}>
+                    <Menu
+                      trigger={triggerProps => (
+                        <Pressable
+                          accessibilityLabel="More options menu"
+                          {...triggerProps}
+                        >
+                          <ThreeDotsIcon />
+                        </Pressable>
+                      )}
+                    >
+                      <Menu.Item>Edit</Menu.Item>
+                      <Menu.Item>Delete</Menu.Item>
+                    </Menu>
+                  </View>
+                </View>
+              )}
             />
-          </A>
-        )) ?? <ActivityIndicator size={'large'} />)}
+          ) : (
+            <ActivityIndicator size={'large'} />
+          )}
+        </View>
+      )}
 
       {segmentedButtonValue === 'users' &&
         (users?.map(user => (
@@ -79,6 +111,12 @@ export const ProjectPage = ({ route }: { route: any }) => {
             description={`[${user.provider}] ${user.providerId}`}
           />
         )) ?? <ActivityIndicator size={'large'} />)}
+
+      <View>
+        <Button onPress={() => alert('hi')}>hello</Button>
+      </View>
     </SafeAreaView>
   )
 }
+
+export const ProjectPage = withContext(_ProjectPage, ProjectPageContextProvider)
