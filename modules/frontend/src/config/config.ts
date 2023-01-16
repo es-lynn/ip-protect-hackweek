@@ -1,4 +1,4 @@
-import { Api } from '../../lib/api.ts/Api'
+import { Api } from '../../lib/api/Api'
 
 const api = new Api({
   baseUrl: 'http://192.168.50.96:4000',

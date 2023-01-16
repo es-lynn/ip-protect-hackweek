@@ -6,11 +6,13 @@
     "start": "expo start",
     "start:android": "expo start --android",
     "start:ios": "expo start --ios",
-    "start:web": "expo start --web"
+    "start:web": "expo start --web",
+    "build:api-client": "npx swagger-typescript-api -p http://localhost:4000/swagger/docs-json -o ./lib/api"
   },
   "dependencies": {
     "@commons/shared": "*",
     "@expo/webpack-config": "^0.17.3",
+    "@expo/html-elements": "^0.3.0",
     "@react-navigation/native": "^6.0.16",
     "@react-navigation/native-stack": "^6.9.4",
     "axios": "^1.2.1",

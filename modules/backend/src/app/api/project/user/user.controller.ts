@@ -4,16 +4,16 @@ import { ApiTags } from '@nestjs/swagger'
 import { UseAuthGuard } from '../../../core/guards/decorators/UseAuthGuard'
 import { PrismaService } from '../../../core/prisma/prisma.service'
 import {
-  AddBody,
-  AddParam,
-  AddRes,
-  EditRoleBody,
-  EditRoleParam,
-  EditRoleRes,
-  ListParam,
-  ListRes,
-  RemoveParam,
-  RemoveRes
+  UserAddBody,
+  UserAddParam,
+  UserAddRes,
+  UserEditRoleBody,
+  UserEditRoleParam,
+  UserEditRoleRes,
+  UserListParam,
+  UserListRes,
+  UserRemoveParam,
+  UserRemoveRes
 } from './user.dto'
 import { mapToUserDto } from './user.util'
 
@@ -25,7 +25,7 @@ export class UserController {
 
   @HttpCode(200)
   @Get('/list')
-  async list(@Param() param: ListParam): Promise<ListRes> {
+  async list(@Param() param: UserListParam): Promise<UserListRes> {
     const { projectUsers } = await this.prisma.project.findUniqueOrThrow({
       where: {
         friendlyId: param.projectFriendlyId
@@ -44,7 +44,10 @@ export class UserController {
 
   @HttpCode(201)
   @Post('/add')
-  async add(@Param() param: AddParam, @Body() body: AddBody): Promise<AddRes> {
+  async add(
+    @Param() param: UserAddParam,
+    @Body() body: UserAddBody
+  ): Promise<UserAddRes> {
     const project = await this.prisma.project.findUniqueOrThrow({
       where: { friendlyId: param.projectFriendlyId }
     })
@@ -63,9 +66,9 @@ export class UserController {
   @HttpCode(200)
   @Post(':userId/role/edit')
   async roleEdit(
-    @Param() param: EditRoleParam,
-    @Body() body: EditRoleBody
-  ): Promise<EditRoleRes> {
+    @Param() param: UserEditRoleParam,
+    @Body() body: UserEditRoleBody
+  ): Promise<UserEditRoleRes> {
     const project = await this.prisma.project.findUniqueOrThrow({
       where: { friendlyId: param.projectFriendlyId }
     })
@@ -85,7 +88,7 @@ export class UserController {
 
   @HttpCode(200)
   @Post('/:userId/remove')
-  async remove(@Param() param: RemoveParam): Promise<RemoveRes> {
+  async remove(@Param() param: UserRemoveParam): Promise<UserRemoveRes> {
     const project = await this.prisma.project.findUniqueOrThrow({
       where: { friendlyId: param.projectFriendlyId }
     })

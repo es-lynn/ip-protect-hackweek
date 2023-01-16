@@ -12,9 +12,18 @@ export class IpAddress {
 }
 
 export class User {
+  @ApiProperty()
   id: string
+
+  @ApiProperty()
   name: string
+
+  @ApiProperty()
   provider: string
+
+  @ApiProperty()
   providerId: string
+
+  @ApiProperty()
   isAdmin: boolean
 }

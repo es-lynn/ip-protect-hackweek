@@ -6,23 +6,23 @@ class Webpage {
   url: string
 }
 
-export class ListParam {
+export class WebpageListParam {
   @IsString()
   @IsNotEmpty()
   projectFriendlyId: string
 }
 
-export class ListRes {
+export class WebpageListRes {
   webpages: Webpage[]
 }
 
-export class AddParam {
+export class WebpageAddParam {
   @IsString()
   @IsNotEmpty()
   projectFriendlyId: string
 }
 
-export class AddBody {
+export class WebpageAddBody {
   @IsString()
   @IsNotEmpty()
   name: string
@@ -32,11 +32,11 @@ export class AddBody {
   url: string
 }
 
-export class AddRes {
+export class WebpageAddRes {
   webpage: Webpage
 }
 
-export class EditParam {
+export class WebpageEditParam {
   @IsString()
   @IsNotEmpty()
   projectFriendlyId: string
@@ -46,7 +46,7 @@ export class EditParam {
   webpageId: string
 }
 
-export class EditBody {
+export class WebpageEditBody {
   @IsString()
   @IsOptional()
   name?: string
@@ -56,11 +56,11 @@ export class EditBody {
   url?: string
 }
 
-export class EditRes {
+export class WebpageEditRes {
   webpage: Webpage
 }
 
-export class DeleteParam {
+export class WebpageDeleteParam {
   @IsString()
   @IsNotEmpty()
   projectFriendlyId: string
@@ -70,4 +70,4 @@ export class DeleteParam {
   webpageId: string
 }
 
-export class DeleteRes {}
+export class WebpageDeleteRes {}

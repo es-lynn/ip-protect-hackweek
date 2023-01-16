@@ -4,16 +4,16 @@ import { ApiTags } from '@nestjs/swagger'
 import { UseAuthGuard } from '../../../core/guards/decorators/UseAuthGuard'
 import { PrismaService } from '../../../core/prisma/prisma.service'
 import {
-  AddBody,
-  AddParam,
-  AddRes,
-  DeleteParam,
-  DeleteRes,
-  EditBody,
-  EditParam,
-  EditRes,
-  ListParam,
-  ListRes
+  WebpageAddBody,
+  WebpageAddParam,
+  WebpageAddRes,
+  WebpageDeleteParam,
+  WebpageDeleteRes,
+  WebpageEditBody,
+  WebpageEditParam,
+  WebpageEditRes,
+  WebpageListParam,
+  WebpageListRes
 } from './webpage.dto'
 
 @UseAuthGuard()
@@ -24,7 +24,7 @@ export class WebpageController {
 
   @HttpCode(200)
   @Get('/list')
-  async list(@Param() param: ListParam): Promise<ListRes> {
+  async list(@Param() param: WebpageListParam): Promise<WebpageListRes> {
     const project = await this.prisma.project.findUniqueOrThrow({
       where: { friendlyId: param.projectFriendlyId }
     })
@@ -45,7 +45,10 @@ export class WebpageController {
 
   @HttpCode(200)
   @Post('/add')
-  async add(@Param() param: AddParam, @Body() body: AddBody): Promise<AddRes> {
+  async add(
+    @Param() param: WebpageAddParam,
+    @Body() body: WebpageAddBody
+  ): Promise<WebpageAddRes> {
     const project = await this.prisma.project.findUniqueOrThrow({
       where: { friendlyId: param.projectFriendlyId }
     })
@@ -69,9 +72,9 @@ export class WebpageController {
   @HttpCode(200)
   @Post('/:webpageId/edit')
   async edit(
-    @Param() param: EditParam,
-    @Body() body: EditBody
-  ): Promise<EditRes> {
+    @Param() param: WebpageEditParam,
+    @Body() body: WebpageEditBody
+  ): Promise<WebpageEditRes> {
     const webpage = await this.prisma.webpage.update({
       where: { id: param.webpageId },
       data: {
@@ -90,7 +93,7 @@ export class WebpageController {
 
   @HttpCode(200)
   @Post('/:webpageId/delete')
-  async delete(@Param() param: DeleteParam): Promise<DeleteRes> {
+  async delete(@Param() param: WebpageDeleteParam): Promise<WebpageDeleteRes> {
     await this.prisma.webpage.deleteMany({
       where: {
         id: param.webpageId,

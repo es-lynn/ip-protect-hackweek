@@ -2,23 +2,23 @@ import { IsBoolean, IsNotEmpty, IsString } from 'class-validator'
 
 import { User } from '../_dto/dto'
 
-export class ListParam {
+export class UserListParam {
   @IsString()
   @IsNotEmpty()
   projectFriendlyId: string
 }
 
-export class ListRes {
+export class UserListRes {
   users: User[]
 }
 
-export class AddParam {
+export class UserAddParam {
   @IsString()
   @IsNotEmpty()
   projectFriendlyId: string
 }
 
-export class AddBody {
+export class UserAddBody {
   @IsString()
   @IsNotEmpty()
   id: string
@@ -28,11 +28,11 @@ export class AddBody {
   isAdmin: boolean
 }
 
-export class AddRes {
+export class UserAddRes {
   user: User
 }
 
-export class EditRoleParam {
+export class UserEditRoleParam {
   @IsString()
   @IsNotEmpty()
   projectFriendlyId: string
@@ -42,17 +42,17 @@ export class EditRoleParam {
   userId: string
 }
 
-export class EditRoleBody {
+export class UserEditRoleBody {
   @IsBoolean()
   @IsNotEmpty()
   isAdmin: boolean
 }
 
-export class EditRoleRes {
+export class UserEditRoleRes {
   user: User
 }
 
-export class RemoveParam {
+export class UserRemoveParam {
   @IsString()
   @IsNotEmpty()
   projectFriendlyId: string
@@ -62,4 +62,4 @@ export class RemoveParam {
   userId: string
 }
 
-export class RemoveRes {}
+export class UserRemoveRes {}

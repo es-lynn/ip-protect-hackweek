@@ -61,29 +61,29 @@ export interface Webpage {
   url: string
 }
 
-export interface ListRes {
-  users: User[]
+export interface WebpageListRes {
+  webpages: Webpage[]
 }
 
-export interface AddBody {
-  id: string
-  isAdmin: boolean
+export interface WebpageAddBody {
+  name: string
+  url: string
 }
 
-export interface AddRes {
-  user: User
+export interface WebpageAddRes {
+  webpage: Webpage
 }
 
-export interface EditBody {
+export interface WebpageEditBody {
   name?: string
   url?: string
 }
 
-export interface EditRes {
+export interface WebpageEditRes {
   webpage: Webpage
 }
 
-export type DeleteRes = object
+export type WebpageDeleteRes = object
 
 export interface AuthLoginBody {
   code: string
@@ -93,17 +93,36 @@ export interface AuthLoginRes {
   accessToken: string
 }
 
-export type User = object
-
-export interface EditRoleBody {
+export interface User {
+  id: string
+  name: string
+  provider: string
+  providerId: string
   isAdmin: boolean
 }
 
-export interface EditRoleRes {
+export interface UserListRes {
+  users: User[]
+}
+
+export interface UserAddBody {
+  id: string
+  isAdmin: boolean
+}
+
+export interface UserAddRes {
   user: User
 }
 
-export type RemoveRes = object
+export interface UserEditRoleBody {
+  isAdmin: boolean
+}
+
+export interface UserEditRoleRes {
+  user: User
+}
+
+export type UserRemoveRes = object
 
 export type QueryParamsType = Record<string | number, any>
 export type ResponseFormat = keyof Omit<Body, 'body' | 'bodyUsed'>
@@ -468,7 +487,7 @@ export class Api<
      * @secure
      */
     webpageList: (projectFriendlyId: string, params: RequestParams = {}) =>
-      this.request<ListRes, any>({
+      this.request<WebpageListRes, any>({
         path: `/project/${projectFriendlyId}/webpage/list`,
         method: 'GET',
         secure: true,
@@ -486,10 +505,10 @@ export class Api<
      */
     webpageAdd: (
       projectFriendlyId: string,
-      data: AddBody,
+      data: WebpageAddBody,
       params: RequestParams = {}
     ) =>
-      this.request<AddRes, any>({
+      this.request<WebpageAddRes, any>({
         path: `/project/${projectFriendlyId}/webpage/add`,
         method: 'POST',
         body: data,
@@ -510,10 +529,10 @@ export class Api<
     webpageEdit: (
       projectFriendlyId: string,
       webpageId: string,
-      data: EditBody,
+      data: WebpageEditBody,
       params: RequestParams = {}
     ) =>
-      this.request<EditRes, any>({
+      this.request<WebpageEditRes, any>({
         path: `/project/${projectFriendlyId}/webpage/${webpageId}/edit`,
         method: 'POST',
         body: data,
@@ -536,7 +555,7 @@ export class Api<
       webpageId: string,
       params: RequestParams = {}
     ) =>
-      this.request<DeleteRes, any>({
+      this.request<WebpageDeleteRes, any>({
         path: `/project/${projectFriendlyId}/webpage/${webpageId}/delete`,
         method: 'POST',
         secure: true,
@@ -553,7 +572,7 @@ export class Api<
      * @secure
      */
     userList: (projectFriendlyId: string, params: RequestParams = {}) =>
-      this.request<ListRes, any>({
+      this.request<UserListRes, any>({
         path: `/project/${projectFriendlyId}/user/list`,
         method: 'GET',
         secure: true,
@@ -571,10 +590,10 @@ export class Api<
      */
     userAdd: (
       projectFriendlyId: string,
-      data: AddBody,
+      data: UserAddBody,
       params: RequestParams = {}
     ) =>
-      this.request<AddRes, any>({
+      this.request<UserAddRes, any>({
         path: `/project/${projectFriendlyId}/user/add`,
         method: 'POST',
         body: data,
@@ -595,10 +614,10 @@ export class Api<
     userRoleEdit: (
       projectFriendlyId: string,
       userId: string,
-      data: EditRoleBody,
+      data: UserEditRoleBody,
       params: RequestParams = {}
     ) =>
-      this.request<EditRoleRes, any>({
+      this.request<UserEditRoleRes, any>({
         path: `/project/${projectFriendlyId}/user/${userId}/role/edit`,
         method: 'POST',
         body: data,
@@ -621,7 +640,7 @@ export class Api<
       userId: string,
       params: RequestParams = {}
     ) =>
-      this.request<RemoveRes, any>({
+      this.request<UserRemoveRes, any>({
         path: `/project/${projectFriendlyId}/user/${userId}/remove`,
         method: 'POST',
         secure: true,
