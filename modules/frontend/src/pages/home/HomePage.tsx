@@ -1,13 +1,14 @@
+import { Button } from 'native-base'
 import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, SafeAreaView, View } from 'react-native'
 import { Card, List, Text, Title } from 'react-native-paper'
 
-import { Api } from '../../../lib/api.ts/Api'
 import { api } from '../../config/config'
-import { nav } from '../../router/nav'
-import { route } from '../../router/route'
+import { Modal } from '../../modal/ModalController'
 import { ipify } from '../../services/ipify'
 import { sp } from '../../styles/space'
+import { ProjectAddDialog } from './_components/ProjectAddDialog'
+import { ProjectListView } from './_components/ProjectListView'
 
 export const HomePage = () => {
   const [projects, setProjects] = useState<any[]>([])
@@ -35,45 +36,26 @@ export const HomePage = () => {
             {ipv4 ? (
               <Text variant={'displayMedium'}>{ipv4}</Text>
             ) : (
-              <ActivityIndicator
-                size={'large'}
-                style={{ alignSelf: 'flex-start' }}
-              />
+              <ActivityIndicator size={'large'} style={{ alignSelf: 'flex-start' }} />
             )}
 
-            <Text
-              style={{ marginTop: sp._8, marginBottom: sp._4 }}
-              variant={'titleMedium'}
-            >
+            <Text style={{ marginTop: sp._8, marginBottom: sp._4 }} variant={'titleMedium'}>
               IPv6 Address
             </Text>
             {ipv6 ? (
               <Text variant={'displaySmall'}>{ipv6}</Text>
             ) : (
-              <ActivityIndicator
-                size={'large'}
-                style={{ alignSelf: 'flex-start' }}
-              />
+              <ActivityIndicator size={'large'} style={{ alignSelf: 'flex-start' }} />
             )}
           </Card.Content>
         </Card>
         <Text style={{ marginTop: sp._24 }} variant={'titleLarge'}>
           Projects
         </Text>
-        {projects.map(project => (
-          <List.Item
-            key={project.id}
-            title={project.friendlyId}
-            description={project.id}
-            onPress={() =>
-              nav.navigate('project/:projectFriendlyId', {
-                projectFriendlyId: project.friendlyId
-              })
-            }
-            left={props => <List.Icon {...props} icon="folder" />}
-            right={() => <List.Icon icon={'chevron-right'} />}
-          />
-        ))}
+        <ProjectListView projects={projects} />
+        <Button onPress={() => Modal.dialog(props => <ProjectAddDialog {...props} />)}>
+          Add Project
+        </Button>
       </View>
     </SafeAreaView>
   )

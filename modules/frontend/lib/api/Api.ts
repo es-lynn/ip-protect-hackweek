@@ -23,6 +23,48 @@ export interface MeProjectListRes {
   projects: Project[]
 }
 
+export interface IpSet {
+  id: string
+  name: string
+  region: string
+}
+
+export interface ProjectCreateBody {
+  ipset: IpSet
+  friendlyId: string
+  awsAccessKey: string
+  awsSecret: string
+}
+
+export interface Project3734 {
+  id: string
+  friendlyId: string
+  ipset: IpSet
+  awsAccessKey: string
+  awsSecret: string
+}
+
+export interface ProjectCreateRes {
+  project: Project3734
+}
+
+export interface ProjectEditBody {
+  ipset?: IpSet
+  friendlyId?: string
+  awsAccessKey?: string
+  awsSecret?: string
+}
+
+export interface ProjectEditRes {
+  project: Project3734
+}
+
+export interface ProjectViewRes {
+  project: Project3734
+}
+
+export type ProjectDeleteRes = object
+
 export interface ListResIpAddress {
   id: string
   ip: string
@@ -146,10 +188,7 @@ export interface FullRequestParams extends Omit<RequestInit, 'body'> {
   cancelToken?: CancelToken
 }
 
-export type RequestParams = Omit<
-  FullRequestParams,
-  'body' | 'method' | 'query' | 'path'
->
+export type RequestParams = Omit<FullRequestParams, 'body' | 'method' | 'query' | 'path'>
 
 export interface ApiConfig<SecurityDataType = unknown> {
   baseUrl?: string
@@ -160,8 +199,7 @@ export interface ApiConfig<SecurityDataType = unknown> {
   customFetch?: typeof fetch
 }
 
-export interface HttpResponse<D extends unknown, E extends unknown = unknown>
-  extends Response {
+export interface HttpResponse<D extends unknown, E extends unknown = unknown> extends Response {
   data: D
   error: E
 }
@@ -180,8 +218,7 @@ export class HttpClient<SecurityDataType = unknown> {
   private securityData: SecurityDataType | null = null
   private securityWorker?: ApiConfig<SecurityDataType>['securityWorker']
   private abortControllers = new Map<CancelToken, AbortController>()
-  private customFetch = (...fetchParams: Parameters<typeof fetch>) =>
-    fetch(...fetchParams)
+  private customFetch = (...fetchParams: Parameters<typeof fetch>) => fetch(...fetchParams)
 
   private baseApiParams: RequestParams = {
     credentials: 'same-origin',
@@ -200,9 +237,7 @@ export class HttpClient<SecurityDataType = unknown> {
 
   protected encodeQueryParam(key: string, value: any) {
     const encodedKey = encodeURIComponent(key)
-    return `${encodedKey}=${encodeURIComponent(
-      typeof value === 'number' ? value : `${value}`
-    )}`
+    return `${encodedKey}=${encodeURIComponent(typeof value === 'number' ? value : `${value}`)}`
   }
 
   protected addQueryParam(query: QueryParamsType, key: string) {
@@ -216,9 +251,7 @@ export class HttpClient<SecurityDataType = unknown> {
 
   protected toQueryString(rawQuery?: QueryParamsType): string {
     const query = rawQuery || {}
-    const keys = Object.keys(query).filter(
-      key => 'undefined' !== typeof query[key]
-    )
+    const keys = Object.keys(query).filter(key => 'undefined' !== typeof query[key])
     return keys
       .map(key =>
         Array.isArray(query[key])
@@ -239,9 +272,7 @@ export class HttpClient<SecurityDataType = unknown> {
         ? JSON.stringify(input)
         : input,
     [ContentType.Text]: (input: any) =>
-      input !== null && typeof input !== 'string'
-        ? JSON.stringify(input)
-        : input,
+      input !== null && typeof input !== 'string' ? JSON.stringify(input) : input,
     [ContentType.FormData]: (input: any) =>
       Object.keys(input || {}).reduce((formData, key) => {
         const property = input[key]
@@ -258,10 +289,7 @@ export class HttpClient<SecurityDataType = unknown> {
     [ContentType.UrlEncoded]: (input: any) => this.toQueryString(input)
   }
 
-  protected mergeRequestParams(
-    params1: RequestParams,
-    params2?: RequestParams
-  ): RequestParams {
+  protected mergeRequestParams(params1: RequestParams, params2?: RequestParams): RequestParams {
     return {
       ...this.baseApiParams,
       ...params1,
@@ -274,9 +302,7 @@ export class HttpClient<SecurityDataType = unknown> {
     }
   }
 
-  protected createAbortSignal = (
-    cancelToken: CancelToken
-  ): AbortSignal | undefined => {
+  protected createAbortSignal = (cancelToken: CancelToken): AbortSignal | undefined => {
     if (this.abortControllers.has(cancelToken)) {
       const abortController = this.abortControllers.get(cancelToken)
       if (abortController) {
@@ -321,24 +347,15 @@ export class HttpClient<SecurityDataType = unknown> {
     const responseFormat = format || requestParams.format
 
     return this.customFetch(
-      `${baseUrl || this.baseUrl || ''}${path}${
-        queryString ? `?${queryString}` : ''
-      }`,
+      `${baseUrl || this.baseUrl || ''}${path}${queryString ? `?${queryString}` : ''}`,
       {
         ...requestParams,
         headers: {
           ...(requestParams.headers || {}),
-          ...(type && type !== ContentType.FormData
-            ? { 'Content-Type': type }
-            : {})
+          ...(type && type !== ContentType.FormData ? { 'Content-Type': type } : {})
         },
-        signal: cancelToken
-          ? this.createAbortSignal(cancelToken)
-          : requestParams.signal,
-        body:
-          typeof body === 'undefined' || body === null
-            ? null
-            : payloadFormatter(body)
+        signal: cancelToken ? this.createAbortSignal(cancelToken) : requestParams.signal,
+        body: typeof body === 'undefined' || body === null ? null : payloadFormatter(body)
       }
     ).then(async response => {
       const r = response as HttpResponse<T, E>
@@ -376,9 +393,7 @@ export class HttpClient<SecurityDataType = unknown> {
  * @version 0.0.0
  * @contact
  */
-export class Api<
-  SecurityDataType extends unknown
-> extends HttpClient<SecurityDataType> {
+export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
   me = {
     /**
      * No description
@@ -418,6 +433,78 @@ export class Api<
     /**
      * No description
      *
+     * @tags /project
+     * @name ProjectCreate
+     * @request POST:/project/create
+     * @secure
+     */
+    projectCreate: (data: ProjectCreateBody, params: RequestParams = {}) =>
+      this.request<ProjectCreateRes, any>({
+        path: `/project/create`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * No description
+     *
+     * @tags /project
+     * @name ProjectEdit
+     * @request PATCH:/project/{projectFriendlyId}/edit
+     * @secure
+     */
+    projectEdit: (projectFriendlyId: string, data: ProjectEditBody, params: RequestParams = {}) =>
+      this.request<ProjectEditRes, any>({
+        path: `/project/${projectFriendlyId}/edit`,
+        method: 'PATCH',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * No description
+     *
+     * @tags /project
+     * @name ProjectView
+     * @request GET:/project/{projectFriendlyId}
+     * @secure
+     */
+    projectView: (projectFriendlyId: string, params: RequestParams = {}) =>
+      this.request<ProjectViewRes, any>({
+        path: `/project/${projectFriendlyId}`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * No description
+     *
+     * @tags /project
+     * @name ProjectDelete
+     * @request POST:/project/{projectFriendlyId}/delete
+     * @secure
+     */
+    projectDelete: (projectFriendlyId: string, params: RequestParams = {}) =>
+      this.request<ProjectDeleteRes, any>({
+        path: `/project/${projectFriendlyId}/delete`,
+        method: 'POST',
+        secure: true,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * No description
+     *
      * @tags /project/:projectFriendlyId/user/@me/ip-address
      * @name IpaddressList
      * @request GET:/project/{projectFriendlyId}/user/@me/ip-address/list
@@ -440,11 +527,7 @@ export class Api<
      * @request POST:/project/{projectFriendlyId}/user/@me/ip-address/add
      * @secure
      */
-    ipaddressAdd: (
-      projectFriendlyId: string,
-      data: IpAddressAddBody,
-      params: RequestParams = {}
-    ) =>
+    ipaddressAdd: (projectFriendlyId: string, data: IpAddressAddBody, params: RequestParams = {}) =>
       this.request<IpAddressAddRes, any>({
         path: `/project/${projectFriendlyId}/user/@me/ip-address/add`,
         method: 'POST',
@@ -503,11 +586,7 @@ export class Api<
      * @request POST:/project/{projectFriendlyId}/webpage/add
      * @secure
      */
-    webpageAdd: (
-      projectFriendlyId: string,
-      data: WebpageAddBody,
-      params: RequestParams = {}
-    ) =>
+    webpageAdd: (projectFriendlyId: string, data: WebpageAddBody, params: RequestParams = {}) =>
       this.request<WebpageAddRes, any>({
         path: `/project/${projectFriendlyId}/webpage/add`,
         method: 'POST',
@@ -550,11 +629,7 @@ export class Api<
      * @request POST:/project/{projectFriendlyId}/webpage/{webpageId}/delete
      * @secure
      */
-    webpageDelete: (
-      projectFriendlyId: string,
-      webpageId: string,
-      params: RequestParams = {}
-    ) =>
+    webpageDelete: (projectFriendlyId: string, webpageId: string, params: RequestParams = {}) =>
       this.request<WebpageDeleteRes, any>({
         path: `/project/${projectFriendlyId}/webpage/${webpageId}/delete`,
         method: 'POST',
@@ -588,11 +663,7 @@ export class Api<
      * @request POST:/project/{projectFriendlyId}/user/add
      * @secure
      */
-    userAdd: (
-      projectFriendlyId: string,
-      data: UserAddBody,
-      params: RequestParams = {}
-    ) =>
+    userAdd: (projectFriendlyId: string, data: UserAddBody, params: RequestParams = {}) =>
       this.request<UserAddRes, any>({
         path: `/project/${projectFriendlyId}/user/add`,
         method: 'POST',
@@ -635,11 +706,7 @@ export class Api<
      * @request POST:/project/{projectFriendlyId}/user/{userId}/remove
      * @secure
      */
-    userRemove: (
-      projectFriendlyId: string,
-      userId: string,
-      params: RequestParams = {}
-    ) =>
+    userRemove: (projectFriendlyId: string, userId: string, params: RequestParams = {}) =>
       this.request<UserRemoveRes, any>({
         path: `/project/${projectFriendlyId}/user/${userId}/remove`,
         method: 'POST',

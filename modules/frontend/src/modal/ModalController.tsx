@@ -1,9 +1,4 @@
-import {
-  AlertDialog,
-  Button,
-  Modal as NativeBaseModal,
-  Text
-} from 'native-base'
+import { AlertDialog, Button, Modal as NativeBaseModal, Text } from 'native-base'
 import React, { ReactElement } from 'react'
 
 import { AsyncButton } from '../components/AsyncButton'
@@ -27,9 +22,7 @@ class ModalController {
     }) => ReactElement,
     element:
       | ReactElement
-      | ((p: {
-          modal: { ok: (result: any) => void; cancel: () => void }
-        }) => ReactElement)
+      | ((p: { modal: { ok: (result: any) => void; cancel: () => void } }) => ReactElement)
   ): Promise<T> {
     if (this.modal == null) {
       throw new Error(
@@ -55,9 +48,7 @@ export class MyModalController extends ModalController {
   confirm<T>(
     element:
       | ReactElement
-      | ((p: {
-          modal: { ok: (result: T) => void; cancel: () => void }
-        }) => ReactElement)
+      | ((p: { modal: { ok: (result: T) => void; cancel: () => void } }) => ReactElement)
   ): Promise<T> {
     return this.render(p => {
       const cancelRef = {} as any
@@ -76,8 +67,8 @@ export class MyModalController extends ModalController {
   confirm2<T>(options: {
     title: string
     body: string
-    onConfirm: () => Promise<void> | void
-    onCancel?: () => void
+    onConfirm: () => Promise<any> | any
+    onCancel?: () => any
     type: 'info' | 'success' | 'warning' | 'danger'
   }): Promise<T> {
     return this.render(modalController => {
@@ -96,9 +87,7 @@ export class MyModalController extends ModalController {
   dialog<T>(
     element:
       | ReactElement
-      | ((p: {
-          modal: { ok: (result: T) => void; cancel: () => void }
-        }) => ReactElement)
+      | ((p: { modal: { ok: (result: T) => void; cancel: () => void } }) => ReactElement)
   ): Promise<T> {
     return this.render(p => {
       return (
@@ -117,9 +106,7 @@ export class MyModalController extends ModalController {
   drawer<T>(
     element:
       | ReactElement
-      | ((p: {
-          modal: { ok: (result: T) => void; cancel: () => void }
-        }) => ReactElement)
+      | ((p: { modal: { ok: (result: T) => void; cancel: () => void } }) => ReactElement)
   ): Promise<T> {
     return this.render(
       // p => <DrawerLayout {...p}>{p.children}</DrawerLayout>,
