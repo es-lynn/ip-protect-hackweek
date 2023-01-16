@@ -1,5 +1,5 @@
 import { A } from '@expo/html-elements'
-import { Button, Menu, Pressable, ThreeDotsIcon } from 'native-base'
+import { Button, Menu, Pressable, ThreeDotsIcon, WarningIcon } from 'native-base'
 import React from 'react'
 import { ActivityIndicator, FlatList, View } from 'react-native'
 import { Text } from 'react-native-paper'
@@ -12,14 +12,8 @@ import { IpAddressAddDialog } from './IpAddressAddDialog'
 export type IpAddressViewProps = {
   ipAddresses?: IpAddress[]
   projectFriendlyId: string
-  deleteIpAddress: (
-    projectFriendlyId: string,
-    ipAddress: string
-  ) => Promise<void>
-  addIpAddress: (
-    projectFriendlyId: string,
-    ipAddress: { ip: string; tag: string }
-  ) => Promise<void>
+  deleteIpAddress: (projectFriendlyId: string, ipAddress: string) => Promise<void>
+  addIpAddress: (projectFriendlyId: string, ipAddress: { ip: string; tag: string }) => Promise<void>
 }
 export const IpAddressView = ({
   ipAddresses,
@@ -42,17 +36,15 @@ export const IpAddressView = ({
                 alignItems: 'center'
               }}
             >
-              <View style={{ flexDirection: 'column' }}>
+              {!ipAddress['synced'] && <WarningIcon />}
+              <View style={{ flexDirection: 'column', marginLeft: sp._8 }}>
                 <Text>{ipAddress.tag}</Text>
                 <Text>{ipAddress.ip}</Text>
               </View>
               <View style={{ marginLeft: 'auto' }}>
                 <Menu
                   trigger={triggerProps => (
-                    <Pressable
-                      accessibilityLabel="More options menu"
-                      {...triggerProps}
-                    >
+                    <Pressable accessibilityLabel="More options menu" {...triggerProps}>
                       <ThreeDotsIcon />
                     </Pressable>
                   )}

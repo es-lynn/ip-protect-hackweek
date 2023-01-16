@@ -83,8 +83,8 @@ export class IpAddressController {
     })
 
     const awsIpSet = new AwsIpSet({
-      accessKeyId: this.cfg.aws.access_key_id,
-      secretAccessKey: this.cfg.aws.secret_access_key,
+      accessKeyId: project.awsAccessKey,
+      secretAccessKey: project.awsSecret,
       id: project.config.ipset.id,
       name: project.config.ipset.name,
       region: project.config.ipset.region
@@ -139,8 +139,8 @@ export class IpAddressController {
       where: { friendlyId: param.projectFriendlyId }
     })) as ProjectType
     const awsIpSet = new AwsIpSet({
-      accessKeyId: this.cfg.aws.access_key_id,
-      secretAccessKey: this.cfg.aws.secret_access_key,
+      accessKeyId: project.awsAccessKey,
+      secretAccessKey: project.awsSecret,
       id: project.config.ipset.id,
       name: project.config.ipset.name,
       region: project.config.ipset.region

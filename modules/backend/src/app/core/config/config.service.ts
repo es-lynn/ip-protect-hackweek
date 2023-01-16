@@ -17,10 +17,6 @@ export class ConfigService extends Config<ConfigSchema> implements ConfigSchema 
     title: string
     version: string
   }
-  aws: {
-    access_key_id: string
-    secret_access_key: string
-  }
   auth: {
     basicPassword: string
     certUrl: string
@@ -41,10 +37,6 @@ export class ConfigService extends Config<ConfigSchema> implements ConfigSchema 
       path: '/swagger/docs',
       title: `API Documentation - IProtect`,
       version: pkg.version
-    }
-    this.aws = {
-      access_key_id: env.getOrThrow('AWS_ACCESS_KEY_ID'),
-      secret_access_key: env.getOrThrow('AWS_SECRET_ACCESS_KEY')
     }
     this.auth = {
       basicPassword: env.getOrThrow('AUTH_BASIC_PASSWORD'),

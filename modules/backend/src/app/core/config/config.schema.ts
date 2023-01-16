@@ -9,10 +9,6 @@ export type ConfigSchema = {
     title: string
     version: string
   }
-  aws: {
-    access_key_id: string
-    secret_access_key: string
-  }
   auth: {
     redirectUrl: string
     tokenUrl: string
