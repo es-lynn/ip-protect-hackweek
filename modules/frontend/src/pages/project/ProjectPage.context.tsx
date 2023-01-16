@@ -30,10 +30,21 @@ export interface ProjectPageContextType {
   webpages?: Webpage[]
   users?: User[]
   projectFriendlyId: string
+
   deleteWebpage: (projectFriendlyId: string, webpageId: string) => Promise<void>
   addWebpage: (
     projectFriendlyId: string,
     webpage: { url: string; name: string }
+  ) => Promise<void>
+
+  deleteIpAddress: (
+    projectFriendlyId: string,
+    ipAddress: string
+  ) => Promise<void>
+
+  addIpAddress: (
+    projectFriendlyId: string,
+    ipAddress: { ip: string; tag: string }
   ) => Promise<void>
 }
 
@@ -87,6 +98,34 @@ export const ProjectPageContextProvider = ({ children, route }: any) => {
       .then(data => setWebpages(data.data.webpages))
   }
 
+  async function deleteIpAddress(
+    projectFriendlyId: string,
+    ipAddress: string
+  ): Promise<void> {
+    await api.project.ipaddressRemove(projectFriendlyId, {
+      ipAddress: ipAddress
+    })
+    await api.project
+      .ipaddressList(projectFriendlyId)
+      .then(data => setIpAddresses(data.data.ipAddresses))
+  }
+
+  async function addIpAddress(
+    projectFriendlyId: string,
+    ipAddress: {
+      ip: string
+      tag: string
+    }
+  ): Promise<void> {
+    await api.project.ipaddressAdd(projectFriendlyId, {
+      ip: ipAddress.ip,
+      tag: ipAddress.tag
+    })
+    await api.project
+      .ipaddressList(projectFriendlyId)
+      .then(data => setIpAddresses(data.data.ipAddresses))
+  }
+
   return (
     <ProjectPageContext.Provider
       value={{
@@ -95,7 +134,9 @@ export const ProjectPageContextProvider = ({ children, route }: any) => {
         users,
         projectFriendlyId,
         deleteWebpage,
-        addWebpage
+        addWebpage,
+        deleteIpAddress,
+        addIpAddress
       }}
     >
       {children}

@@ -4,10 +4,9 @@ import React from 'react'
 import { ActivityIndicator, FlatList, View } from 'react-native'
 import { Text } from 'react-native-paper'
 
-import { Webpage } from '../../../../lib/api/Api'
-import { Modal } from '../../../modal/ModalController'
-import { sp } from '../../../styles/space'
-import { MyMenuItem } from './MenuItem'
+import { Webpage } from '../../../../../lib/api/Api'
+import { Modal } from '../../../../modal/ModalController'
+import { sp } from '../../../../styles/space'
 import { ProjectPageDeleteModal } from './ProjectPageDeleteModal'
 import { WebpageAddModal } from './WebpageAddModal'
 
@@ -58,7 +57,7 @@ export const WebpageView = ({
                     </Pressable>
                   )}
                 >
-                  <MyMenuItem
+                  <Menu.Item
                     onPress={() =>
                       Modal.confirm(props => (
                         <ProjectPageDeleteModal
@@ -73,7 +72,7 @@ export const WebpageView = ({
                     }
                   >
                     Delete
-                  </MyMenuItem>
+                  </Menu.Item>
                 </Menu>
               </View>
             </View>

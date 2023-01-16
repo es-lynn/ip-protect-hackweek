@@ -1,5 +1,13 @@
-import { AlertDialog, Button, Modal as NativeBaseModal } from 'native-base'
+import {
+  AlertDialog,
+  Button,
+  Modal as NativeBaseModal,
+  Text
+} from 'native-base'
 import React, { ReactElement } from 'react'
+
+import { AsyncButton } from '../components/AsyncButton'
+import { ConfirmDialog } from './layouts/ConfirmDialog'
 
 /**
  * ModalController is simply an interface controller customized to your own needs
@@ -64,6 +72,26 @@ export class MyModalController extends ModalController {
         </AlertDialog>
       )
     }, element)
+  }
+  confirm2<T>(options: {
+    title: string
+    body: string
+    onConfirm: () => Promise<void> | void
+    onCancel?: () => void
+    type: 'info' | 'success' | 'warning' | 'danger'
+  }): Promise<T> {
+    return this.render(modalController => {
+      return (
+        <ConfirmDialog
+          title={options.title}
+          body={options.body}
+          onConfirm={options.onConfirm}
+          onCancel={options.onCancel}
+          type={options.type}
+          modalController={modalController}
+        />
+      )
+    }, <></>)
   }
   dialog<T>(
     element:

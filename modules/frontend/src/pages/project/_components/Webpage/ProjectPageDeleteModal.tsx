@@ -1,14 +1,14 @@
 import { AlertDialog, Button, Text } from 'native-base'
 import React, { useContext } from 'react'
 
-import { Project, Webpage } from '../../../../lib/api/Api'
-import { AsyncButton } from '../../../components/AsyncButton'
-import { withContext } from '../../../hoc/withContext'
-import { sleep } from '../../../utils/util'
+import { Project, Webpage } from '../../../../../lib/api/Api'
+import { AsyncButton } from '../../../../components/AsyncButton'
+import { withContext } from '../../../../hoc/withContext'
+import { sleep } from '../../../../utils/util'
 import {
   ProjectPageContext,
   ProjectPageContextProvider
-} from '../ProjectPage.context'
+} from '../../ProjectPage.context'
 
 type ProjectPageDeleteModalProps<T> = {
   modal: { ok: (result?: T) => void; cancel: () => void }

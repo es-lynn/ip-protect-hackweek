@@ -1,44 +1,44 @@
 import { Button, FormControl, Input, Modal } from 'native-base'
 import React from 'react'
 
-import { Webpage } from '../../../../lib/api/Api'
-import { AsyncButton } from '../../../components/AsyncButton'
-import { useFormState } from '../../../hooks/useFormState'
+import { Webpage } from '../../../../../lib/api/Api'
+import { AsyncButton } from '../../../../components/AsyncButton'
+import { useFormState } from '../../../../hooks/useFormState'
 
-type WebpageAddModalProps<T> = {
+type IpAddressAddDialogProps<T> = {
   modal: { ok: (result?: T) => void; cancel: () => void }
   projectFriendlyId: string
-  addWebpage: (
+  addIpAddress: (
     projectFriendlyId: string,
-    webpage: { url: string; name: string }
+    ipAddress: { ip: string; tag: string }
   ) => Promise<void>
 }
 
-export const WebpageAddModal = ({
+export const IpAddressAddDialog = ({
   modal,
   projectFriendlyId,
-  addWebpage
-}: WebpageAddModalProps<any>) => {
+  addIpAddress
+}: IpAddressAddDialogProps<any>) => {
   const [form, setForm] = useFormState<{
-    name: string
-    url: string
+    tag: string
+    ipAddress: string
   }>({
-    name: '',
-    url: ''
+    tag: '',
+    ipAddress: ''
   })
 
   return (
     <Modal.Content>
       <Modal.CloseButton />
-      <Modal.Header>Webpage</Modal.Header>
+      <Modal.Header>IP Address</Modal.Header>
       <Modal.Body>
         <FormControl>
-          <FormControl.Label>Name</FormControl.Label>
-          <Input onChangeText={text => setForm('name', text)} />
+          <FormControl.Label>Tag</FormControl.Label>
+          <Input onChangeText={text => setForm('tag', text)} />
         </FormControl>
         <FormControl mt="3">
-          <FormControl.Label>URL Address</FormControl.Label>
-          <Input onChangeText={text => setForm('url', text)} />
+          <FormControl.Label>IP Address</FormControl.Label>
+          <Input onChangeText={text => setForm('ipAddress', text)} />
         </FormControl>
       </Modal.Body>
       <Modal.Footer>
@@ -52,9 +52,9 @@ export const WebpageAddModal = ({
           </Button>
           <AsyncButton
             onPress={async () => {
-              await addWebpage(projectFriendlyId, {
-                url: form.url,
-                name: form.name
+              await addIpAddress(projectFriendlyId, {
+                ip: form.ipAddress,
+                tag: form.tag
               })
               modal.ok()
             }}

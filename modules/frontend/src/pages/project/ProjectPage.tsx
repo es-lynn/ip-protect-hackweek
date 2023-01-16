@@ -23,9 +23,9 @@ import { withContext } from '../../hoc/withContext'
 import { Modal } from '../../modal/ModalController'
 import { nav } from '../../router/nav'
 import { sp } from '../../styles/space'
-import { MyButton, MyMenuItem } from './_components/MenuItem'
-import { ProjectPageDeleteModal } from './_components/ProjectPageDeleteModal'
-import { WebpageView } from './_components/WebpageView'
+import { IpAddressView } from './_components/IPAddress/IpAddressView'
+import { ProjectPageDeleteModal } from './_components/Webpage/ProjectPageDeleteModal'
+import { WebpageView } from './_components/Webpage/WebpageView'
 import {
   ProjectPageContext,
   ProjectPageContextProvider
@@ -38,7 +38,9 @@ export const _ProjectPage = () => {
     ipAddresses,
     projectFriendlyId,
     deleteWebpage,
-    addWebpage
+    addWebpage,
+    deleteIpAddress,
+    addIpAddress
   } = useContext(ProjectPageContext)
 
   const [segmentedButtonValue, setSegmentedButtonValue] =
@@ -56,10 +58,14 @@ export const _ProjectPage = () => {
           { value: 'users', label: 'Users' }
         ]}
       />
-      {segmentedButtonValue === 'ip-address' &&
-        (ipAddresses?.map(ip => (
-          <List.Item key={ip.id} title={ip.ip} description={ip.tag} />
-        )) ?? <ActivityIndicator size={'large'} />)}
+      {segmentedButtonValue === 'ip-address' && (
+        <IpAddressView
+          ipAddresses={ipAddresses}
+          projectFriendlyId={projectFriendlyId}
+          deleteIpAddress={deleteIpAddress}
+          addIpAddress={addIpAddress}
+        />
+      )}
 
       {segmentedButtonValue === 'websites' && (
         <WebpageView
