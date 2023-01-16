@@ -58,9 +58,7 @@ export class IpAddressController {
         id: it.id,
         ip: it.ipAddress,
         tag: it.tag,
-        synced: ipAddresses.IPSet.Addresses.some(
-          ip => ip.split('/')[0] === it.ipAddress
-        )
+        synced: ipAddresses.IPSet.Addresses.some(ip => ip.split('/')[0] === it.ipAddress)
       }))
     }
   }

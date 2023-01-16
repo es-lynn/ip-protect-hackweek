@@ -6,10 +6,7 @@ import { pkg } from '../package/package'
 import { ConfigSchema } from './config.schema'
 
 @Injectable()
-export class ConfigService
-  extends Config<ConfigSchema>
-  implements ConfigSchema
-{
+export class ConfigService extends Config<ConfigSchema> implements ConfigSchema {
   app: {
     port: number
     dev_mode: boolean

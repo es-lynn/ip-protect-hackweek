@@ -1,5 +1,5 @@
 import { applyDecorators, UseGuards } from '@nestjs/common'
-import { ApiBasicAuth, ApiBearerAuth } from '@nestjs/swagger'
+import { ApiBasicAuth } from '@nestjs/swagger'
 
 import { AuthGuard } from '../auth-guard'
 

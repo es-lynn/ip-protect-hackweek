@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { useEffect } from 'react'
+import React from 'react'
 
 import { HomePage } from '../pages/home/HomePage'
 import { ProjectPage } from '../pages/project/ProjectPage'

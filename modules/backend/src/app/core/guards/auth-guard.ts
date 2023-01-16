@@ -1,9 +1,4 @@
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable,
-  UnauthorizedException
-} from '@nestjs/common'
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common'
 import { str } from 'src/commons/utils/StringUtil'
 
 import { ConfigService } from '../config/config.service'

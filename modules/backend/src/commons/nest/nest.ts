@@ -1,8 +1,4 @@
-import {
-  INestApplication,
-  NotImplementedException,
-  ValidationPipe
-} from '@nestjs/common'
+import { INestApplication, NotImplementedException, ValidationPipe } from '@nestjs/common'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 
 import { ConfigService } from '../../app/core/config/config.service'
@@ -65,9 +61,7 @@ function useSwagger(
       .build(),
     {
       operationIdFactory: (controllerKey, methodKey) => {
-        return `${controllerKey
-          .split('Controller')[0]
-          .toLowerCase()}_${methodKey}`
+        return `${controllerKey.split('Controller')[0].toLowerCase()}_${methodKey}`
       }
     }
   )

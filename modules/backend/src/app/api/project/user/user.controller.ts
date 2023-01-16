@@ -44,10 +44,7 @@ export class UserController {
 
   @HttpCode(201)
   @Post('/add')
-  async add(
-    @Param() param: UserAddParam,
-    @Body() body: UserAddBody
-  ): Promise<UserAddRes> {
+  async add(@Param() param: UserAddParam, @Body() body: UserAddBody): Promise<UserAddRes> {
     const project = await this.prisma.project.findUniqueOrThrow({
       where: { friendlyId: param.projectFriendlyId }
     })

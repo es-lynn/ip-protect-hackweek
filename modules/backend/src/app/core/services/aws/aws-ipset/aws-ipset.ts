@@ -51,9 +51,7 @@ export class AwsIpSet {
       .promise()
   }
 
-  async removeIpAddressesFromIpset(
-    ipAddress: string | string[]
-  ): Promise<void> {
+  async removeIpAddressesFromIpset(ipAddress: string | string[]): Promise<void> {
     const ipAddresses = formatIpAddress(ipAddress)
     const { LockToken, IPSet } = await this.getIpAddressesForIpset()
     const finalAddresses = arr.difference(IPSet.Addresses, ipAddresses)

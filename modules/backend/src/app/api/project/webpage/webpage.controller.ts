@@ -45,10 +45,7 @@ export class WebpageController {
 
   @HttpCode(200)
   @Post('/add')
-  async add(
-    @Param() param: WebpageAddParam,
-    @Body() body: WebpageAddBody
-  ): Promise<WebpageAddRes> {
+  async add(@Param() param: WebpageAddParam, @Body() body: WebpageAddBody): Promise<WebpageAddRes> {
     const project = await this.prisma.project.findUniqueOrThrow({
       where: { friendlyId: param.projectFriendlyId }
     })
