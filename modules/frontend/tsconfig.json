@@ -2,5 +2,6 @@
   "compilerOptions": {
     "strict": true
   },
+  "include": ["../commons-shared"],
   "extends": "expo/tsconfig.base"
 }

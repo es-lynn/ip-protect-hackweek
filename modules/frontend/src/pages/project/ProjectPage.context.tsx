@@ -22,24 +22,30 @@ import {
 import { api } from '../../config/config'
 import { nav } from '../../router/nav'
 import { sp } from '../../styles/space'
+import { sleep } from '../../utils/util'
 
 export interface ProjectPageContextType {
   ipAddresses?: IpAddress[]
   webpages?: Webpage[]
   users?: User[]
   projectFriendlyId: string
+  deleteWebpage: (projectFriendlyId: string, webpageId: string) => Promise<void>
 }
+
 export const ProjectPageContext = createContext<ProjectPageContextType>(
   null as any
 )
-// @ts-ignore
-export const ProjectPageContextProvider = ({ children, route }) => {
+export const ProjectPageContextProvider = ({ children, route }: any) => {
   const projectFriendlyId = route.params.projectFriendlyId
   const [ipAddresses, setIpAddresses] = useState<ListResIpAddress[]>()
   const [webpages, setWebpages] = useState<Webpage[]>()
   const [users, setUsers] = useState<User[]>()
 
   useEffect(() => {
+    fetch()
+  }, [])
+
+  function fetch() {
     api.project
       .ipaddressList(projectFriendlyId)
       .then(data => setIpAddresses(data.data.ipAddresses))
@@ -51,7 +57,17 @@ export const ProjectPageContextProvider = ({ children, route }) => {
     api.project
       .userList(projectFriendlyId)
       .then(data => setUsers(data.data.users))
-  }, [])
+  }
+
+  async function deleteWebpage(
+    projectFriendlyId: string,
+    webpageId: string
+  ): Promise<void> {
+    await api.project.webpageDelete(projectFriendlyId, webpageId)
+    await api.project
+      .webpageList(projectFriendlyId)
+      .then(data => setWebpages(data.data.webpages))
+  }
 
   return (
     <ProjectPageContext.Provider
@@ -59,7 +75,8 @@ export const ProjectPageContextProvider = ({ children, route }) => {
         ipAddresses,
         webpages,
         users,
-        projectFriendlyId
+        projectFriendlyId,
+        deleteWebpage
       }}
     >
       {children}

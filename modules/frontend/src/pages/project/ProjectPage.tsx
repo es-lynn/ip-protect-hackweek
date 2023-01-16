@@ -20,15 +20,19 @@ import {
 } from '../../../lib/api/Api'
 import { api } from '../../config/config'
 import { withContext } from '../../hoc/withContext'
+import { Modal } from '../../modal/ModalController'
 import { nav } from '../../router/nav'
 import { sp } from '../../styles/space'
+import { MyButton, MyMenuItem } from './_components/MenuItem'
+import { ProjectPageDeleteModal } from './_components/ProjectPageDeleteModal'
+import { WebpageView } from './_components/WebpageView'
 import {
   ProjectPageContext,
   ProjectPageContextProvider
 } from './ProjectPage.context'
 
 export const _ProjectPage = () => {
-  const { webpages, users, ipAddresses, projectFriendlyId } =
+  const { webpages, users, ipAddresses, projectFriendlyId, deleteWebpage } =
     useContext(ProjectPageContext)
 
   const [segmentedButtonValue, setSegmentedButtonValue] =
@@ -52,48 +56,11 @@ export const _ProjectPage = () => {
         )) ?? <ActivityIndicator size={'large'} />)}
 
       {segmentedButtonValue === 'websites' && (
-        <View>
-          {webpages ? (
-            <FlatList<Webpage>
-              data={webpages}
-              renderItem={({ item: webpage }) => (
-                <View
-                  key={webpage.id}
-                  style={{
-                    padding: sp._8,
-                    flexDirection: 'row',
-                    width: '100%',
-                    alignItems: 'center'
-                  }}
-                >
-                  <A href={webpage.url}>
-                    <View style={{ flexDirection: 'column' }}>
-                      <Text>{webpage.url}</Text>
-                      <Text>{webpage.name}</Text>
-                    </View>
-                  </A>
-                  <View style={{ marginLeft: 'auto' }}>
-                    <Menu
-                      trigger={triggerProps => (
-                        <Pressable
-                          accessibilityLabel="More options menu"
-                          {...triggerProps}
-                        >
-                          <ThreeDotsIcon />
-                        </Pressable>
-                      )}
-                    >
-                      <Menu.Item>Edit</Menu.Item>
-                      <Menu.Item>Delete</Menu.Item>
-                    </Menu>
-                  </View>
-                </View>
-              )}
-            />
-          ) : (
-            <ActivityIndicator size={'large'} />
-          )}
-        </View>
+        <WebpageView
+          webpages={webpages}
+          projectFriendlyId={projectFriendlyId}
+          deleteWebpage={deleteWebpage}
+        />
       )}
 
       {segmentedButtonValue === 'users' &&
@@ -111,10 +78,6 @@ export const _ProjectPage = () => {
             description={`[${user.provider}] ${user.providerId}`}
           />
         )) ?? <ActivityIndicator size={'large'} />)}
-
-      <View>
-        <Button onPress={() => alert('hi')}>hello</Button>
-      </View>
     </SafeAreaView>
   )
 }
