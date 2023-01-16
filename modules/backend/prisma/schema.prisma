@@ -23,6 +23,8 @@ model Project {
   webpages      Webpage[]
   projectUsers  ProjectUser[]
   ipAddresses IpAddress[]
+  awsAccessKey  String
+  awsSecret     String
   config Json @default("{}")
 }
 
@@ -39,7 +41,7 @@ model Webpage {
 model ProjectUser {
   id            String      @id @default(uuid())
   isAdmin       Boolean
-  project       Project     @relation(fields: [projectId], references: [id])
+  project       Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId     String
   user          User        @relation(fields: [userId], references: [id])
   userId        String
