@@ -1,6 +1,11 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common'
-import { str } from 'src/commons/utils/StringUtil'
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException
+} from '@nestjs/common'
 
+import { str } from '../../../commons/utils/StringUtil'
 import { ConfigService } from '../config/config.service'
 import { PrismaService } from '../prisma/prisma.service'
 
@@ -12,12 +17,6 @@ export class AuthGuard implements CanActivate {
     const req = context.switchToHttp().getRequest()
     const session = req.session
 
-    // /** Bearer */
-    // if (req.headers.authorization?.startsWith('Bearer')) {
-    //   const [, accessToken] = req.headers.authorization.split('Bearer ')
-    //   req.user = await this.prisma.user.findUniqueOrThrow({
-    //     where: { id: accessToken }
-    //   })
     /** Basic */
     if (req.headers.authorization?.startsWith('Basic')) {
       const [, base64] = req.headers.authorization.split('Basic ')
