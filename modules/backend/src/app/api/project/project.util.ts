@@ -1,5 +1,3 @@
-import { Project } from '@prisma/client'
-
 import { Format } from '../../../commons/utils/Format'
 import { ProjectType } from '../../core/model/models/project.type'
 import { Project3734 } from './project.dto'

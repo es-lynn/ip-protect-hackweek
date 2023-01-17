@@ -2,7 +2,6 @@ import { Body, Controller, Get, HttpCode, Param, Patch, Post } from '@nestjs/com
 import { ApiTags } from '@nestjs/swagger'
 import { User } from '@prisma/client'
 
-import { Format } from '../../../commons/utils/Format'
 import { AuthUser } from '../../core/guards/decorators/AuthUser'
 import { UseAuthGuard } from '../../core/guards/decorators/UseAuthGuard'
 import { ProjectType } from '../../core/model/models/project.type'
@@ -29,7 +28,6 @@ export class ProjectController {
   @HttpCode(200)
   @Post('/create')
   async create(@AuthUser() user: User, @Body() body: ProjectCreateBody): Promise<ProjectCreateRes> {
-    console.log(body)
     const project = (await this.prisma.project.create({
       data: {
         friendlyId: body.friendlyId,

@@ -24,6 +24,8 @@ describe('UserController', () => {
       })
       await prisma.project.create({
         data: {
+          awsAccessKey: 'A4G21RE1',
+          awsSecret: 'b2b9d07384c5',
           friendlyId: 'doppel-scanner',
           projectUsers: {
             create: [
@@ -35,6 +37,8 @@ describe('UserController', () => {
       })
       await prisma.project.create({
         data: {
+          awsAccessKey: 'AM0C6NS03Y',
+          awsSecret: '321839484c80',
           friendlyId: 'squarebox'
         }
       })
