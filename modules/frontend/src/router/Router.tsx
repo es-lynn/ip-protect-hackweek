@@ -3,11 +3,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { useEffect } from 'react'
 import React from 'react'
 
+import { DebugPage } from '../pages/debug/DebugPage'
 import { HomePage } from '../pages/home/HomePage'
 import { LoginPage } from '../pages/login/LoginPage'
 import { ProjectPage } from '../pages/project/ProjectPage'
 import { navigationRef } from './nav'
-import { route } from './route'
 
 const Stack = createNativeStackNavigator()
 
@@ -27,6 +27,7 @@ export const Router = () => {
       }}
     >
       <Stack.Navigator>
+        <Stack.Screen name={'debug'} component={DebugPage} />
         <Stack.Screen name={'login'} component={LoginPage} />
         <Stack.Screen name={'home'} component={HomePage} />
         <Stack.Screen name={'project/:projectFriendlyId'} component={ProjectPage} />

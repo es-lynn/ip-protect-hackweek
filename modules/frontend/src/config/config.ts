@@ -1,14 +1,27 @@
+import Constants from 'expo-constants'
+
 import { Api } from '../../lib/api/Api'
 import { throwToastError, Toast } from '../toast/Toast'
+
+const env: any = Constants.expoConfig?.extra?.env ?? {}
+
+export const Cfg = {
+  API_URL: env.API_URL,
+  BASIC_AUTH_UID: env.BASIC_AUTH_UID,
+  BASIC_AUTH_PASSWORD: env.BASIC_AUTH_PASSWORD
+}
 
 type Credentials = {
   uid?: string
   password?: string
 }
-const credentials: Credentials = {}
+const credentials: Credentials = {
+  uid: Cfg.BASIC_AUTH_UID,
+  password: Cfg.BASIC_AUTH_PASSWORD
+}
 
 const api = new Api({
-  baseUrl: 'http://192.168.50.96:4000',
+  baseUrl: Cfg.API_URL,
   securityWorker: securityData => {
     if (!credentials.uid || !credentials.password) {
       throwToastError(new Error('Unauthorized. Please login'))
