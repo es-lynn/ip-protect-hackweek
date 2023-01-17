@@ -22,7 +22,11 @@ export const ConfirmDialog = ({
 }: ConfirmDialogProps) => {
   return (
     <AlertDialog
+      avoidKeyboard={false}
+      closeOnOverlayClick={false}
+      // FIXME
       key={new Date().getTime()}
+      // FIXME
       leastDestructiveRef={{} as any}
       isOpen={modalController.visibility}
       onClose={modalController.close}

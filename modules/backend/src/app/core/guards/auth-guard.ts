@@ -1,13 +1,9 @@
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable,
-  UnauthorizedException
-} from '@nestjs/common'
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common'
 
 import { str } from '../../../commons/utils/StringUtil'
 import { ConfigService } from '../config/config.service'
 import { PrismaService } from '../prisma/prisma.service'
+import { parseUid } from './auth-guard.util'
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -20,15 +16,18 @@ export class AuthGuard implements CanActivate {
     /** Basic */
     if (req.headers.authorization?.startsWith('Basic')) {
       const [, base64] = req.headers.authorization.split('Basic ')
-      const [username, password] = str.base64Decode(base64).split(':')
+      const [uid, password] = str.base64Decode(base64).split(':')
+      const [provider, providerId] = parseUid(uid)
       if (password !== this.config.auth.basicPassword) {
         throw new UnauthorizedException('Incorrect password')
       }
       const user = await this.prisma.user.findUnique({
-        where: { id: username }
+        where: {
+          providerId_provider: { provider, providerId }
+        }
       })
       if (!user) {
-        throw new UnauthorizedException(`No such user exists: ${username}`)
+        throw new UnauthorizedException(`No such user exists: ${uid}`)
       }
       req.user = user
       /** Session */

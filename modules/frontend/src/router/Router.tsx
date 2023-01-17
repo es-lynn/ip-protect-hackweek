@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import React from 'react'
 
 import { HomePage } from '../pages/home/HomePage'
+import { LoginPage } from '../pages/login/LoginPage'
 import { ProjectPage } from '../pages/project/ProjectPage'
 import { navigationRef } from './nav'
 import { route } from './route'
@@ -26,11 +27,9 @@ export const Router = () => {
       }}
     >
       <Stack.Navigator>
+        <Stack.Screen name={'login'} component={LoginPage} />
         <Stack.Screen name={'home'} component={HomePage} />
-        <Stack.Screen
-          name={'project/:projectFriendlyId'}
-          component={ProjectPage}
-        />
+        <Stack.Screen name={'project/:projectFriendlyId'} component={ProjectPage} />
       </Stack.Navigator>
     </NavigationContainer>
   )

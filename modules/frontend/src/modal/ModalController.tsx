@@ -92,11 +92,11 @@ export class MyModalController extends ModalController {
     return this.render(p => {
       return (
         <NativeBaseModal
+          avoidKeyboard={false}
+          closeOnOverlayClick={false}
           key={new Date().getTime()}
           isOpen={p.visibility}
           onClose={p.close}
-          initialFocusRef={{} as any}
-          finalFocusRef={{} as any}
         >
           {p.children}
         </NativeBaseModal>
