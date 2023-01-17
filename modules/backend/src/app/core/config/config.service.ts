@@ -19,11 +19,6 @@ export class ConfigService extends Config<ConfigSchema> implements ConfigSchema 
   }
   auth: {
     basicPassword: string
-    certUrl: string
-    tokenUrl: string
-    redirectUrl: string
-    clientId: string
-    clientSecret: string
   }
 
   constructor(private env: EnvService) {
@@ -39,12 +34,7 @@ export class ConfigService extends Config<ConfigSchema> implements ConfigSchema 
       version: pkg.version
     }
     this.auth = {
-      basicPassword: env.getOrThrow('AUTH_BASIC_PASSWORD'),
-      certUrl: env.getOrThrow('AUTH_CERT_URL'),
-      tokenUrl: env.getOrThrow('AUTH_TOKEN_URL'),
-      redirectUrl: env.getOrThrow('AUTH_REDIRECT_URL'),
-      clientId: env.getOrThrow('AUTH_CLIENT_ID'),
-      clientSecret: env.getOrThrow('AUTH_CLIENT_SECRET')
+      basicPassword: env.getOrThrow('AUTH_BASIC_PASSWORD')
     }
   }
 }

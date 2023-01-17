@@ -1,10 +1,13 @@
 {
   "name": "@commons/shared",
   "version": "0.0.0",
-  "main": "index.ts",
+  "main": "index.js",
   "author": "es-lynn",
   "license": "MIT",
   "scripts": {
+    "copmile": "tsc --noEmit && eslint . --ext .ts,.tsx --max-warnings=0",
+    "compile:fix": "tsc --noEmit && eslint . --ext .ts,.tsx --fix --plugin unused-imports --fix --rule 'unused-imports/no-unused-imports-ts: warn'",
+    "build": "tsc",
     "test": "echo 'No tests found'"
   },
   "private": false

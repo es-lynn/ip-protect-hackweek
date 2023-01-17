@@ -10,9 +10,6 @@ export type ConfigSchema = {
     version: string
   }
   auth: {
-    redirectUrl: string
-    tokenUrl: string
-    clientId: string
-    clientSecret: string
+    basicPassword: string
   }
 }
