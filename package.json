@@ -11,6 +11,7 @@
     "build:all": "lerna run build",
     "compile:all": "lerna run compile",
     "compile:fix:all": "lerna run compile:fix",
+    "test:all": "lerna run test",
     "prepare": "husky install"
   },
   "devDependencies": {

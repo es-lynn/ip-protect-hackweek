@@ -4,5 +4,8 @@
   "main": "index.ts",
   "author": "es-lynn",
   "license": "MIT",
+  "scripts": {
+    "test": "echo 'No tests found'"
+  },
   "private": false
 }
