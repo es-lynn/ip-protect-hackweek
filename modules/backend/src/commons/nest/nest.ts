@@ -1,7 +1,10 @@
 import { INestApplication, NotImplementedException, ValidationPipe } from '@nestjs/common'
+import { HttpAdapterHost } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 
 import { ConfigService } from '../../app/core/config/config.service'
+import { AllExceptionsFilter } from '../../app/core/filters/all.exceptions.filter'
+import { PrismaExceptionsFilter } from '../../app/core/filters/prisma.exceptions.filter'
 import { ClassValidationError } from '../errors/ClassValidationError'
 
 function logConfig(app: INestApplication): void {
@@ -19,8 +22,11 @@ function useClassValidationPipe(app: INestApplication): void {
   )
 }
 
-function useGlobalErrorFilter(_app: INestApplication): void {
-  throw new NotImplementedException('useGlobalErrorFilter')
+function useGlobalErrorFilter(app: INestApplication): void {
+  const config = app.get(ConfigService)
+  const enableDebugRes = config.app.dev_mode
+  app.useGlobalFilters(new AllExceptionsFilter(enableDebugRes))
+  app.useGlobalFilters(new PrismaExceptionsFilter(enableDebugRes))
 }
 
 function useSwagger(

@@ -12,6 +12,7 @@ async function bootstrap(): Promise<void> {
   nest.logConfig(app)
 
   nest.useClassValidationPipe(app)
+  nest.useGlobalErrorFilter(app)
 
   if (cfg.app.enable_swagger) {
     nest.useSwagger(app, cfg.swagger)
