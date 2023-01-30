@@ -1,6 +1,8 @@
 # IProtect
 
 [![compile](https://github.com/es-lynn/ip-protect/actions/workflows/compile.yml/badge.svg)](https://github.com/es-lynn/ip-protect/actions/workflows/compile.yml)
+[![test](https://github.com/es-lynn/ip-protect/actions/workflows/test.yml/badge.svg)](https://github.com/es-lynn/ip-protect/actions/workflows/test.yml)
+[![build](https://github.com/es-lynn/ip-protect/actions/workflows/build.yml/badge.svg)](https://github.com/es-lynn/ip-protect/actions/workflows/build.yml)
 
 # Requirements
 

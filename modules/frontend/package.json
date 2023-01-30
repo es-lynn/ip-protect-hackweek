@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
+    "build:web": "npx dotenv expo export:web",
     "start": "expo start",
     "start:android": "expo start --android",
     "start:ios": "expo start --ios",
-    "start:web": "expo start --web",
+    "start:web": "npx dotenv expo start --web",
     "build:api-client": "npx swagger-typescript-api -p http://localhost:4000/swagger/docs-json -o ./lib/api",
     "test": "echo 'No tests found'"
   },
@@ -34,6 +35,8 @@
     "@babel/core": "^7.12.9",
     "@types/react": "~18.0.24",
     "@types/react-native": "~0.70.6",
+    "dotenv-cli": "^7.0.0",
+    "dotenv": "^16.0.3",
     "eas-cli": "^2.9.0"
   },
   "private": true

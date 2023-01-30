@@ -4,3 +4,4 @@ node_modules
 .DS_Store
 modules/**/dist
 modules/backend/.env
+modules/frontend/.env
