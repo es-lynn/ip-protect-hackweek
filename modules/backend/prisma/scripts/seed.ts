@@ -7,7 +7,7 @@ import faker from 'faker'
     data: {
       id: 'b6862bc4-e1c6-42e5-86af-5044c9799157',
       name: 'Evelyn Toh',
-      provider: 'gcc',
+      provider: 'email',
       providerId: 'evelyn_toh@outlook.com'
     }
   })

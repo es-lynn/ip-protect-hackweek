@@ -1,5 +1,4 @@
-import { INestApplication, NotImplementedException, ValidationPipe } from '@nestjs/common'
-import { HttpAdapterHost } from '@nestjs/core'
+import { INestApplication, ValidationPipe } from '@nestjs/common'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 
 import { ConfigService } from '../../app/core/config/config.service'

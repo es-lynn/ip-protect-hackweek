@@ -4,7 +4,7 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "build:web": "npx dotenv expo export:web",
-    "start": "expo start",
+    "start": "npx dotenv expo start",
     "start:android": "expo start --android",
     "start:ios": "expo start --ios",
     "start:web": "npx dotenv expo start --web",

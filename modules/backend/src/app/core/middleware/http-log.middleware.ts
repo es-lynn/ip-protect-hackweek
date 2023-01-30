@@ -7,7 +7,7 @@ import { generateTransactionId } from '../../../commons/utils/HttpUtils'
 export class HttpLogMiddleware implements NestMiddleware {
   private reqLogger = new Logger('-->')
   private resLogger = new Logger('<--')
-  use(req: Request, res: Response, next: Function) {
+  use(req: Request, res: Response, next: Function): void {
     const transactionId = generateTransactionId()
     req['transactionId'] = transactionId
 
