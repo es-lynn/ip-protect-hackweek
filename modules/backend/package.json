@@ -6,6 +6,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
+    "postinstall": "yarn prisma generate",
     "build": "nest build",
     "start": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -13,7 +14,7 @@
     "db:setup": "docker create --name ip-protect-db -p 5432:5432 -e POSTGRES_USER=dev -e POSTGRES_PASSWORD=password -e POSTGRES_DB=ip-protect postgres:13.6",
     "db:seed": "ts-node ./prisma/scripts/seed.ts",
     "db:reset": "prisma migrate reset",
-    "copmile": "tsc --noEmit && eslint . --ext .ts,.tsx --max-warnings=0",
+    "compile": "tsc --noEmit && eslint . --ext .ts,.tsx --max-warnings=0",
     "compile:fix": "tsc --noEmit && eslint . --ext .ts,.tsx --fix --plugin unused-imports --fix --rule 'unused-imports/no-unused-imports-ts: warn'",
     "test": "jest",
     "test:watch": "jest --watch",
