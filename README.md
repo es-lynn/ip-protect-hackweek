@@ -2,7 +2,9 @@
 
 [![compile](https://github.com/es-lynn/ip-protect/actions/workflows/compile.yml/badge.svg)](https://github.com/es-lynn/ip-protect/actions/workflows/compile.yml)
 [![test](https://github.com/es-lynn/ip-protect/actions/workflows/test.yml/badge.svg)](https://github.com/es-lynn/ip-protect/actions/workflows/test.yml)
-[![build](https://github.com/es-lynn/ip-protect/actions/workflows/build.yml/badge.svg)](https://github.com/es-lynn/ip-protect/actions/workflows/build.yml)
+[![build_push_digitalocean](https://github.com/es-lynn/ip-protect-hackweek/actions/workflows/build-push-digitalocean.yml/badge.svg)](https://github.com/es-lynn/ip-protect-hackweek/actions/workflows/build-push-digitalocean.yml)
+[![build_deploy_netlify](https://github.com/es-lynn/ip-protect-hackweek/actions/workflows/build-deploy-netlify.yml/badge.svg)](https://github.com/es-lynn/ip-protect-hackweek/actions/workflows/build-deploy-netlify.yml)
+[![Netlify (DEV)](https://api.netlify.com/api/v1/badges/5f75da4d-6d21-4e9f-b849-b544d8483cdb/deploy-status)](https://app.netlify.com/sites/dev-iprotect/deploys)
 
 # Requirements
 
@@ -15,11 +17,13 @@
 
 1. `yarn setup`
 2. modules/backend
+   1. Copy .env.sample to .env
    1. `yarn db:setup`
    2. `yarn db:start`
    3. `yarn db:seed`
 3. modules/frontend
-   1. `yarn start`
+   1. Copy /env/.env.sample to /env/.env.local
+   2. `yarn start`
 
 # Updating APIs
 
