@@ -140,11 +140,22 @@ export interface User {
   name: string
   provider: string
   providerId: string
+}
+
+export interface UserSearchRes {
+  users: User[]
+}
+
+export interface ProjectUser {
+  id: string
+  name: string
+  provider: string
+  providerId: string
   isAdmin: boolean
 }
 
 export interface UserListRes {
-  users: User[]
+  users: ProjectUser[]
 }
 
 export interface UserAddBody {
@@ -153,7 +164,7 @@ export interface UserAddBody {
 }
 
 export interface UserAddRes {
-  user: User
+  user: ProjectUser
 }
 
 export interface UserEditRoleBody {
@@ -161,7 +172,7 @@ export interface UserEditRoleBody {
 }
 
 export interface UserEditRoleRes {
-  user: User
+  user: ProjectUser
 }
 
 export type UserRemoveRes = object
@@ -729,6 +740,30 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: 'POST',
         body: data,
         type: ContentType.Json,
+        format: 'json',
+        ...params
+      })
+  }
+  user = {
+    /**
+     * No description
+     *
+     * @tags /user
+     * @name UserList
+     * @request GET:/user/search
+     * @secure
+     */
+    userList: (
+      query: {
+        q: string
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<UserSearchRes, any>({
+        path: `/user/search`,
+        method: 'GET',
+        query: query,
+        secure: true,
         format: 'json',
         ...params
       })

@@ -12,24 +12,17 @@ import React, { useContext, useEffect, useState } from 'react'
 import { ActivityIndicator, FlatList, SafeAreaView, View } from 'react-native'
 import { Chip, List, SegmentedButtons, Text } from 'react-native-paper'
 
-import {
-  ListResIpAddress,
-  User,
-  Webpage,
-  WebpageListRes
-} from '../../../lib/api/Api'
+import { ListResIpAddress, User, Webpage, WebpageListRes } from '../../../lib/api/Api'
 import { api } from '../../config/config'
 import { withContext } from '../../hoc/withContext'
 import { Modal } from '../../modal/ModalController'
 import { nav } from '../../router/nav'
 import { sp } from '../../styles/space'
 import { IpAddressView } from './_components/IPAddress/IpAddressView'
+import { UserView } from './_components/User/UserView'
 import { ProjectPageDeleteModal } from './_components/Webpage/ProjectPageDeleteModal'
 import { WebpageView } from './_components/Webpage/WebpageView'
-import {
-  ProjectPageContext,
-  ProjectPageContextProvider
-} from './ProjectPage.context'
+import { ProjectPageContext, ProjectPageContextProvider } from './ProjectPage.context'
 
 export const _ProjectPage = () => {
   const {
@@ -40,11 +33,11 @@ export const _ProjectPage = () => {
     deleteWebpage,
     addWebpage,
     deleteIpAddress,
-    addIpAddress
+    addIpAddress,
+    editProjectUserRole
   } = useContext(ProjectPageContext)
 
-  const [segmentedButtonValue, setSegmentedButtonValue] =
-    useState<string>('ip-address')
+  const [segmentedButtonValue, setSegmentedButtonValue] = useState<string>('ip-address')
 
   return (
     <SafeAreaView style={{ padding: sp._24 }}>
@@ -76,21 +69,13 @@ export const _ProjectPage = () => {
         />
       )}
 
-      {segmentedButtonValue === 'users' &&
-        (users?.map(user => (
-          <List.Item
-            key={user.id}
-            title={() => (
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text>{user.name}</Text>
-                {user.isAdmin && (
-                  <Chip style={{ marginLeft: sp._8 }}>Admin</Chip>
-                )}
-              </View>
-            )}
-            description={`[${user.provider}] ${user.providerId}`}
-          />
-        )) ?? <ActivityIndicator size={'large'} />)}
+      {segmentedButtonValue === 'users' && (
+        <UserView
+          users={users}
+          projectFriendlyId={projectFriendlyId}
+          editProjectUserRole={editProjectUserRole}
+        />
+      )}
     </SafeAreaView>
   )
 }

@@ -23,7 +23,4 @@ export class User {
 
   @ApiProperty()
   providerId: string
-
-  @ApiProperty()
-  isAdmin: boolean
 }

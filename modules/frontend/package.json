@@ -4,6 +4,8 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "build:web": "npx dotenv expo export:web",
+    "compile": "tsc --noEmit && eslint . --ext .ts,.tsx --max-warnings=0",
+    "compile:fix": "tsc --noEmit && eslint . --ext .ts,.tsx --fix --plugin unused-imports --fix --rule 'unused-imports/no-unused-imports-ts: warn'",
     "start": "npx dotenv expo start",
     "start:android": "expo start --android",
     "start:ios": "expo start --ios",

@@ -1,6 +1,22 @@
+import { ApiProperty } from '@nestjs/swagger'
 import { IsBoolean, IsNotEmpty, IsString } from 'class-validator'
 
-import { User } from '../_dto/dto'
+export class ProjectUser {
+  @ApiProperty()
+  id: string
+
+  @ApiProperty()
+  name: string
+
+  @ApiProperty()
+  provider: string
+
+  @ApiProperty()
+  providerId: string
+
+  @ApiProperty()
+  isAdmin: boolean
+}
 
 export class UserListParam {
   @IsString()
@@ -9,7 +25,7 @@ export class UserListParam {
 }
 
 export class UserListRes {
-  users: User[]
+  users: ProjectUser[]
 }
 
 export class UserAddParam {
@@ -29,7 +45,7 @@ export class UserAddBody {
 }
 
 export class UserAddRes {
-  user: User
+  user: ProjectUser
 }
 
 export class UserEditRoleParam {
@@ -49,7 +65,7 @@ export class UserEditRoleBody {
 }
 
 export class UserEditRoleRes {
-  user: User
+  user: ProjectUser
 }
 
 export class UserRemoveParam {

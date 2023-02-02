@@ -1,8 +1,8 @@
 import { ProjectUser, User } from '@prisma/client'
 
-import { User as UserDto } from '../_dto/dto'
+import { ProjectUser as ProjectUserDto } from './user.dto'
 
-export function mapToUserDto(projUser: ProjectUser & { user: User }): UserDto {
+export function mapToUserDto(projUser: ProjectUser & { user: User }): ProjectUserDto {
   return {
     id: projUser.user.id,
     name: projUser.user.name,
