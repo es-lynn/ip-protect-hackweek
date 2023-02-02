@@ -41,7 +41,7 @@ export const UserAddDialog = ({
               value={form.userSearchQuery}
               onChangeText={async text => {
                 setForm('userSearchQuery', text)
-                const users = (await api.user.userList({ q: text })).data.users
+                const users = (await api.user.userSearch({ q: text })).data.users
                 setUserList(
                   users.map(it => ({
                     title: `[${it.provider}] ${it.providerId} (${it.name})`,
