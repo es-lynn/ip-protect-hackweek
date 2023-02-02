@@ -1,6 +1,12 @@
 import React, { createContext, useEffect, useState } from 'react'
 
-import { IpAddress, ListResIpAddress, ProjectUser, Webpage } from '../../../lib/api/Api'
+import {
+  IpAddress,
+  IpAddressWhitelistedRes,
+  ListResIpAddress,
+  ProjectUser,
+  Webpage
+} from '../../../lib/api/Api'
 import { api } from '../../config/config'
 import { fromRole, Role } from '../../types/role'
 
@@ -9,6 +15,7 @@ export interface ProjectPageContextType {
   webpages?: Webpage[]
   users?: ProjectUser[]
   projectFriendlyId: string
+  whitelisted?: IpAddressWhitelistedRes
 
   deleteWebpage: (projectFriendlyId: string, webpageId: string) => Promise<void>
   addWebpage: (projectFriendlyId: string, webpage: { url: string; name: string }) => Promise<void>
@@ -27,6 +34,7 @@ export const ProjectPageContextProvider = ({ children, route }: any) => {
   const [ipAddresses, setIpAddresses] = useState<ListResIpAddress[]>()
   const [webpages, setWebpages] = useState<Webpage[]>()
   const [users, setUsers] = useState<ProjectUser[]>()
+  const [whitelisted, setWhitelisted] = useState<IpAddressWhitelistedRes>()
 
   useEffect(() => {
     fetch()
@@ -36,6 +44,11 @@ export const ProjectPageContextProvider = ({ children, route }: any) => {
     api.project.ipaddressList(projectFriendlyId).then(data => setIpAddresses(data.data.ipAddresses))
     api.project.webpageList(projectFriendlyId).then(data => setWebpages(data.data.webpages))
     api.project.userList(projectFriendlyId).then(data => setUsers(data.data.users))
+    api.project
+      .ipaddressWhitelisted(projectFriendlyId, {
+        ipAddress: '2001:0db8:3333:4444:5555:6666:7777:8888'
+      })
+      .then(data => setWhitelisted(data.data))
   }
 
   async function deleteWebpage(projectFriendlyId: string, webpageId: string): Promise<void> {
@@ -114,6 +127,7 @@ export const ProjectPageContextProvider = ({ children, route }: any) => {
         webpages,
         users,
         projectFriendlyId,
+        whitelisted,
         deleteWebpage,
         addWebpage,
         deleteIpAddress,

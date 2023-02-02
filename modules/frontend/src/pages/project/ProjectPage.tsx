@@ -1,5 +1,6 @@
+import { CircleIcon } from 'native-base'
 import React, { useContext, useState } from 'react'
-import { SafeAreaView } from 'react-native'
+import { ActivityIndicator, SafeAreaView, View } from 'react-native'
 import { SegmentedButtons, Text } from 'react-native-paper'
 
 import { withContext } from '../../hoc/withContext'
@@ -15,6 +16,7 @@ export const _ProjectPage = () => {
     users,
     ipAddresses,
     projectFriendlyId,
+    whitelisted,
     deleteWebpage,
     addWebpage,
     deleteIpAddress,
@@ -28,7 +30,24 @@ export const _ProjectPage = () => {
 
   return (
     <SafeAreaView style={{ padding: sp._24 }}>
-      <Text>{projectFriendlyId}</Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Text>{projectFriendlyId}</Text>
+        {whitelisted ? (
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <CircleIcon
+              style={{ marginLeft: sp._8, color: whitelisted.isWhitelisted ? 'green' : 'red' }}
+            />
+            {whitelisted.ipAddress?.tag && (
+              <Text style={{ marginLeft: sp._4 }}>({whitelisted.ipAddress.tag})</Text>
+            )}
+            {whitelisted.isMyIp === false && (
+              <Text style={{ marginLeft: sp._4 }}>[whitelisted by {whitelisted.user?.name}]</Text>
+            )}
+          </View>
+        ) : (
+          <ActivityIndicator size={'small'} />
+        )}
+      </View>
       <SegmentedButtons
         value={segmentedButtonValue}
         onValueChange={setSegmentedButtonValue}
@@ -41,6 +60,7 @@ export const _ProjectPage = () => {
       {segmentedButtonValue === 'ip-address' && (
         <IpAddressView
           ipAddresses={ipAddresses}
+          whitelistedIpAddress={whitelisted?.ipAddress}
           projectFriendlyId={projectFriendlyId}
           deleteIpAddress={deleteIpAddress}
           addIpAddress={addIpAddress}

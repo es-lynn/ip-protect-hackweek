@@ -97,6 +97,20 @@ export interface IpAddressRemoveBody {
 
 export type IpAddressRemoveRes = object
 
+export interface User {
+  id: string
+  name: string
+  provider: string
+  providerId: string
+}
+
+export interface IpAddressWhitelistedRes {
+  isWhitelisted: boolean
+  isMyIp?: boolean
+  ipAddress?: IpAddress
+  user?: User
+}
+
 export interface Webpage {
   id: string
   name: string
@@ -133,13 +147,6 @@ export interface AuthLoginBody {
 
 export interface AuthLoginRes {
   accessToken: string
-}
-
-export interface User {
-  id: string
-  name: string
-  provider: string
-  providerId: string
 }
 
 export interface UserSearchRes {
@@ -575,6 +582,30 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags /project/:projectFriendlyId/user/@me/ip-address
+     * @name IpaddressWhitelisted
+     * @request GET:/project/{projectFriendlyId}/user/@me/ip-address/whitelisted
+     * @secure
+     */
+    ipaddressWhitelisted: (
+      projectFriendlyId: string,
+      query: {
+        ipAddress: string
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<IpAddressWhitelistedRes, any>({
+        path: `/project/${projectFriendlyId}/user/@me/ip-address/whitelisted`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * No description
+     *
      * @tags /project/:projectFriendlyId/webpage
      * @name WebpageList
      * @request GET:/project/{projectFriendlyId}/webpage/list
@@ -749,11 +780,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags /user
-     * @name UserList
+     * @name UserSearch
      * @request GET:/user/search
      * @secure
      */
-    userList: (
+    userSearch: (
       query: {
         q: string
       },

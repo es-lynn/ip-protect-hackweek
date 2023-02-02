@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common'
 import * as AWS from 'aws-sdk'
 import { IPSet, LockToken } from 'aws-sdk/clients/wafv2'
 
@@ -7,6 +8,7 @@ import { Config } from './aws-ipset.types'
 
 export class AwsIpSet {
   private readonly client: AWS.WAFV2
+  private readonly logger = new Logger(AwsIpSet.name)
   constructor(private config: Config) {
     this.client = new AWS.WAFV2({
       credentials: {

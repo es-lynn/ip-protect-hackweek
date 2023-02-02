@@ -1,4 +1,4 @@
-import { Button, Menu, Pressable, ThreeDotsIcon, WarningIcon } from 'native-base'
+import { Button, CircleIcon, Menu, Pressable, ThreeDotsIcon, WarningIcon } from 'native-base'
 import React from 'react'
 import { ActivityIndicator, FlatList, View } from 'react-native'
 import { Text } from 'react-native-paper'
@@ -10,6 +10,7 @@ import { IpAddressAddDialog } from './IpAddressAddDialog'
 
 export type IpAddressViewProps = {
   ipAddresses?: IpAddress[]
+  whitelistedIpAddress?: IpAddress
   projectFriendlyId: string
   deleteIpAddress: (projectFriendlyId: string, ipAddress: string) => Promise<void>
   addIpAddress: (projectFriendlyId: string, ipAddress: { ip: string; tag: string }) => Promise<void>
@@ -18,7 +19,8 @@ export const IpAddressView = ({
   ipAddresses,
   projectFriendlyId,
   deleteIpAddress,
-  addIpAddress
+  addIpAddress,
+  whitelistedIpAddress
 }: IpAddressViewProps) => {
   return (
     <View>
@@ -35,7 +37,10 @@ export const IpAddressView = ({
                 alignItems: 'center'
               }}
             >
-              {!ipAddress['synced'] && <WarningIcon />}
+              {!ipAddress['synced'] && <WarningIcon style={{ color: 'red' }} />}
+              {whitelistedIpAddress?.ip === ipAddress.ip && (
+                <CircleIcon style={{ color: 'green' }} />
+              )}
               <View style={{ flexDirection: 'column', marginLeft: sp._8 }}>
                 <Text>{ipAddress.tag}</Text>
                 <Text>{ipAddress.ip}</Text>
