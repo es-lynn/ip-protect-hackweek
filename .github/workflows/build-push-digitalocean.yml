@@ -1,4 +1,4 @@
-name: build-push-digitalocean
+name: build_push_digitalocean
 
 on:
   push:
