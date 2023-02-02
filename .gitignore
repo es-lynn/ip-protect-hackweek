@@ -5,3 +5,4 @@ node_modules
 modules/**/dist
 modules/backend/.env
 modules/frontend/.env
+modules/frontend/env/.env.local

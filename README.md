@@ -15,11 +15,13 @@
 
 1. `yarn setup`
 2. modules/backend
+   1. Copy .env.sample to .env
    1. `yarn db:setup`
    2. `yarn db:start`
    3. `yarn db:seed`
 3. modules/frontend
-   1. `yarn start`
+   1. Copy /env/.env.sample to /env/.env.local
+   2. `yarn start`
 
 # Updating APIs
 
