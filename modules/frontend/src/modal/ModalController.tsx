@@ -1,7 +1,6 @@
-import { AlertDialog, Button, Modal as NativeBaseModal, Text } from 'native-base'
+import { AlertDialog, Modal as NativeBaseModal } from 'native-base'
 import React, { ReactElement } from 'react'
 
-import { AsyncButton } from '../components/AsyncButton'
 import { ConfirmDialog } from './layouts/ConfirmDialog'
 
 /**
@@ -10,7 +9,7 @@ import { ConfirmDialog } from './layouts/ConfirmDialog'
 class ModalController {
   modal: any = undefined as any
 
-  setModal(modal: any) {
+  setModal(modal: any): void {
     this.modal = modal
   }
 

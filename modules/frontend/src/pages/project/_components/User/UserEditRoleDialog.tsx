@@ -1,7 +1,7 @@
-import { Button, FormControl, Input, Modal, Select } from 'native-base'
+import { Button, FormControl, Modal, Select } from 'native-base'
 import React from 'react'
 
-import { ProjectUser, User, Webpage } from '../../../../../lib/api/Api'
+import { ProjectUser } from '../../../../../lib/api/Api'
 import { AsyncButton } from '../../../../components/AsyncButton'
 import { useFormState } from '../../../../hooks/useFormState'
 import { parseRole, Role, toRole } from '../../../../types/role'

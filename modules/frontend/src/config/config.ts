@@ -1,7 +1,7 @@
 import Constants from 'expo-constants'
 
 import { Api } from '../../lib/api/Api'
-import { throwToastError, Toast } from '../toast/Toast'
+import { throwToastError } from '../toast/Toast'
 
 const env: any = Constants.expoConfig?.extra?.env ?? {}
 

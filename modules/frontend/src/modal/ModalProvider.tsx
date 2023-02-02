@@ -1,9 +1,4 @@
-import React, {
-  forwardRef,
-  ReactElement,
-  useImperativeHandle,
-  useState
-} from 'react'
+import React, { forwardRef, ReactElement, useImperativeHandle, useState } from 'react'
 
 import { obj } from '../utils/object.util'
 
@@ -51,15 +46,10 @@ export const ModalProvider = forwardRef((props: {}, ref) => {
       Object.keys(modalInfoList).forEach(uuid => close(uuid))
     },
     async render<T>(
-      modalContainer: (p: {
-        visibility: boolean
-        close: () => void
-      }) => ReactElement,
+      modalContainer: (p: { visibility: boolean; close: () => void }) => ReactElement,
       modalChild:
         | ReactElement
-        | ((p: {
-            modal: { ok: (result: any) => void; cancel: () => void }
-          }) => ReactElement),
+        | ((p: { modal: { ok: (result: any) => void; cancel: () => void } }) => ReactElement),
       uuid: string,
       modalProps: any,
       reject = false

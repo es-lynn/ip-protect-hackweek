@@ -1,7 +1,6 @@
 import { Button, FormControl, Input, Modal } from 'native-base'
 import React from 'react'
 
-import { Webpage } from '../../../../../lib/api/Api'
 import { AsyncButton } from '../../../../components/AsyncButton'
 import { useFormState } from '../../../../hooks/useFormState'
 

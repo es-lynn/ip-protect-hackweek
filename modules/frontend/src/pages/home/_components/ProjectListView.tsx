@@ -1,17 +1,13 @@
-import { A } from '@expo/html-elements'
 import { Menu, Pressable, ThreeDotsIcon } from 'native-base'
 import React from 'react'
 import { ActivityIndicator, FlatList, TouchableHighlight, View } from 'react-native'
 import { Text } from 'react-native-paper'
 
-import { Project, Project3734, Webpage } from '../../../../lib/api/Api'
+import { Project } from '../../../../lib/api/Api'
 import { api } from '../../../config/config'
 import { Modal } from '../../../modal/ModalController'
 import { nav } from '../../../router/nav'
 import { sp } from '../../../styles/space'
-import { ProjectPageDeleteModal } from '../../project/_components/Webpage/ProjectPageDeleteModal'
-import { WebpageViewProps } from '../../project/_components/Webpage/WebpageView'
-import { ProjectAddDialog } from './ProjectAddDialog'
 import { ProjectEditDialog } from './ProjectEditDialog'
 
 export type ProjectListViewProps = {

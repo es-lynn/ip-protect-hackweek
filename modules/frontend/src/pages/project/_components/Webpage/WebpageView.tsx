@@ -14,10 +14,7 @@ export type WebpageViewProps = {
   webpages?: Webpage[]
   projectFriendlyId: string
   deleteWebpage: (projectFriendlyId: string, webpageId: string) => Promise<void>
-  addWebpage: (
-    projectFriendlyId: string,
-    webpage: { url: string; name: string }
-  ) => Promise<void>
+  addWebpage: (projectFriendlyId: string, webpage: { url: string; name: string }) => Promise<void>
 }
 export const WebpageView = ({
   webpages,
@@ -49,10 +46,7 @@ export const WebpageView = ({
               <View style={{ marginLeft: 'auto' }}>
                 <Menu
                   trigger={triggerProps => (
-                    <Pressable
-                      accessibilityLabel="More options menu"
-                      {...triggerProps}
-                    >
+                    <Pressable accessibilityLabel="More options menu" {...triggerProps}>
                       <ThreeDotsIcon />
                     </Pressable>
                   )}
@@ -63,9 +57,7 @@ export const WebpageView = ({
                         <ProjectPageDeleteModal
                           projectFriendlyId={projectFriendlyId}
                           webpage={webpage}
-                          onDelete={async () =>
-                            await deleteWebpage(projectFriendlyId, webpage.id)
-                          }
+                          onDelete={async () => await deleteWebpage(projectFriendlyId, webpage.id)}
                           {...props}
                         />
                       ))

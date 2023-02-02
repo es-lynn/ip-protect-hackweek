@@ -1,14 +1,12 @@
-import { A } from '@expo/html-elements'
 import { Button, Menu, Pressable, ThreeDotsIcon } from 'native-base'
 import React from 'react'
 import { ActivityIndicator, FlatList, View } from 'react-native'
 import { Chip, Text } from 'react-native-paper'
 
-import { ProjectUser, User } from '../../../../../lib/api/Api'
+import { ProjectUser } from '../../../../../lib/api/Api'
 import { Modal } from '../../../../modal/ModalController'
 import { sp } from '../../../../styles/space'
-import { Role, toRole } from '../../../../types/role'
-import { IpAddressAddDialog } from '../IPAddress/IpAddressAddDialog'
+import { Role } from '../../../../types/role'
 import { UserEditRoleDialog } from './UserEditRoleDialog'
 
 export type UserViewProps = {

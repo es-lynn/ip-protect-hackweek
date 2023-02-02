@@ -1,4 +1,4 @@
-import { Box, Button, FavouriteIcon, FormControl, IconButton, Input, Text } from 'native-base'
+import { Box, Button, FormControl, Input } from 'native-base'
 import React from 'react'
 import { SafeAreaView } from 'react-native'
 

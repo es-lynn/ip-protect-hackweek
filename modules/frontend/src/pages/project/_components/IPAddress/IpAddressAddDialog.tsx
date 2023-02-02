@@ -1,17 +1,13 @@
 import { Button, FormControl, Input, Modal } from 'native-base'
 import React from 'react'
 
-import { Webpage } from '../../../../../lib/api/Api'
 import { AsyncButton } from '../../../../components/AsyncButton'
 import { useFormState } from '../../../../hooks/useFormState'
 
 type IpAddressAddDialogProps<T> = {
   modal: { ok: (result?: T) => void; cancel: () => void }
   projectFriendlyId: string
-  addIpAddress: (
-    projectFriendlyId: string,
-    ipAddress: { ip: string; tag: string }
-  ) => Promise<void>
+  addIpAddress: (projectFriendlyId: string, ipAddress: { ip: string; tag: string }) => Promise<void>
 }
 
 export const IpAddressAddDialog = ({
@@ -43,11 +39,7 @@ export const IpAddressAddDialog = ({
       </Modal.Body>
       <Modal.Footer>
         <Button.Group space={2}>
-          <Button
-            variant="ghost"
-            colorScheme="blueGray"
-            onPress={() => modal.cancel()}
-          >
+          <Button variant="ghost" colorScheme="blueGray" onPress={() => modal.cancel()}>
             Cancel
           </Button>
           <AsyncButton

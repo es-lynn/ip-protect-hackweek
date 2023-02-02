@@ -1,10 +1,9 @@
-import { A } from '@expo/html-elements'
 import { Button, Menu, Pressable, ThreeDotsIcon, WarningIcon } from 'native-base'
 import React from 'react'
 import { ActivityIndicator, FlatList, View } from 'react-native'
 import { Text } from 'react-native-paper'
 
-import { IpAddress, Webpage } from '../../../../../lib/api/Api'
+import { IpAddress } from '../../../../../lib/api/Api'
 import { Modal } from '../../../../modal/ModalController'
 import { sp } from '../../../../styles/space'
 import { IpAddressAddDialog } from './IpAddressAddDialog'

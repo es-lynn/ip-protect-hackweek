@@ -1,7 +1,7 @@
 import { Button } from 'native-base'
 import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, SafeAreaView, View } from 'react-native'
-import { Card, List, Text, Title } from 'react-native-paper'
+import { Card, Text } from 'react-native-paper'
 
 import { api } from '../../config/config'
 import { Modal } from '../../modal/ModalController'

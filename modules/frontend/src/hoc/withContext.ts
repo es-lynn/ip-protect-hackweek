@@ -1,9 +1,6 @@
 import React from 'react'
 
-export function withContext<T>(
-  component: React.FC<T>,
-  contextProvider: any
-): React.FC<T> {
+export function withContext<T>(component: React.FC<T>, contextProvider: any): React.FC<T> {
   return function contextComponent(props) {
     return React.createElement(contextProvider, {
       ...props,

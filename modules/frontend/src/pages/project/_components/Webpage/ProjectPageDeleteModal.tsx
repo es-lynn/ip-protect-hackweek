@@ -1,14 +1,8 @@
 import { AlertDialog, Button, Text } from 'native-base'
-import React, { useContext } from 'react'
+import React from 'react'
 
-import { Project, Webpage } from '../../../../../lib/api/Api'
+import { Webpage } from '../../../../../lib/api/Api'
 import { AsyncButton } from '../../../../components/AsyncButton'
-import { withContext } from '../../../../hoc/withContext'
-import { sleep } from '../../../../utils/util'
-import {
-  ProjectPageContext,
-  ProjectPageContextProvider
-} from '../../ProjectPage.context'
 
 type ProjectPageDeleteModalProps<T> = {
   modal: { ok: (result?: T) => void; cancel: () => void }
@@ -28,17 +22,12 @@ export const ProjectPageDeleteModal = ({
       <AlertDialog.Header>Delete Webpage</AlertDialog.Header>
       <AlertDialog.Body>
         <Text>
-          This will remove {webpage.name} ({webpage.url}) from the project:{' '}
-          {projectFriendlyId}
+          This will remove {webpage.name} ({webpage.url}) from the project: {projectFriendlyId}
         </Text>
       </AlertDialog.Body>
       <AlertDialog.Footer>
         <Button.Group space={2}>
-          <Button
-            variant="unstyled"
-            colorScheme="coolGray"
-            onPress={() => modal.cancel()}
-          >
+          <Button variant="unstyled" colorScheme="coolGray" onPress={() => modal.cancel()}>
             Cancel
           </Button>
           <AsyncButton

@@ -15,9 +15,7 @@ type ExtraProps = {
 }
 
 type withAsyncOptions<T extends JSXElementConstructor<any>> = {
-  asyncHandler?:
-    | keyof React.ComponentProps<T>
-    | (keyof React.ComponentProps<T>)[]
+  asyncHandler?: keyof React.ComponentProps<T> | (keyof React.ComponentProps<T>)[]
   omitProps?: ('loading' | 'disabled')[]
   mapProps?: Record<'loading' | 'disabled', string>
 }

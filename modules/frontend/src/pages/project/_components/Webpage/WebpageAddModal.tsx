@@ -1,17 +1,13 @@
 import { Button, FormControl, Input, Modal } from 'native-base'
 import React from 'react'
 
-import { Webpage } from '../../../../../lib/api/Api'
 import { AsyncButton } from '../../../../components/AsyncButton'
 import { useFormState } from '../../../../hooks/useFormState'
 
 type WebpageAddModalProps<T> = {
   modal: { ok: (result?: T) => void; cancel: () => void }
   projectFriendlyId: string
-  addWebpage: (
-    projectFriendlyId: string,
-    webpage: { url: string; name: string }
-  ) => Promise<void>
+  addWebpage: (projectFriendlyId: string, webpage: { url: string; name: string }) => Promise<void>
 }
 
 export const WebpageAddModal = ({
@@ -43,11 +39,7 @@ export const WebpageAddModal = ({
       </Modal.Body>
       <Modal.Footer>
         <Button.Group space={2}>
-          <Button
-            variant="ghost"
-            colorScheme="blueGray"
-            onPress={() => modal.cancel()}
-          >
+          <Button variant="ghost" colorScheme="blueGray" onPress={() => modal.cancel()}>
             Cancel
           </Button>
           <AsyncButton
