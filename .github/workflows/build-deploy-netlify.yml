@@ -1,11 +1,11 @@
-name: build
+name: build-deploy-netlify
 
 on:
   push:
     branches: [ main, 'ci/**' ]
 
 jobs:
-  build:
+  build_deploy_netlify:
     runs-on: ubuntu-latest
 
     strategy:

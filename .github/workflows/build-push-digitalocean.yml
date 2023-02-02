@@ -1,4 +1,4 @@
-name: build
+name: build-push-digitalocean
 
 on:
   push:
@@ -15,7 +15,7 @@ env:
   IMAGE_NAME: "ip-protect-backend"
 
 jobs:
-  build:
+  build_push_digitalocean:
 
     runs-on: ubuntu-latest
     steps:
