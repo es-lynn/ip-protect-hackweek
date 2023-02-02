@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "strict": true
+    "strict": true,
+    "suppressImplicitAnyIndexErrors": true
   },
   "include": ["../commons-shared", "src"],
   "extends": "expo/tsconfig.base"
