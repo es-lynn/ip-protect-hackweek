@@ -13,8 +13,7 @@
     "build:all": "lerna run build",
     "compile:all": "lerna run compile",
     "compile:fix:all": "lerna run compile:fix",
-    "test:all": "lerna run test",
-    "prepare": "husky install"
+    "test:all": "lerna run test"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.31.0",
@@ -26,7 +25,6 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-unused-imports": "^2.0.0",
-    "husky": "^8.0.1",
     "lerna": "^5.6.2",
     "prettier": "^2.6.2",
     "typescript": "^4.7.3"
