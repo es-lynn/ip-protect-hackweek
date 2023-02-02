@@ -34,9 +34,7 @@ export const UserEditRoleDialog = ({
           <FormControl.Label>Role</FormControl.Label>
           <Select
             minWidth="200"
-            _selectedItem={{
-              bg: 'teal.600'
-            }}
+            _selectedItem={{ bg: 'teal.600' }}
             mt="1"
             defaultValue={form.role}
             onValueChange={value => setForm('role', parseRole(value))}

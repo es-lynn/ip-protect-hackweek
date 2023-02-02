@@ -7,7 +7,7 @@ import { fromRole, Role } from '../../types/role'
 export interface ProjectPageContextType {
   ipAddresses?: IpAddress[]
   webpages?: Webpage[]
-  users?: User[]
+  users?: ProjectUser[]
   projectFriendlyId: string
 
   deleteWebpage: (projectFriendlyId: string, webpageId: string) => Promise<void>
@@ -17,6 +17,8 @@ export interface ProjectPageContextType {
   addIpAddress: (projectFriendlyId: string, ipAddress: { ip: string; tag: string }) => Promise<void>
 
   editProjectUserRole: (projectFriendlyId: string, userId: string, role: Role) => Promise<void>
+  addProjectUser: (projectFriendlyId: string, userId: string, role: Role) => Promise<void>
+  removeProjectUser: (projectFriendlyId: string, userId: string) => Promise<void>
 }
 
 export const ProjectPageContext = createContext<ProjectPageContextType>(null as any)
@@ -88,6 +90,23 @@ export const ProjectPageContextProvider = ({ children, route }: any) => {
     api.project.userList(projectFriendlyId).then(data => setUsers(data.data.users))
   }
 
+  async function addProjectUser(
+    projectFriendlyId: string,
+    userId: string,
+    role: Role
+  ): Promise<void> {
+    await api.project.userAdd(projectFriendlyId, {
+      id: userId,
+      isAdmin: fromRole(role)
+    })
+    api.project.userList(projectFriendlyId).then(data => setUsers(data.data.users))
+  }
+
+  async function removeProjectUser(projectFriendlyId: string, userId: string): Promise<void> {
+    await api.project.userRemove(projectFriendlyId, userId)
+    api.project.userList(projectFriendlyId).then(data => setUsers(data.data.users))
+  }
+
   return (
     <ProjectPageContext.Provider
       value={{
@@ -99,7 +118,9 @@ export const ProjectPageContextProvider = ({ children, route }: any) => {
         addWebpage,
         deleteIpAddress,
         addIpAddress,
-        editProjectUserRole
+        editProjectUserRole,
+        addProjectUser,
+        removeProjectUser
       }}
     >
       {children}

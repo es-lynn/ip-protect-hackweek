@@ -13,7 +13,7 @@ export class UserController {
 
   @HttpCode(200)
   @Get('/search')
-  async list(@Query() query: UserSearchQuery): Promise<UserSearchRes> {
+  async search(@Query() query: UserSearchQuery): Promise<UserSearchRes> {
     const users = await this.prisma.user.findMany({
       where: {
         OR: [

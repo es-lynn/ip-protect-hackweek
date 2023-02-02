@@ -4,17 +4,27 @@ import { ActivityIndicator, FlatList, View } from 'react-native'
 import { Chip, Text } from 'react-native-paper'
 
 import { ProjectUser } from '../../../../../lib/api/Api'
+import { api } from '../../../../config/config'
 import { Modal } from '../../../../modal/ModalController'
 import { sp } from '../../../../styles/space'
 import { Role } from '../../../../types/role'
+import { UserAddDialog } from './UserAddDialog'
 import { UserEditRoleDialog } from './UserEditRoleDialog'
 
 export type UserViewProps = {
   users?: ProjectUser[]
   projectFriendlyId: string
   editProjectUserRole: (projectFriendlyId: string, userId: string, role: Role) => Promise<void>
+  addProjectUser: (projectFriendlyId: string, userId: string, role: Role) => Promise<void>
+  removeProjectUser: (projectFriendlyId: string, userId: string) => Promise<void>
 }
-export const UserView = ({ users, projectFriendlyId, editProjectUserRole }: UserViewProps) => {
+export const UserView = ({
+  users,
+  projectFriendlyId,
+  editProjectUserRole,
+  addProjectUser,
+  removeProjectUser
+}: UserViewProps) => {
   return (
     <View>
       {users ? (
@@ -31,8 +41,13 @@ export const UserView = ({ users, projectFriendlyId, editProjectUserRole }: User
               }}
             >
               <View style={{ flexDirection: 'column' }}>
-                <Text>{user.name}</Text>
-                {user.isAdmin && <Chip style={{ marginLeft: sp._8 }}>Admin</Chip>}
+                <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+                  <Text>{user.name}</Text>
+                  {user.isAdmin && <Chip style={{ marginLeft: sp._8 }}>Admin</Chip>}
+                </View>
+                <Text>
+                  [{user.provider}] {user.providerId}
+                </Text>
               </View>
               <View style={{ marginLeft: 'auto' }}>
                 <Menu
@@ -56,7 +71,18 @@ export const UserView = ({ users, projectFriendlyId, editProjectUserRole }: User
                   >
                     Edit Role
                   </Menu.Item>
-                  <Menu.Item onPress={() => {}}>Delete</Menu.Item>
+                  <Menu.Item
+                    onPress={() =>
+                      Modal.confirm2({
+                        type: 'danger',
+                        title: 'Remove User',
+                        body: `Are you sure you wish to remove ${user.name} from this project?`,
+                        onConfirm: async () => await removeProjectUser(projectFriendlyId, user.id)
+                      })
+                    }
+                  >
+                    Delete
+                  </Menu.Item>
                 </Menu>
               </View>
             </View>
@@ -65,7 +91,19 @@ export const UserView = ({ users, projectFriendlyId, editProjectUserRole }: User
       ) : (
         <ActivityIndicator size={'large'} />
       )}
-      <Button onPress={() => {}}>Add User</Button>
+      <Button
+        onPress={() =>
+          Modal.dialog(props => (
+            <UserAddDialog
+              projectFriendlyId={projectFriendlyId}
+              addProjectUser={addProjectUser}
+              {...props}
+            />
+          ))
+        }
+      >
+        Add User
+      </Button>
     </View>
   )
 }
