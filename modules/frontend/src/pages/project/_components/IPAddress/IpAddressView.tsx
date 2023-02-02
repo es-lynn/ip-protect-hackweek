@@ -37,7 +37,7 @@ export const IpAddressView = ({
                 alignItems: 'center'
               }}
             >
-              {!ipAddress['synced'] && <WarningIcon style={{ color: 'red' }} />}
+              {!ipAddress['synced'] && <WarningIcon style={{ color: 'orange' }} />}
               {whitelistedIpAddress?.ip === ipAddress.ip && (
                 <CircleIcon style={{ color: 'green' }} />
               )}

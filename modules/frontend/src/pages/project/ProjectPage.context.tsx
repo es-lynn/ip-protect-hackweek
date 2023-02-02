@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 
 import {
   IpAddress,
@@ -7,6 +7,7 @@ import {
   ProjectUser,
   Webpage
 } from '../../../lib/api/Api'
+import { AppContext } from '../../App.context'
 import { api } from '../../config/config'
 import { fromRole, Role } from '../../types/role'
 
@@ -30,6 +31,7 @@ export interface ProjectPageContextType {
 
 export const ProjectPageContext = createContext<ProjectPageContextType>(null as any)
 export const ProjectPageContextProvider = ({ children, route }: any) => {
+  const { ipv4, ipv6 } = useContext(AppContext)
   const projectFriendlyId = route.params.projectFriendlyId
   const [ipAddresses, setIpAddresses] = useState<ListResIpAddress[]>()
   const [webpages, setWebpages] = useState<Webpage[]>()
@@ -40,15 +42,24 @@ export const ProjectPageContextProvider = ({ children, route }: any) => {
     fetch()
   }, [])
 
+  useEffect(() => {
+    if (ipv6) {
+      api.project
+        .ipaddressWhitelisted(projectFriendlyId, {
+          ipAddress: ipv6
+        })
+        .then(data => setWhitelisted(data.data))
+    } else if (ipv6 == null) {
+      setWhitelisted({
+        isWhitelisted: false
+      })
+    }
+  }, [ipv6])
+
   function fetch() {
     api.project.ipaddressList(projectFriendlyId).then(data => setIpAddresses(data.data.ipAddresses))
     api.project.webpageList(projectFriendlyId).then(data => setWebpages(data.data.webpages))
     api.project.userList(projectFriendlyId).then(data => setUsers(data.data.users))
-    api.project
-      .ipaddressWhitelisted(projectFriendlyId, {
-        ipAddress: '2001:0db8:3333:4444:5555:6666:7777:8888'
-      })
-      .then(data => setWhitelisted(data.data))
   }
 
   async function deleteWebpage(projectFriendlyId: string, webpageId: string): Promise<void> {
