@@ -1,4 +1,4 @@
-import { CircleIcon, Menu, Pressable, ThreeDotsIcon } from 'native-base'
+import { Menu, Pressable, ThreeDotsIcon } from 'native-base'
 import React from 'react'
 import { ActivityIndicator, FlatList, TouchableHighlight, View } from 'react-native'
 import { Text } from 'react-native-paper'
@@ -13,9 +13,9 @@ import { WhitelistIndicator } from './WhitelistIndicator'
 
 export type ProjectListViewProps = {
   projects: Project[]
-  projectsWhitelist: Record<string, IpAddressWhitelistedRes>
+  // projectsWhitelist: Record<string, IpAddressWhitelistedRes>
 }
-export const ProjectListView = ({ projects, projectsWhitelist }: ProjectListViewProps) => {
+export const ProjectListView = ({ projects }: ProjectListViewProps) => {
   return (
     <View>
       {projects ? (
@@ -31,9 +31,9 @@ export const ProjectListView = ({ projects, projectsWhitelist }: ProjectListView
                 alignItems: 'center'
               }}
             >
-              <WhitelistIndicator
-                isWhitelisted={projectsWhitelist[project.friendlyId]?.isWhitelisted}
-              />
+              {/*<WhitelistIndicator*/}
+              {/*  isWhitelisted={projectsWhitelist[project.friendlyId]?.isWhitelisted}*/}
+              {/*/>*/}
               <TouchableHighlight
                 onPress={() =>
                   nav.navigate('project/:projectFriendlyId', {

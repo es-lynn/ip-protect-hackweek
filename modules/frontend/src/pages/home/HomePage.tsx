@@ -14,7 +14,7 @@ import { formatIpAddress } from './HomePage.util'
 
 export const HomePage = () => {
   const [projects, setProjects] = useState<Project[]>([])
-  const [whitelist, setWhitelist] = useState<Record<string, IpAddressWhitelistedRes>>({})
+  // const [whitelist, setWhitelist] = useState<Record<string, IpAddressWhitelistedRes>>({})
   const { ipv4, ipv6 } = useContext(AppContext)
 
   useEffect(() => {
@@ -24,20 +24,20 @@ export const HomePage = () => {
     })
   }, [])
 
-  // FIXME: Definitely not my prettiest code
-  useEffect(() => {
-    projects.forEach(project => {
-      if (ipv6) {
-        api.project
-          .ipaddressWhitelisted(project.friendlyId, {
-            ipAddress: ipv6
-          })
-          .then(data => {
-            setWhitelist(prev => ({ ...prev, [project.friendlyId]: data.data }))
-          })
-      }
-    })
-  }, [projects, ipv6])
+  // // FIXME: Definitely not my prettiest code
+  // useEffect(() => {
+  //   projects.forEach(project => {
+  //     if (ipv6) {
+  //       api.project
+  //         .ipaddressWhitelisted(project.friendlyId, {
+  //           ipAddress: ipv6
+  //         })
+  //         .then(data => {
+  //           setWhitelist(prev => ({ ...prev, [project.friendlyId]: data.data }))
+  //         })
+  //     }
+  //   })
+  // }, [projects, ipv6])
 
   return (
     <SafeAreaView>
@@ -66,7 +66,7 @@ export const HomePage = () => {
         <Text style={{ marginTop: sp._24 }} variant={'titleLarge'}>
           Projects
         </Text>
-        <ProjectListView projects={projects} projectsWhitelist={whitelist} />
+        <ProjectListView projects={projects} />
         <Button onPress={() => Modal.dialog(props => <ProjectAddDialog {...props} />)}>
           Add Project
         </Button>
