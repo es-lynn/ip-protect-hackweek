@@ -3,15 +3,17 @@ import React from 'react'
 import { ActivityIndicator, FlatList, TouchableHighlight, View } from 'react-native'
 import { Text } from 'react-native-paper'
 
-import { Project } from '../../../../lib/api/Api'
-import { api } from '../../../config/config'
-import { Modal } from '../../../modal/ModalController'
-import { nav } from '../../../router/nav'
-import { sp } from '../../../styles/space'
-import { ProjectEditDialog } from './ProjectEditDialog'
+import { IpAddressWhitelistedRes, Project } from '../../../../../lib/api/Api'
+import { api } from '../../../../config/config'
+import { Modal } from '../../../../modal/ModalController'
+import { nav } from '../../../../router/nav'
+import { sp } from '../../../../styles/space'
+import { ProjectEditDialog } from '../ProjectEditDialog'
+import { WhitelistIndicator } from './WhitelistIndicator'
 
 export type ProjectListViewProps = {
   projects: Project[]
+  // projectsWhitelist: Record<string, IpAddressWhitelistedRes>
 }
 export const ProjectListView = ({ projects }: ProjectListViewProps) => {
   return (
@@ -29,6 +31,9 @@ export const ProjectListView = ({ projects }: ProjectListViewProps) => {
                 alignItems: 'center'
               }}
             >
+              {/*<WhitelistIndicator*/}
+              {/*  isWhitelisted={projectsWhitelist[project.friendlyId]?.isWhitelisted}*/}
+              {/*/>*/}
               <TouchableHighlight
                 onPress={() =>
                   nav.navigate('project/:projectFriendlyId', {

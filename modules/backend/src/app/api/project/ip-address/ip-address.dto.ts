@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString } from 'class-validator'
 
-import { IpAddress } from '../_dto/dto'
+import { IpAddress, User } from '../_dto/dto'
 
 class ListResIpAddress extends IpAddress {
   synced: boolean
@@ -85,3 +85,22 @@ export class IpAddressSyncParam {
 }
 
 export class IpAddressSyncRes {}
+
+export class IpAddressWhitelistedParam {
+  @IsString()
+  @IsNotEmpty()
+  projectFriendlyId: string
+}
+
+export class IpAddressWhitelistedQuery {
+  @IsString()
+  @IsNotEmpty()
+  ipAddress: string
+}
+
+export class IpAddressWhitelistedRes {
+  isWhitelisted: boolean
+  isMyIp?: boolean
+  ipAddress?: IpAddress
+  user?: User
+}

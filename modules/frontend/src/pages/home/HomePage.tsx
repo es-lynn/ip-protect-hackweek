@@ -1,29 +1,43 @@
 import { Button } from 'native-base'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { ActivityIndicator, SafeAreaView, View } from 'react-native'
 import { Card, Text } from 'react-native-paper'
 
+import { IpAddressWhitelistedRes, Project } from '../../../lib/api/Api'
+import { AppContext } from '../../App.context'
 import { api } from '../../config/config'
 import { Modal } from '../../modal/ModalController'
-import { ipify } from '../../services/ipify'
 import { sp } from '../../styles/space'
 import { ProjectAddDialog } from './_components/ProjectAddDialog'
-import { ProjectListView } from './_components/ProjectListView'
+import { ProjectListView } from './_components/ProjectListView/ProjectListView'
+import { formatIpAddress } from './HomePage.util'
 
 export const HomePage = () => {
-  const [projects, setProjects] = useState<any[]>([])
-  const [ipv4, setIpv4] = useState<string>()
-  const [ipv6, setIpv6] = useState<string>()
+  const [projects, setProjects] = useState<Project[]>([])
+  // const [whitelist, setWhitelist] = useState<Record<string, IpAddressWhitelistedRes>>({})
+  const { ipv4, ipv6 } = useContext(AppContext)
 
   useEffect(() => {
     api.me.meProjectsList().then(data => {
-      setProjects(data.data.projects)
-    })
-    ipify.fetchIpAddress().then(data => {
-      setIpv4(data.ipv4)
-      setIpv6(data.ipv6 ?? 'N/A')
+      const projects = data.data.projects
+      setProjects(projects)
     })
   }, [])
+
+  // // FIXME: Definitely not my prettiest code
+  // useEffect(() => {
+  //   projects.forEach(project => {
+  //     if (ipv6) {
+  //       api.project
+  //         .ipaddressWhitelisted(project.friendlyId, {
+  //           ipAddress: ipv6
+  //         })
+  //         .then(data => {
+  //           setWhitelist(prev => ({ ...prev, [project.friendlyId]: data.data }))
+  //         })
+  //     }
+  //   })
+  // }, [projects, ipv6])
 
   return (
     <SafeAreaView>
@@ -33,8 +47,8 @@ export const HomePage = () => {
             <Text style={{ marginBottom: sp._4 }} variant={'titleMedium'}>
               IPv4 Address
             </Text>
-            {ipv4 ? (
-              <Text variant={'displayMedium'}>{ipv4}</Text>
+            {ipv4 !== undefined ? (
+              <Text variant={'displayMedium'}>{formatIpAddress(ipv4)}</Text>
             ) : (
               <ActivityIndicator size={'large'} style={{ alignSelf: 'flex-start' }} />
             )}
@@ -42,8 +56,8 @@ export const HomePage = () => {
             <Text style={{ marginTop: sp._8, marginBottom: sp._4 }} variant={'titleMedium'}>
               IPv6 Address
             </Text>
-            {ipv6 ? (
-              <Text variant={'displaySmall'}>{ipv6}</Text>
+            {ipv6 !== undefined ? (
+              <Text variant={'displaySmall'}>{formatIpAddress(ipv6)}</Text>
             ) : (
               <ActivityIndicator size={'large'} style={{ alignSelf: 'flex-start' }} />
             )}

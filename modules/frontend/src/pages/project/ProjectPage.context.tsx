@@ -1,6 +1,13 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 
-import { IpAddress, ListResIpAddress, ProjectUser, Webpage } from '../../../lib/api/Api'
+import {
+  IpAddress,
+  IpAddressWhitelistedRes,
+  ListResIpAddress,
+  ProjectUser,
+  Webpage
+} from '../../../lib/api/Api'
+import { AppContext } from '../../App.context'
 import { api } from '../../config/config'
 import { fromRole, Role } from '../../types/role'
 
@@ -9,6 +16,7 @@ export interface ProjectPageContextType {
   webpages?: Webpage[]
   users?: ProjectUser[]
   projectFriendlyId: string
+  whitelisted?: IpAddressWhitelistedRes
 
   deleteWebpage: (projectFriendlyId: string, webpageId: string) => Promise<void>
   addWebpage: (projectFriendlyId: string, webpage: { url: string; name: string }) => Promise<void>
@@ -23,14 +31,30 @@ export interface ProjectPageContextType {
 
 export const ProjectPageContext = createContext<ProjectPageContextType>(null as any)
 export const ProjectPageContextProvider = ({ children, route }: any) => {
+  const { ipv4, ipv6 } = useContext(AppContext)
   const projectFriendlyId = route.params.projectFriendlyId
   const [ipAddresses, setIpAddresses] = useState<ListResIpAddress[]>()
   const [webpages, setWebpages] = useState<Webpage[]>()
   const [users, setUsers] = useState<ProjectUser[]>()
+  const [whitelisted, setWhitelisted] = useState<IpAddressWhitelistedRes>()
 
   useEffect(() => {
     fetch()
   }, [])
+
+  useEffect(() => {
+    if (ipv6) {
+      api.project
+        .ipaddressWhitelisted(projectFriendlyId, {
+          ipAddress: ipv6
+        })
+        .then(data => setWhitelisted(data.data))
+    } else if (ipv6 == null) {
+      setWhitelisted({
+        isWhitelisted: false
+      })
+    }
+  }, [ipv6])
 
   function fetch() {
     api.project.ipaddressList(projectFriendlyId).then(data => setIpAddresses(data.data.ipAddresses))
@@ -114,6 +138,7 @@ export const ProjectPageContextProvider = ({ children, route }: any) => {
         webpages,
         users,
         projectFriendlyId,
+        whitelisted,
         deleteWebpage,
         addWebpage,
         deleteIpAddress,

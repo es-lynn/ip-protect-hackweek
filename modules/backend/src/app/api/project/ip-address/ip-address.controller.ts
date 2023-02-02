@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common'
+import { Body, Controller, Get, HttpCode, Param, Post, Query } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { User } from '@prisma/client'
 
@@ -16,7 +16,10 @@ import {
   IpAddressListRes,
   IpAddressRemoveBody,
   IpAddressRemoveParam,
-  IpAddressRemoveRes
+  IpAddressRemoveRes,
+  IpAddressWhitelistedParam,
+  IpAddressWhitelistedQuery,
+  IpAddressWhitelistedRes
 } from './ip-address.dto'
 
 @UseAuthGuard()
@@ -176,4 +179,58 @@ export class IpAddressController {
   //
   //   return {}
   // }
+
+  // FIXME: This function is due for a refactor
+  // NOTE: There's an edgecase in there about whether IP address is synced or not
+  @HttpCode(200)
+  @Get('/whitelisted')
+  async whitelisted(
+    @Param() param: IpAddressWhitelistedParam,
+    @Query() query: IpAddressWhitelistedQuery,
+    @AuthUser() user: User
+  ): Promise<IpAddressWhitelistedRes> {
+    const project = (await this.db.project.findUniqueOrThrow({
+      where: { friendlyId: param.projectFriendlyId }
+    })) as ProjectType
+
+    const awsIpSet = new AwsIpSet({
+      accessKeyId: project.awsAccessKey,
+      secretAccessKey: project.awsSecret,
+      id: project.config.ipset.id,
+      name: project.config.ipset.name,
+      region: project.config.ipset.region
+    })
+    const ipAddresses = await awsIpSet.getIpAddressesForIpset()
+    const isWhitelisted = ipAddresses.IPSet.Addresses.some(
+      ip => ip.split('/')[0] === query.ipAddress
+    )
+
+    const projectIpAddress = await this.db.ipAddress.findFirst({
+      where: { ipAddress: query.ipAddress },
+      include: {
+        projectUser: {
+          include: { user: true }
+        }
+      }
+    })
+
+    const response: IpAddressWhitelistedRes = {
+      isWhitelisted: isWhitelisted
+    }
+    if (projectIpAddress) {
+      response.ipAddress = {
+        ip: projectIpAddress.ipAddress,
+        tag: projectIpAddress.tag,
+        id: projectIpAddress.tag
+      }
+      response.user = {
+        id: projectIpAddress.projectUser.user.id,
+        name: projectIpAddress.projectUser.user.name,
+        provider: projectIpAddress.projectUser.user.provider,
+        providerId: projectIpAddress.projectUser.user.providerId
+      }
+      response.isMyIp = user.id === projectIpAddress.projectUser.user.id
+    }
+    return response
+  }
 }
