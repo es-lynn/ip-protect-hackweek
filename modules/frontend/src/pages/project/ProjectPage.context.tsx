@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react'
 
-import { IpAddress, ListResIpAddress, ProjectUser, User, Webpage } from '../../../lib/api/Api'
+import { IpAddress, ListResIpAddress, ProjectUser, Webpage } from '../../../lib/api/Api'
 import { api } from '../../config/config'
 import { fromRole, Role } from '../../types/role'
 

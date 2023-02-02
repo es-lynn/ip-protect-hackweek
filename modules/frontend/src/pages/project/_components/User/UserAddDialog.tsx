@@ -1,6 +1,5 @@
 import { Button, FormControl, Input, Modal, Select } from 'native-base'
 import React, { useState } from 'react'
-import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown'
 
 import { AsyncButton } from '../../../../components/AsyncButton'
 import { api } from '../../../../config/config'

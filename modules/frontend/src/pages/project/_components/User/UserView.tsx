@@ -4,7 +4,6 @@ import { ActivityIndicator, FlatList, View } from 'react-native'
 import { Chip, Text } from 'react-native-paper'
 
 import { ProjectUser } from '../../../../../lib/api/Api'
-import { api } from '../../../../config/config'
 import { Modal } from '../../../../modal/ModalController'
 import { sp } from '../../../../styles/space'
 import { Role } from '../../../../types/role'
