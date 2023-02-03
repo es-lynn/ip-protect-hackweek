@@ -3,11 +3,8 @@ import { Button, Text, View } from 'native-base'
 import React from 'react'
 import { ActivityIndicator, SafeAreaView } from 'react-native'
 
-import { LoginDialog } from './_components/LoginDialog'
-
-export const LoginPage = () => {
+export const RedirectPage = () => {
   const { user, isLoading, isAuthenticated } = useAuth0()
-
   return (
     <SafeAreaView>
       {isLoading ? (

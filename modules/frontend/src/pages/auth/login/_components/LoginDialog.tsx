@@ -1,10 +1,10 @@
 import { Button, FormControl, Input, Modal } from 'native-base'
 import React from 'react'
 
-import { credentials } from '../../../config/config'
-import { useFormState } from '../../../hooks/useFormState'
-import { nav } from '../../../router/nav'
-import { route } from '../../../router/route'
+import { credentials } from '../../../../config/config'
+import { useFormState } from '../../../../hooks/useFormState'
+import { nav } from '../../../../router/nav'
+import { route } from '../../../../router/route'
 
 type ProjectAddDialogProps<T> = {
   modal: { ok: (result?: T) => void; cancel: () => void }

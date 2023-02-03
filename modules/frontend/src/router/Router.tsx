@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
 
 import { LoginPage } from '../pages/auth/login/LoginPage'
+import { RedirectPage } from '../pages/auth/redirect/RedirectPage'
 import { DebugPage } from '../pages/debug/DebugPage'
 import { HomePage } from '../pages/home/HomePage'
 import { ProjectPage } from '../pages/project/ProjectPage'
