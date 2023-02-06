@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { ActivityIndicator, SafeAreaView, View } from 'react-native'
 import { Card, Text } from 'react-native-paper'
 
-import { IpAddressWhitelistedRes, Project } from '../../../lib/api/Api'
+import { Project } from '../../../lib/api/Api'
 import { AppContext } from '../../App.context'
 import { api } from '../../config/config'
 import { Modal } from '../../modal/ModalController'

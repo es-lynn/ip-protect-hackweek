@@ -1,6 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsOptional, IsString } from 'class-validator'
 
+/*
+ {
+ }
+ {
+  ipAddress: {
+    ipv4: '
+    ipv6: '
+  },
+  projects: []
+ }
+ */
+export class MeRes {}
+
 export class MeIpAddressRes {
   @IsString()
   ipv4: string

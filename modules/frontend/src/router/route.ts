@@ -1,9 +1,9 @@
 export const route = {
   index: 'index',
   auth: {
-    index: 'login',
-    login: 'login',
-    redirect: 'redirect'
+    index: 'auth/login',
+    login: 'auth/login',
+    redirect: 'auth/redirect'
   },
   home: {
     index: 'home'

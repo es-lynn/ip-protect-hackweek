@@ -21,9 +21,10 @@ export const Router = () => {
         enabled: true,
         config: {
           screens: {
-            [route.debug.index]: 'Debug',
-            [route.auth.login]: 'Login',
-            [route.home.index]: 'Home',
+            [route.debug.index]: 'debug',
+            [route.auth.login]: 'auth/login',
+            [route.auth.redirect]: 'auth/redirect',
+            [route.home.index]: 'home',
             'project/:projectFriendlyId': 'project/:projectFriendlyId'
           }
         }
