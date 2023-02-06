@@ -1,4 +1,4 @@
-import { IsEmpty, IsNotEmpty, IsNumber, IsString, Max } from 'class-validator'
+import { IsEmpty, IsNotEmpty, IsNumber, IsOptional, IsString, Max } from 'class-validator'
 
 export class InvitationCreateParam {
   @IsString()
@@ -13,7 +13,7 @@ export class InvitationCreateBody {
   expiresIn: number
 
   @IsString()
-  @IsEmpty()
+  @IsOptional()
   providerId?: string
 }
 

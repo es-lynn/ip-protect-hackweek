@@ -186,8 +186,7 @@ export type UserRemoveRes = object
 export interface InvitationCreateBody {
   /** @max 604800 */
   expiresIn: number
-  providerId: string
-  password: string
+  providerId?: string
 }
 
 export interface InvitationCreateRes {
