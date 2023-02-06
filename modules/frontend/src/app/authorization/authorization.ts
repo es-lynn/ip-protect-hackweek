@@ -1,10 +1,8 @@
-import { credentials } from '../../config/config'
-
 export class Authorization {
   private header!: string
 
   setBasic(username: string, password: string): void {
-    this.header = `Basic ${btoa(`${credentials.uid}:${credentials.password}`)}`
+    this.header = `Basic ${btoa(`${username}:${password}`)}`
   }
 
   setBearer(jwt: string): void {
