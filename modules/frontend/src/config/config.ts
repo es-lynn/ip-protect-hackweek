@@ -35,9 +35,6 @@ if (credentials.uid && credentials.password) {
 const api = new Api({
   baseUrl: Cfg.API_URL,
   securityWorker: securityData => {
-    if (!credentials.uid || !credentials.password) {
-      throwToastError(new Error('Unauthorized. Please login'))
-    }
     return { headers: { Authorization: authorization.getHeader() } }
   }
 })
