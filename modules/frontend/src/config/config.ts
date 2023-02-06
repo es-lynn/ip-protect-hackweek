@@ -28,10 +28,9 @@ const credentials: Credentials = {
 }
 
 const authorization = new Authorization()
-if (!credentials.uid || !credentials.password) {
-  throwToastError(new Error('Unauthorized. Please login'))
+if (credentials.uid && credentials.password) {
+  authorization.setBasic(credentials.uid, credentials.password)
 }
-authorization.setBasic(credentials.uid, credentials.password)
 
 const api = new Api({
   baseUrl: Cfg.API_URL,
