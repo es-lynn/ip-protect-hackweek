@@ -27,4 +27,17 @@ export class EnvSchema {
   @IsNotEmpty()
   @IsString()
   AUTH_BASIC_PASSWORD: string
+
+  /**
+   * AUTH0
+   */
+  @Type(() => String)
+  @IsNotEmpty()
+  @IsString()
+  AUTH0_DOMAIN: string
+
+  @Type(() => String)
+  @IsNotEmpty()
+  @IsString()
+  AUTH0_CLIENT_ID: string
 }

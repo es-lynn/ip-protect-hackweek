@@ -1,6 +1,7 @@
 import Constants from 'expo-constants'
 
 import { Api } from '../../lib/api/Api'
+import { Authorization } from '../app/authorization/authorization'
 import { throwToastError } from '../toast/Toast'
 
 const env: any = Constants.expoConfig?.extra?.env ?? {}
@@ -26,18 +27,20 @@ const credentials: Credentials = {
   password: Cfg.BASIC_AUTH_PASSWORD
 }
 
+const authorization = new Authorization()
+if (!credentials.uid || !credentials.password) {
+  throwToastError(new Error('Unauthorized. Please login'))
+}
+authorization.setBasic(credentials.uid, credentials.password)
+
 const api = new Api({
   baseUrl: Cfg.API_URL,
   securityWorker: securityData => {
     if (!credentials.uid || !credentials.password) {
       throwToastError(new Error('Unauthorized. Please login'))
     }
-    return {
-      headers: {
-        Authorization: `Basic ${btoa(`${credentials.uid}:${credentials.password}`)}`
-      }
-    }
+    return { headers: { Authorization: authorization.getHeader() } }
   }
 })
 
-export { api, credentials }
+export { api, credentials, authorization }

@@ -20,6 +20,10 @@ export class ConfigService extends Config<ConfigSchema> implements ConfigSchema 
   auth: {
     basicPassword: string
   }
+  auth0: {
+    domain: string
+    clientId: string
+  }
 
   constructor(private env: EnvService) {
     super()
@@ -35,6 +39,10 @@ export class ConfigService extends Config<ConfigSchema> implements ConfigSchema 
     }
     this.auth = {
       basicPassword: env.getOrThrow('AUTH_BASIC_PASSWORD')
+    }
+    this.auth0 = {
+      domain: env.getOrThrow('AUTH0_DOMAIN'),
+      clientId: env.getOrThrow('AUTH0_CLIENT_ID')
     }
   }
 }
