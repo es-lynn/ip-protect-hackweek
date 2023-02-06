@@ -4,3 +4,4 @@
 - [ ] Decided how to standardize JwtService
   - should be it be a module? injectable? just a class?
 - [ ] Should not use localStorage
+- [ ] TBH not happy with the `Invitation` implementation

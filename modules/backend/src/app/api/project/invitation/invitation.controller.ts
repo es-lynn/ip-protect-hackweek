@@ -45,7 +45,7 @@ export class InvitationController {
     })
 
     return {
-      url: `${this.cfg.app.domain}/invite?code=${invitation.id}`
+      url: `${this.cfg.app.frontendDomain}/invite?code=${invitation.id}`
     }
   }
 }
