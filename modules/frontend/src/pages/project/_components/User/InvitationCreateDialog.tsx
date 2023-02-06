@@ -1,10 +1,8 @@
 import { Button, FormControl, Input, Modal, Select } from 'native-base'
-import React, { useState } from 'react'
+import React from 'react'
 
 import { AsyncButton } from '../../../../components/AsyncButton'
-import { api } from '../../../../config/config'
 import { useFormState } from '../../../../hooks/useFormState'
-import { parseRole, Role } from '../../../../types/role'
 
 type UserAddDialogProps<T> = {
   modal: { ok: (result?: T) => void; cancel: () => void }

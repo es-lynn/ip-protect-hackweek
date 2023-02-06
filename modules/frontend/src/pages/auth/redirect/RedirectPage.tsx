@@ -1,14 +1,13 @@
-import { IdToken, useAuth0 } from '@auth0/auth0-react'
+import { useAuth0 } from '@auth0/auth0-react'
 import { Text, View } from 'native-base'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { ActivityIndicator, SafeAreaView } from 'react-native'
-import { err } from 'react-native-svg/lib/typescript/xml'
 
 import { api, authorization } from '../../../config/config'
 import { useAsyncEffect } from '../../../hooks/useAsyncEffect'
 import { nav } from '../../../router/nav'
 import { route } from '../../../router/route'
-import { throwToastAPIError, throwToastError, Toast } from '../../../toast/Toast'
+import { throwToastAPIError } from '../../../toast/Toast'
 
 export const RedirectPage = () => {
   const { user, isLoading, isAuthenticated, getIdTokenClaims } = useAuth0()

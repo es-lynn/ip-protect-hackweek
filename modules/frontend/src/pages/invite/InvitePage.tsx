@@ -1,7 +1,7 @@
-import { IdToken, useAuth0 } from '@auth0/auth0-react'
+import { useAuth0 } from '@auth0/auth0-react'
 import { Button, Text, View } from 'native-base'
-import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, SafeAreaView } from 'react-native'
+import React from 'react'
+import { SafeAreaView } from 'react-native'
 
 export const InvitePage = ({ route }: any) => {
   const { loginWithRedirect } = useAuth0()

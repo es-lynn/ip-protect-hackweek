@@ -1,4 +1,4 @@
-import { IsEmpty, IsNotEmpty, IsNumber, IsOptional, IsString, Max } from 'class-validator'
+import { IsNotEmpty, IsNumber, IsOptional, IsString, Max } from 'class-validator'
 
 export class InvitationCreateParam {
   @IsString()

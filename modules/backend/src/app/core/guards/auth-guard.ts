@@ -1,5 +1,4 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common'
-import * as jose from 'jose'
 
 import { str } from '../../../commons/utils/StringUtil'
 import { ConfigService } from '../config/config.service'

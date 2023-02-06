@@ -5,7 +5,6 @@ import { ConfigService } from '../../core/config/config.service'
 import { JwtService } from '../../core/guards/services/jwt/jwt.service'
 import { PrismaService } from '../../core/prisma/prisma.service'
 import { AuthRegisterBody, AuthRegisterRes } from './auth.dto'
-import { AuthService } from './auth.service'
 
 @ApiTags('/auth')
 @Controller('auth')
