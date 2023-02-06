@@ -6,6 +6,7 @@ import { LoginPage } from '../pages/auth/login/LoginPage'
 import { RedirectPage } from '../pages/auth/redirect/RedirectPage'
 import { DebugPage } from '../pages/debug/DebugPage'
 import { HomePage } from '../pages/home/HomePage'
+import { InvitePage } from '../pages/invite/InvitePage'
 import { ProjectPage } from '../pages/project/ProjectPage'
 import { navigationRef } from './nav'
 import { route } from './route'
@@ -25,6 +26,7 @@ export const Router = () => {
             [route.auth.login]: 'auth/login',
             [route.auth.redirect]: 'auth/redirect',
             [route.home.index]: 'home',
+            [route.invite.index]: 'invite',
             'project/:projectFriendlyId': 'project/:projectFriendlyId'
           }
         }
@@ -33,6 +35,7 @@ export const Router = () => {
       <Stack.Navigator>
         <Stack.Screen name={route.auth.login} component={LoginPage} />
         <Stack.Screen name={route.auth.redirect} component={RedirectPage} />
+        <Stack.Screen name={route.invite.index} component={InvitePage} />
         <Stack.Screen name={route.debug.index} component={DebugPage} />
         <Stack.Screen name={route.home.index} component={HomePage} />
         <Stack.Screen name={'project/:projectFriendlyId'} component={ProjectPage} />

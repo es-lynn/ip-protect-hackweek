@@ -141,13 +141,12 @@ export interface WebpageEditRes {
 
 export type WebpageDeleteRes = object
 
-export interface AuthLoginBody {
+export interface AuthRegisterBody {
   code: string
+  idToken: string
 }
 
-export interface AuthLoginRes {
-  accessToken: string
-}
+export type AuthRegisterRes = object
 
 export interface UserSearchRes {
   users: User[]
@@ -183,6 +182,17 @@ export interface UserEditRoleRes {
 }
 
 export type UserRemoveRes = object
+
+export interface InvitationCreateBody {
+  /** @max 604800 */
+  expiresIn: number
+  providerId: string
+  password: string
+}
+
+export interface InvitationCreateRes {
+  url: string
+}
 
 export type QueryParamsType = Record<string | number, any>
 export type ResponseFormat = keyof Omit<Body, 'body' | 'bodyUsed'>
@@ -413,6 +423,23 @@ export class HttpClient<SecurityDataType = unknown> {
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
   me = {
+    /**
+     * No description
+     *
+     * @tags /me
+     * @name MeIndex
+     * @request GET:/me
+     * @secure
+     */
+    meIndex: (params: RequestParams = {}) =>
+      this.request<MeIpAddressRes, any>({
+        path: `/me`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params
+      }),
+
     /**
      * No description
      *
@@ -755,6 +782,29 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         secure: true,
         format: 'json',
         ...params
+      }),
+
+    /**
+     * No description
+     *
+     * @tags /project/:projectFriendlyId/invitation
+     * @name InvitationCreate
+     * @request POST:/project/{projectFriendlyId}/invitation/create
+     * @secure
+     */
+    invitationCreate: (
+      projectFriendlyId: string,
+      data: InvitationCreateBody,
+      params: RequestParams = {}
+    ) =>
+      this.request<InvitationCreateRes, any>({
+        path: `/project/${projectFriendlyId}/invitation/create`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
       })
   }
   auth = {
@@ -762,12 +812,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags /auth
-     * @name AuthLogin
-     * @request POST:/auth/login
+     * @name AuthRegister
+     * @request POST:/auth/register
      */
-    authLogin: (data: AuthLoginBody, params: RequestParams = {}) =>
-      this.request<AuthLoginRes, any>({
-        path: `/auth/login`,
+    authRegister: (data: AuthRegisterBody, params: RequestParams = {}) =>
+      this.request<AuthRegisterRes, any>({
+        path: `/auth/register`,
         method: 'POST',
         body: data,
         type: ContentType.Json,

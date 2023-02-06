@@ -3,6 +3,8 @@ export type ConfigSchema = {
     port: number
     dev_mode: boolean
     enable_swagger: boolean
+    domain: string
+    frontendDomain: string
   }
   swagger: {
     path: string

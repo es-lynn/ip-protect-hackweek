@@ -5,6 +5,9 @@ export const route = {
     login: 'auth/login',
     redirect: 'auth/redirect'
   },
+  invite: {
+    index: 'invite'
+  },
   home: {
     index: 'home'
   },

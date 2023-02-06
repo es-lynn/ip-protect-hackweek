@@ -20,6 +20,16 @@ export class EnvSchema {
   @IsBoolean()
   APP_ENABLE_SWAGGER: boolean
 
+  @Type(() => String)
+  @IsNotEmpty()
+  @IsString()
+  APP_DOMAIN: string
+
+  @Type(() => String)
+  @IsNotEmpty()
+  @IsString()
+  APP_FRONTEND_DOMAIN: string
+
   /**
    * AUTH
    */

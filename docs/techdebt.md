@@ -1,0 +1,6 @@
+- [ ] `isAdmin` should be changed to `role: string`
+- [ ] IPAddress should probably be linked to ProjectUser rather than Project
+- [ ] Link commons repository properly
+- [ ] Decided how to standardize JwtService
+  - should be it be a module? injectable? just a class?
+- [ ] Should not use localStorage

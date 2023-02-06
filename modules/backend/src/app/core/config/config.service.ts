@@ -11,6 +11,8 @@ export class ConfigService extends Config<ConfigSchema> implements ConfigSchema 
     port: number
     dev_mode: boolean
     enable_swagger: boolean
+    domain: string
+    frontendDomain: string
   }
   swagger: {
     path: string
@@ -30,7 +32,9 @@ export class ConfigService extends Config<ConfigSchema> implements ConfigSchema 
     this.app = {
       port: env.getOrThrow('APP_PORT'),
       dev_mode: env.getOrThrow('APP_DEV_MODE'),
-      enable_swagger: env.getOrThrow('APP_ENABLE_SWAGGER')
+      enable_swagger: env.getOrThrow('APP_ENABLE_SWAGGER'),
+      domain: env.getOrThrow('APP_DOMAIN'),
+      frontendDomain: env.getOrThrow('APP_FRONTEND_DOMAIN')
     }
     this.swagger = {
       path: '/swagger/docs',
