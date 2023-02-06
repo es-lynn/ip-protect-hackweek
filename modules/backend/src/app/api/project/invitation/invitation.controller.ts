@@ -29,9 +29,6 @@ export class InvitationController {
     @Body() body: InvitationCreateBody,
     @AuthUser() user: User
   ): Promise<InvitationCreateRes> {
-    // TODO: Change auth.basicPassword to app.adminPassword
-    if (body.password !== this.cfg.auth.basicPassword) throw new Error('Invalid password')
-
     const project = await this.db.project.findUniqueOrThrow({
       where: { friendlyId: param.projectFriendlyId }
     })
