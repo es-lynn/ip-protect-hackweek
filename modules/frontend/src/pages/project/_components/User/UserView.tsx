@@ -4,9 +4,11 @@ import { ActivityIndicator, FlatList, View } from 'react-native'
 import { Chip, Text } from 'react-native-paper'
 
 import { ProjectUser } from '../../../../../lib/api/Api'
+import { AsyncButton } from '../../../../components/AsyncButton'
 import { Modal } from '../../../../modal/ModalController'
 import { sp } from '../../../../styles/space'
 import { Role } from '../../../../types/role'
+import { InvitationCreateDialog } from './InvitationCreateDialog'
 import { UserAddDialog } from './UserAddDialog'
 import { UserEditRoleDialog } from './UserEditRoleDialog'
 
@@ -16,13 +18,15 @@ export type UserViewProps = {
   editProjectUserRole: (projectFriendlyId: string, userId: string, role: Role) => Promise<void>
   addProjectUser: (projectFriendlyId: string, userId: string, role: Role) => Promise<void>
   removeProjectUser: (projectFriendlyId: string, userId: string) => Promise<void>
+  createInviteLink: (projectFriendlyId: string, duration: number, email: string) => Promise<string>
 }
 export const UserView = ({
   users,
   projectFriendlyId,
   editProjectUserRole,
   addProjectUser,
-  removeProjectUser
+  removeProjectUser,
+  createInviteLink
 }: UserViewProps) => {
   return (
     <View>
@@ -103,6 +107,20 @@ export const UserView = ({
       >
         Add User
       </Button>
+      <AsyncButton
+        onPress={async () => {
+          const url = await Modal.dialog<string>(props => (
+            <InvitationCreateDialog
+              projectFriendlyId={projectFriendlyId}
+              createInviteLink={createInviteLink}
+              {...props}
+            />
+          ))
+          prompt('Invitation link', url)
+        }}
+      >
+        Create Invite Link
+      </AsyncButton>
     </View>
   )
 }

@@ -20,6 +20,16 @@ export class EnvSchema {
   @IsBoolean()
   APP_ENABLE_SWAGGER: boolean
 
+  @Type(() => String)
+  @IsNotEmpty()
+  @IsString()
+  APP_DOMAIN: string
+
+  @Type(() => String)
+  @IsNotEmpty()
+  @IsString()
+  APP_FRONTEND_DOMAIN: string
+
   /**
    * AUTH
    */
@@ -27,4 +37,17 @@ export class EnvSchema {
   @IsNotEmpty()
   @IsString()
   AUTH_BASIC_PASSWORD: string
+
+  /**
+   * AUTH0
+   */
+  @Type(() => String)
+  @IsNotEmpty()
+  @IsString()
+  AUTH0_DOMAIN: string
+
+  @Type(() => String)
+  @IsNotEmpty()
+  @IsString()
+  AUTH0_CLIENT_ID: string
 }

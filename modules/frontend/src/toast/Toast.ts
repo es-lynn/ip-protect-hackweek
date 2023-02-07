@@ -24,6 +24,14 @@ function info(message: string): void {
   })
 }
 
+export function throwToastAPIError(e: Error): never {
+  const error = e['error'] ?? e
+  ToastNativeBase.show({
+    title: `${error.name}: ${error.message}`
+  })
+  throw error
+}
+
 export function throwToastError(e: Error): never {
   ToastNativeBase.show({
     title: `${e.name}: ${e.message}`

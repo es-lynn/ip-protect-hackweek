@@ -11,6 +11,8 @@ export class ConfigService extends Config<ConfigSchema> implements ConfigSchema 
     port: number
     dev_mode: boolean
     enable_swagger: boolean
+    domain: string
+    frontendDomain: string
   }
   swagger: {
     path: string
@@ -20,13 +22,19 @@ export class ConfigService extends Config<ConfigSchema> implements ConfigSchema 
   auth: {
     basicPassword: string
   }
+  auth0: {
+    domain: string
+    clientId: string
+  }
 
   constructor(private env: EnvService) {
     super()
     this.app = {
       port: env.getOrThrow('APP_PORT'),
       dev_mode: env.getOrThrow('APP_DEV_MODE'),
-      enable_swagger: env.getOrThrow('APP_ENABLE_SWAGGER')
+      enable_swagger: env.getOrThrow('APP_ENABLE_SWAGGER'),
+      domain: env.getOrThrow('APP_DOMAIN'),
+      frontendDomain: env.getOrThrow('APP_FRONTEND_DOMAIN')
     }
     this.swagger = {
       path: '/swagger/docs',
@@ -35,6 +43,10 @@ export class ConfigService extends Config<ConfigSchema> implements ConfigSchema 
     }
     this.auth = {
       basicPassword: env.getOrThrow('AUTH_BASIC_PASSWORD')
+    }
+    this.auth0 = {
+      domain: env.getOrThrow('AUTH0_DOMAIN'),
+      clientId: env.getOrThrow('AUTH0_CLIENT_ID')
     }
   }
 }

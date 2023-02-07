@@ -27,6 +27,8 @@ export interface ProjectPageContextType {
   editProjectUserRole: (projectFriendlyId: string, userId: string, role: Role) => Promise<void>
   addProjectUser: (projectFriendlyId: string, userId: string, role: Role) => Promise<void>
   removeProjectUser: (projectFriendlyId: string, userId: string) => Promise<void>
+
+  createInviteLink: (projectFriendlyId: string, duration: number, email: string) => Promise<string>
 }
 
 export const ProjectPageContext = createContext<ProjectPageContextType>(null as any)
@@ -131,6 +133,18 @@ export const ProjectPageContextProvider = ({ children, route }: any) => {
     api.project.userList(projectFriendlyId).then(data => setUsers(data.data.users))
   }
 
+  async function createInviteLink(
+    projectFriendlyId: string,
+    expiresIn: number,
+    email: string
+  ): Promise<string> {
+    const response = await api.project.invitationCreate(projectFriendlyId, {
+      expiresIn: expiresIn,
+      providerId: email
+    })
+    return response.data.url
+  }
+
   return (
     <ProjectPageContext.Provider
       value={{
@@ -145,7 +159,8 @@ export const ProjectPageContextProvider = ({ children, route }: any) => {
         addIpAddress,
         editProjectUserRole,
         addProjectUser,
-        removeProjectUser
+        removeProjectUser,
+        createInviteLink
       }}
     >
       {children}

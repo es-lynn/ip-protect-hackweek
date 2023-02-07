@@ -10,9 +10,15 @@ import { sp } from '../../styles/space'
 
 export const DebugPage = () => {
   const [cfgForm, setCfgForm] = useFormState<typeof Cfg>({
+    APP_DOMAIN: Cfg.APP_DOMAIN,
     API_URL: Cfg.API_URL ?? '',
     BASIC_AUTH_PASSWORD: Cfg.BASIC_AUTH_PASSWORD ?? '',
-    BASIC_AUTH_UID: Cfg.BASIC_AUTH_UID ?? ''
+    BASIC_AUTH_UID: Cfg.BASIC_AUTH_UID ?? '',
+    auth0: {
+      clientId: Cfg.auth0.clientId,
+      domain: Cfg.auth0.domain,
+      redirectUri: Cfg.auth0.redirectUri
+    }
   })
 
   return (

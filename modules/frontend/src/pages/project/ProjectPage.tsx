@@ -23,7 +23,8 @@ export const _ProjectPage = () => {
     addIpAddress,
     editProjectUserRole,
     addProjectUser,
-    removeProjectUser
+    removeProjectUser,
+    createInviteLink
   } = useContext(ProjectPageContext)
 
   const [segmentedButtonValue, setSegmentedButtonValue] = useState<string>('ip-address')
@@ -83,6 +84,7 @@ export const _ProjectPage = () => {
           editProjectUserRole={editProjectUserRole}
           addProjectUser={addProjectUser}
           removeProjectUser={removeProjectUser}
+          createInviteLink={createInviteLink}
         />
       )}
     </SafeAreaView>

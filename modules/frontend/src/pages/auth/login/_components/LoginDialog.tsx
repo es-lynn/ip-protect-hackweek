@@ -1,10 +1,10 @@
 import { Button, FormControl, Input, Modal } from 'native-base'
 import React from 'react'
 
-import { credentials } from '../../../config/config'
-import { useFormState } from '../../../hooks/useFormState'
-import { nav } from '../../../router/nav'
-import { route } from '../../../router/route'
+import { authorization, credentials } from '../../../../config/config'
+import { useFormState } from '../../../../hooks/useFormState'
+import { nav } from '../../../../router/nav'
+import { route } from '../../../../router/route'
 
 type ProjectAddDialogProps<T> = {
   modal: { ok: (result?: T) => void; cancel: () => void }
@@ -43,8 +43,7 @@ export const LoginDialog = ({ modal }: ProjectAddDialogProps<any>) => {
           </Button>
           <Button
             onPress={() => {
-              credentials.uid = credentialsForm.uid
-              credentials.password = credentialsForm.password
+              authorization.setBasic(credentialsForm.uid, credentialsForm.password)
               nav.navigate(route.home.index)
               modal.ok()
             }}

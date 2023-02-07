@@ -1,39 +1,49 @@
-import { Body, Controller, HttpCode, Post } from '@nestjs/common'
+import { Body, Controller, HttpCode, HttpException, HttpStatus, Post } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
 import { ConfigService } from '../../core/config/config.service'
+import { JwtService } from '../../core/guards/services/jwt/jwt.service'
 import { PrismaService } from '../../core/prisma/prisma.service'
-import { AuthLoginBody, AuthLoginRes } from './auth.dto'
-import { AuthService } from './auth.service'
+import { AuthRegisterBody, AuthRegisterRes } from './auth.dto'
 
 @ApiTags('/auth')
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private prisma: PrismaService,
-    private config: ConfigService,
-    private authSvc: AuthService
-  ) {}
-
-  @HttpCode(200)
-  @Post('/login')
-  async login(@Body() _body: AuthLoginBody): Promise<AuthLoginRes> {
-    // const { idTokenClaims } = await this.oauth2Client.fetchIdToken(
-    //   body.code,
-    //   this.config.auth.redirectUrl
-    // )
-    const user = await this.authSvc.findUser({
-      provider: 'gcc',
-      user_friendly_id: 'evelyn_toh@outlook.com',
-      sub: 'gcc::evelyn_toh@outlook.com'
-    } as any)
-    return {
-      accessToken: user.id
-    }
+  private jwtService: JwtService
+  constructor(private prisma: PrismaService, private config: ConfigService) {
+    this.jwtService = new JwtService(config)
   }
 
-  // @Post('logout')
-  // async logout() {
-  // Implement logout functionality here
-  // }
+  // FIXME: Refactor this function into a service
+  @HttpCode(200)
+  @Post('/register')
+  async register(@Body() body: AuthRegisterBody): Promise<AuthRegisterRes> {
+    const jwtUser = await this.jwtService.verifyJwt(body.idToken)
+    const invitation = await this.prisma.invitation.findUniqueOrThrow({
+      where: { id: body.code }
+    })
+    if (Date.now() >= new Date(invitation.expiresAt).getTime()) {
+      throw new HttpException('Invitation expired', HttpStatus.BAD_REQUEST)
+    }
+    if (invitation.providerId && invitation.providerId !== jwtUser.email) {
+      throw new HttpException(
+        `Invitation is not valid for user: ${jwtUser.email}`,
+        HttpStatus.BAD_REQUEST
+      )
+    }
+    await this.prisma.user.create({
+      data: {
+        provider: jwtUser.provider,
+        providerId: jwtUser.email, // NOTE: This will not work for non google providers
+        name: jwtUser.name,
+        projectUsers: {
+          create: {
+            projectId: invitation.projectId,
+            isAdmin: false
+          }
+        }
+      }
+    })
+    return {}
+  }
 }

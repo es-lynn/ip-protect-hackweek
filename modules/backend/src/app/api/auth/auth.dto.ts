@@ -1,11 +1,13 @@
 import { IsNotEmpty, IsString } from 'class-validator'
 
-export class AuthLoginBody {
+export class AuthRegisterBody {
   @IsString()
   @IsNotEmpty()
   code: string
+
+  @IsString()
+  @IsNotEmpty()
+  idToken: string
 }
 
-export class AuthLoginRes {
-  accessToken: string
-}
+export class AuthRegisterRes {}

@@ -15,6 +15,15 @@ export class MeController {
   constructor(private prisma: PrismaService) {}
 
   @HttpCode(200)
+  @Get()
+  async index(@Req() req: Request): Promise<MeIpAddressRes> {
+    return {
+      ipv4: req.ip,
+      ipv6: undefined
+    }
+  }
+
+  @HttpCode(200)
   @Get('/ip-address')
   async ipAddress(@Req() req: Request): Promise<MeIpAddressRes> {
     return {
