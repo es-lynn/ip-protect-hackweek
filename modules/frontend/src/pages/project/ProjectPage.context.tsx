@@ -9,6 +9,7 @@ import {
   Webpage
 } from '../../../lib/api/Api'
 import { AppContext } from '../../App.context'
+import { Access } from '../../components/AccessStatusView'
 import { api } from '../../config/config'
 import { fromRole, Role } from '../../types/role'
 
@@ -17,7 +18,9 @@ export interface ProjectPageContextType {
   webpages?: Webpage[]
   users?: ProjectUser[]
   projectFriendlyId: string
-  whitelisted?: IpAddressWhitelistedRes
+  whitelistedV4?: IpAddressWhitelistedRes
+  whitelistedV6?: IpAddressWhitelistedRes
+  access?: Access
 
   deleteWebpage: (projectFriendlyId: string, webpageId: string) => Promise<void>
   addWebpage: (projectFriendlyId: string, webpage: { url: string; name: string }) => Promise<void>
@@ -39,30 +42,54 @@ export const ProjectPageContextProvider = ({ children, route }: any) => {
   const [ipAddresses, setIpAddresses] = useState<ListResIpAddress[]>()
   const [webpages, setWebpages] = useState<Webpage[]>()
   const [users, setUsers] = useState<ProjectUser[]>()
-  const [whitelisted, setWhitelisted] = useState<IpAddressWhitelistedRes>()
-  const [project, setProject] = useState<Project3734>()
+  const [whitelistedV4, setWhitelistedV4] = useState<IpAddressWhitelistedRes>()
+  const [whitelistedV6, setWhitelistedV6] = useState<IpAddressWhitelistedRes>()
+  const [access, setAccess] = useState<Access>()
 
   useEffect(() => {
     fetch()
   }, [])
 
   useEffect(() => {
-    if (!project) {
-      return
-    }
-    const ipAddress = project.ipType === 'ipv4' ? ipv4 : ipv6
-    if (!ipAddress) {
-      return
-    }
-    api.project
-      .ipaddressWhitelisted(projectFriendlyId, {
-        ipAddress
+    if (ipv6) {
+      api.project
+        .ipaddressWhitelisted(projectFriendlyId, {
+          ipAddress: ipv6
+        })
+        .then(data => setWhitelistedV6(data.data))
+    } else if (ipv6 == null) {
+      setWhitelistedV6({
+        isWhitelisted: false
       })
-      .then(data => setWhitelisted(data.data))
-  }, [project, ipv4, ipv6])
+    }
+  }, [ipv6])
 
-  function fetch() {
-    api.project.projectView(projectFriendlyId).then(data => setProject(data.data.project))
+  useEffect(() => {
+    if (ipv4) {
+      api.project
+        .ipaddressWhitelisted(projectFriendlyId, {
+          ipAddress: ipv4
+        })
+        .then(data => setWhitelistedV4(data.data))
+    } else if (ipv4 == null) {
+      setWhitelistedV4({
+        isWhitelisted: false
+      })
+    }
+  }, [ipv4])
+
+  useEffect(() => {
+    if (whitelistedV4 === undefined || whitelistedV6 === undefined) return
+    if (!whitelistedV4.isWhitelisted && !whitelistedV6.isWhitelisted) {
+      setAccess('none')
+    } else if (whitelistedV4.isWhitelisted && whitelistedV6.isWhitelisted) {
+      setAccess('full')
+    } else {
+      setAccess('partial')
+    }
+  }, [whitelistedV4, whitelistedV6])
+
+  function fetch(): void {
     api.project.ipaddressList(projectFriendlyId).then(data => setIpAddresses(data.data.ipAddresses))
     api.project.webpageList(projectFriendlyId).then(data => setWebpages(data.data.webpages))
     api.project.userList(projectFriendlyId).then(data => setUsers(data.data.users))
@@ -156,7 +183,9 @@ export const ProjectPageContextProvider = ({ children, route }: any) => {
         webpages,
         users,
         projectFriendlyId,
-        whitelisted,
+        whitelistedV4,
+        whitelistedV6,
+        access,
         deleteWebpage,
         addWebpage,
         deleteIpAddress,
