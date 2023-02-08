@@ -2,6 +2,7 @@ import { Body, Controller, HttpCode, Param, Post } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { User } from '@prisma/client'
 
+import { AuthorizationService } from '../../../core/authorization/authorization.service'
 import { ConfigService } from '../../../core/config/config.service'
 import { AuthUser } from '../../../core/guards/decorators/AuthUser'
 import { UseAuthGuard } from '../../../core/guards/decorators/UseAuthGuard'
@@ -12,7 +13,11 @@ import { InvitationCreateBody, InvitationCreateParam, InvitationCreateRes } from
 @ApiTags('/project/:projectFriendlyId/invitation')
 @Controller('/project/:projectFriendlyId/invitation')
 export class InvitationController {
-  constructor(private db: PrismaService, private cfg: ConfigService) {}
+  constructor(
+    private db: PrismaService,
+    private cfg: ConfigService,
+    private authorization: AuthorizationService
+  ) {}
 
   @HttpCode(200)
   @Post('/create')
@@ -21,6 +26,8 @@ export class InvitationController {
     @Body() body: InvitationCreateBody,
     @AuthUser() user: User
   ): Promise<InvitationCreateRes> {
+    await this.authorization.assertUserIsProjectAdmin(user, param.projectFriendlyId)
+
     const project = await this.db.project.findUniqueOrThrow({
       where: { friendlyId: param.projectFriendlyId }
     })
