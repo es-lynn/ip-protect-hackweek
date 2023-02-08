@@ -4,7 +4,6 @@ import {
   IpAddress,
   IpAddressWhitelistedRes,
   ListResIpAddress,
-  Project3734,
   ProjectUser,
   Webpage
 } from '../../../lib/api/Api'

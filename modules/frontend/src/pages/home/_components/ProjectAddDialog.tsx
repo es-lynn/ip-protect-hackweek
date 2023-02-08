@@ -1,4 +1,4 @@
-import { Button, Divider, FormControl, Heading, Input, Modal } from 'native-base'
+import { Button, FormControl, Heading, Input, Modal } from 'native-base'
 import React from 'react'
 
 import { AsyncButton } from '../../../components/AsyncButton'

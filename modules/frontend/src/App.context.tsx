@@ -1,8 +1,6 @@
-import { useAuth0 } from '@auth0/auth0-react'
 import React, { createContext, useEffect, useState } from 'react'
 
 import { identme } from './services/identme'
-import { ipify } from './services/ipify'
 import { expandIPv6 } from './utils/ip.util'
 
 export interface AppContextType {

@@ -1,15 +1,6 @@
-import {
-  ChevronRightIcon,
-  Heading,
-  HStack,
-  InfoIcon,
-  Pressable,
-  Spinner,
-  Text,
-  VStack
-} from 'native-base'
+import { ChevronRightIcon, Heading, HStack, Pressable } from 'native-base'
 
-import { Access, AccessStatusView } from '../../../components/AccessStatusView'
+import { Access } from '../../../components/AccessStatusView'
 
 interface Props {
   name: string

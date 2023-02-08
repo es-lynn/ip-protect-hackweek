@@ -1,6 +1,6 @@
 import { AddIcon, Badge, Box, Button, Divider, HStack, Spinner, Text, View } from 'native-base'
 import React, { useContext } from 'react'
-import { ActivityIndicator, FlatList } from 'react-native'
+import { FlatList } from 'react-native'
 
 import { IpAddress, IpAddressWhitelistedRes } from '../../../../../lib/api/Api'
 import { AppContext } from '../../../../App.context'
