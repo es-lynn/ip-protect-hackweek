@@ -8,8 +8,6 @@ import { UseAuthGuard } from '../../../core/guards/decorators/UseAuthGuard'
 import { ModelService } from '../../../core/model/model.service'
 import { ProjectType } from '../../../core/model/models/project.type'
 import { AwsIpSet } from '../../../core/services/aws/aws-ipset/aws-ipset'
-import { ProjectViewParam, ProjectViewRes } from '../project.dto'
-import { mapProjectToRes } from '../project.util'
 import {
   IpAddressAddBody,
   IpAddressAddParam,
