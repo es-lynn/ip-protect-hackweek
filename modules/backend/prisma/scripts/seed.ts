@@ -15,9 +15,17 @@ import faker from 'faker'
   const project1 = await prisma.project.create({
     data: {
       id: '3a6f97f5-b3a0-4935-a938-6614548a6a5e',
-      friendlyId: 'sgw',
+      friendlyId: 'xgw-ipv4',
       awsAccessKey: '',
       awsSecret: '',
+      ipType: 'ipv4',
+      config: {
+        ipset: {
+          name: 'developers',
+          id: '7b65a72e-98ec-4550-b3a6-1b0d0c09dc99',
+          region: 'ap-southeast-1'
+        }
+      },
       webpages: {
         createMany: {
           data: [
@@ -42,9 +50,10 @@ import faker from 'faker'
   const project2 = await prisma.project.create({
     data: {
       id: '969ad11b-8c7e-45bf-bc0f-18c65f028a7a',
-      friendlyId: 'xgw',
+      friendlyId: 'xgw-ipv6',
       awsAccessKey: '',
       awsSecret: '',
+      ipType: 'ipv6',
       config: {
         ipset: {
           name: 'developers-ipv6',

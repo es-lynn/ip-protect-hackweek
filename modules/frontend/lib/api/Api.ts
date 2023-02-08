@@ -17,6 +17,7 @@ export interface MeIpAddressRes {
 export interface Project {
   id: string
   friendlyId: string
+  ipType: 'ipv4' | 'ipv6'
 }
 
 export interface MeProjectListRes {
@@ -34,6 +35,7 @@ export interface ProjectCreateBody {
   friendlyId: string
   awsAccessKey: string
   awsSecret: string
+  ipType: 'ipv4' | 'ipv6'
 }
 
 export interface Project3734 {
@@ -42,6 +44,7 @@ export interface Project3734 {
   ipset: IpSet
   awsAccessKey: string
   awsSecret: string
+  ipType: 'ipv4' | 'ipv6'
 }
 
 export interface ProjectCreateRes {
@@ -53,6 +56,7 @@ export interface ProjectEditBody {
   friendlyId?: string
   awsAccessKey?: string
   awsSecret?: string
+  ipType: 'ipv4' | 'ipv6'
 }
 
 export interface ProjectEditRes {

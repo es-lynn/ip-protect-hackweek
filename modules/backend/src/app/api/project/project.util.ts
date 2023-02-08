@@ -8,6 +8,7 @@ export function mapProjectToRes(project: ProjectType): Project3734 {
     friendlyId: project.friendlyId,
     awsAccessKey: project.awsAccessKey,
     awsSecret: Format.mask(project.awsSecret),
+    ipType: project.ipType,
     ipset: {
       id: project.config.ipset.id,
       name: project.config.ipset.name,

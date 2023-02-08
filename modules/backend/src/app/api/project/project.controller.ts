@@ -33,6 +33,7 @@ export class ProjectController {
         friendlyId: body.friendlyId,
         awsAccessKey: body.awsAccessKey,
         awsSecret: body.awsSecret,
+        ipType: body.ipType,
         config: {
           ipset: {
             id: body.ipset.id,
@@ -67,6 +68,7 @@ export class ProjectController {
         friendlyId: body.friendlyId,
         awsAccessKey: body.awsAccessKey,
         awsSecret: body.awsSecret,
+        ipType: body.ipType,
         config: body.ipset
           ? {
               ipset: {

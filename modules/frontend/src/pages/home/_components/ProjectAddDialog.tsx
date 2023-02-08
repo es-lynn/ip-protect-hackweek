@@ -1,9 +1,10 @@
-import { Button, FormControl, Input, Modal } from 'native-base'
+import { Button, FormControl, Input, Modal, Radio } from 'native-base'
 import React from 'react'
 
 import { AsyncButton } from '../../../components/AsyncButton'
 import { api } from '../../../config/config'
 import { useFormState } from '../../../hooks/useFormState'
+import { IpType } from '../../../types/iptype'
 
 type ProjectAddDialogProps<T> = {
   modal: { ok: (result?: T) => void; cancel: () => void }
@@ -17,13 +18,15 @@ export const ProjectAddDialog = ({ modal }: ProjectAddDialogProps<any>) => {
     ipSetId: string
     ipSetName: string
     ipSetRegion: string
+    ipType: IpType
   }>({
     friendlyId: '',
     awsAccessKey: '',
     awsSecret: '',
     ipSetId: '',
     ipSetName: '',
-    ipSetRegion: ''
+    ipSetRegion: '',
+    ipType: 'ipv4'
   })
 
   return (
@@ -55,6 +58,20 @@ export const ProjectAddDialog = ({ modal }: ProjectAddDialogProps<any>) => {
           <FormControl.Label>IPSet Region</FormControl.Label>
           <Input onChangeText={text => setProject('ipSetRegion', text)} />
         </FormControl>
+        <Radio.Group
+          name={'ipType'}
+          value={project.ipType}
+          onChange={value => {
+            setProject('ipType', value as IpType)
+          }}
+        >
+          <Radio value="ipv4" my="1">
+            IPv4
+          </Radio>
+          <Radio value="ipv6" my="1">
+            IPv6
+          </Radio>
+        </Radio.Group>
       </Modal.Body>
       <Modal.Footer>
         <Button.Group space={2}>
@@ -67,6 +84,7 @@ export const ProjectAddDialog = ({ modal }: ProjectAddDialogProps<any>) => {
                 friendlyId: project.friendlyId,
                 awsAccessKey: project.awsAccessKey,
                 awsSecret: project.awsSecret,
+                ipType: project.ipType,
                 ipset: {
                   id: project.ipSetId,
                   name: project.ipSetName,

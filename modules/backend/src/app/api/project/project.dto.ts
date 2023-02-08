@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Type } from 'class-transformer'
-import { IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator'
+import { IsIn, IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator'
+
+import { IpType, IpTypeArr } from '../../core/types/types'
 
 export class Project3734 {
   id: string
@@ -8,6 +10,9 @@ export class Project3734 {
   ipset: IpSet
   awsAccessKey: string
   awsSecret: string
+
+  @IsIn(IpTypeArr)
+  ipType: string
 }
 
 export class IpSet {
@@ -36,6 +41,11 @@ export class ProjectCreateBody {
   @IsString()
   @IsNotEmpty()
   awsSecret: string
+
+  @IsIn(IpTypeArr)
+  @IsString()
+  @IsNotEmpty()
+  ipType: IpType
 
   @Type(() => IpSet)
   @ValidateNested()
@@ -68,6 +78,11 @@ export class ProjectEditBody {
   @IsOptional()
   @ApiProperty({ type: IpSet })
   ipset?: IpSet
+
+  @IsIn(IpTypeArr)
+  @IsString()
+  @IsNotEmpty()
+  ipType: IpType
 }
 export class ProjectEditRes {
   project: Project3734
