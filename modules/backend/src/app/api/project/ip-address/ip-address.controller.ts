@@ -7,7 +7,6 @@ import { AuthUser } from '../../../core/guards/decorators/AuthUser'
 import { UseAuthGuard } from '../../../core/guards/decorators/UseAuthGuard'
 import { ModelService } from '../../../core/model/model.service'
 import { ProjectType } from '../../../core/model/models/project.type'
-import { PrismaService } from '../../../core/prisma/prisma.service'
 import { AwsIpSet } from '../../../core/services/aws/aws-ipset/aws-ipset'
 import {
   IpAddressAddBody,
@@ -210,7 +209,7 @@ export class IpAddressController {
     )
 
     const projectIpAddress = await this.db.ipAddress.findFirst({
-      where: { ipAddress: query.ipAddress },
+      where: { ipAddress: query.ipAddress, projectId: project.id },
       include: {
         projectUser: {
           include: { user: true }
