@@ -483,7 +483,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags /project/:projectFriendlyId/user/@me/ip-address
+     * @tags /project/:projectFriendlyId
      * @name IpaddressList
      * @request GET:/project/{projectFriendlyId}/user/@me/ip-address/list
      * @secure
@@ -500,7 +500,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags /project/:projectFriendlyId/user/@me/ip-address
+     * @tags /project/:projectFriendlyId
      * @name IpaddressAdd
      * @request POST:/project/{projectFriendlyId}/user/@me/ip-address/add
      * @secure
@@ -519,7 +519,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags /project/:projectFriendlyId/user/@me/ip-address
+     * @tags /project/:projectFriendlyId
      * @name IpaddressRemove
      * @request POST:/project/{projectFriendlyId}/user/@me/ip-address/remove
      * @secure
@@ -542,7 +542,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags /project/:projectFriendlyId/user/@me/ip-address
+     * @tags /project/:projectFriendlyId
      * @name IpaddressWhitelisted
      * @request GET:/project/{projectFriendlyId}/user/@me/ip-address/whitelisted
      * @secure
