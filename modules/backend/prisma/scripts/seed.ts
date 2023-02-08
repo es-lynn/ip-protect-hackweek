@@ -55,7 +55,7 @@ import faker from 'faker'
       awsSecret: '',
       ipType: 'ipv6',
       config: {
-        ipset: {
+        v6ipset: {
           name: 'developers-ipv6',
           id: '94ed4fd3-617f-4b5a-a291-812ed12ffd93',
           region: 'ap-southeast-1'

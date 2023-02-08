@@ -8,6 +8,7 @@ export class Project3734 {
   id: string
   friendlyId: string
   ipset: IpSet
+  ipsetV6: IpSet
   awsAccessKey: string
   awsSecret: string
 
@@ -51,6 +52,11 @@ export class ProjectCreateBody {
   @ValidateNested()
   @ApiProperty({ type: IpSet })
   ipset: IpSet
+
+  @Type(() => IpSet)
+  @ValidateNested()
+  @ApiProperty({ type: IpSet })
+  ipsetV6: IpSet
 }
 export class ProjectCreateRes {
   project: Project3734
@@ -78,6 +84,10 @@ export class ProjectEditBody {
   @IsOptional()
   @ApiProperty({ type: IpSet })
   ipset?: IpSet
+
+  @IsOptional()
+  @ApiProperty({ type: IpSet })
+  ipsetV6?: IpSet
 
   @IsIn(IpTypeArr)
   @IsString()

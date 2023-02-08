@@ -1,8 +1,6 @@
-import { useAuth0 } from '@auth0/auth0-react'
 import React, { createContext, useEffect, useState } from 'react'
 
 import { identme } from './services/identme'
-import { ipify } from './services/ipify'
 import { expandIPv6 } from './utils/ip.util'
 
 export interface AppContextType {
@@ -16,14 +14,20 @@ export const AppContextProvider = ({ children, route }: any) => {
   const [ipv6, setIpv6] = useState<string | null>()
 
   useEffect(() => {
-    identme.fetchIpAddress().then(data => {
-      setIpv4(data.ipv4 ?? null)
-      if (data.ipv6) {
-        setIpv6(expandIPv6(data.ipv6))
-      } else {
+    identme.fetchIpAddress().then(
+      data => {
+        setIpv4(data.ipv4 ?? null)
+        if (data.ipv6) {
+          setIpv6(expandIPv6(data.ipv6))
+        } else {
+          setIpv6(null)
+        }
+      },
+      () => {
+        setIpv4(null)
         setIpv6(null)
       }
-    })
+    )
   }, [])
 
   return (

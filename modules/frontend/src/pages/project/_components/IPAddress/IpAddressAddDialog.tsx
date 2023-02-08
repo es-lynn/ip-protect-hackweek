@@ -8,19 +8,23 @@ type IpAddressAddDialogProps<T> = {
   modal: { ok: (result?: T) => void; cancel: () => void }
   projectFriendlyId: string
   addIpAddress: (projectFriendlyId: string, ipAddress: { ip: string; tag: string }) => Promise<void>
+  ipAddress?: string
+  tag?: string
 }
 
 export const IpAddressAddDialog = ({
   modal,
   projectFriendlyId,
-  addIpAddress
+  addIpAddress,
+  ipAddress,
+  tag
 }: IpAddressAddDialogProps<any>) => {
   const [form, setForm] = useFormState<{
     tag: string
     ipAddress: string
   }>({
-    tag: '',
-    ipAddress: ''
+    tag: tag ?? '',
+    ipAddress: ipAddress ?? ''
   })
 
   return (
@@ -30,11 +34,19 @@ export const IpAddressAddDialog = ({
       <Modal.Body>
         <FormControl>
           <FormControl.Label>Tag</FormControl.Label>
-          <Input onChangeText={text => setForm('tag', text)} />
+          <Input
+            onChangeText={text => setForm('tag', text)}
+            value={form.tag}
+            placeholder="e.g. Home, Office, Phone"
+          />
         </FormControl>
         <FormControl mt="3">
           <FormControl.Label>IP Address</FormControl.Label>
-          <Input onChangeText={text => setForm('ipAddress', text)} />
+          <Input
+            onChangeText={text => setForm('ipAddress', text)}
+            value={form.ipAddress}
+            placeholder="IPv4 or IPv6"
+          />
         </FormControl>
       </Modal.Body>
       <Modal.Footer>

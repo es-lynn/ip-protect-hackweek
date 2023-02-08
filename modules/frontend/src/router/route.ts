@@ -9,7 +9,7 @@ export const route = {
     index: 'invite'
   },
   home: {
-    index: 'home'
+    index: 'Your projects'
   },
   debug: {
     index: 'debug'
