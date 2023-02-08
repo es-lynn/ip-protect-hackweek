@@ -18,9 +18,11 @@
 1. `yarn setup`
 2. modules/backend
    1. Copy .env.sample to .env
-   1. `yarn db:setup`
-   2. `yarn db:start`
-   3. `yarn db:seed`
+   2. `yarn db:setup`
+   3. `yarn db:start`
+   4. `yarn db:reset`
+   5. `yarn db:seed`
+   6. `yarn start` 
 3. modules/frontend
    1. Copy /env/.env.sample to /env/.env.local
    2. `yarn start`
