@@ -15,9 +15,7 @@ export const LoginPage = () => {
       <Button onPress={() => loginWithRedirect()}>Login (Auth0)</Button>
       <Button
         onPress={() => {
-          loginWithRedirect({
-            appState: 'abc123' as any
-          })
+          loginWithRedirect()
         }}
       >
         Login with state (Auth0)
