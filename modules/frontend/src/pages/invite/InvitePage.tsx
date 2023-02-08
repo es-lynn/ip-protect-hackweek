@@ -16,7 +16,11 @@ export const InvitePage = ({ route }: any) => {
         <Button
           onPress={() => {
             sessionStorage.setItem('inviteCode', code)
-            loginWithRedirect()
+            loginWithRedirect({
+              authorizationParams: {
+                prompt: 'login'
+              }
+            })
           }}
         >
           Register

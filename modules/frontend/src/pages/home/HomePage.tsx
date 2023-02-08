@@ -1,11 +1,13 @@
-import { Button } from 'native-base'
+import { useAuth0 } from '@auth0/auth0-react'
+import { config } from 'dotenv'
+import { Button, IconButton } from 'native-base'
 import React, { useContext, useEffect, useState } from 'react'
 import { ActivityIndicator, SafeAreaView, View } from 'react-native'
 import { Card, Text } from 'react-native-paper'
 
 import { Project } from '../../../lib/api/Api'
 import { AppContext } from '../../App.context'
-import { api } from '../../config/config'
+import { api, Cfg } from '../../config/config'
 import { Modal } from '../../modal/ModalController'
 import { nav } from '../../router/nav'
 import { route } from '../../router/route'
@@ -19,6 +21,7 @@ export const HomePage = () => {
   const [projects, setProjects] = useState<Project[]>([])
   // const [whitelist, setWhitelist] = useState<Record<string, IpAddressWhitelistedRes>>({})
   const { ipv4, ipv6 } = useContext(AppContext)
+  const { logout } = useAuth0()
 
   useEffect(() => {
     api.me
@@ -51,6 +54,19 @@ export const HomePage = () => {
   return (
     <SafeAreaView>
       <View style={{ margin: sp._24 }}>
+        <Button
+          onPress={() =>
+            Modal.confirm2({
+              title: 'Logout',
+              type: 'danger',
+              body: 'Are you sure you wish to logout?',
+              onConfirm: () => logout({ logoutParams: { returnTo: Cfg.APP_DOMAIN } }),
+              confirmText: 'Logout'
+            })
+          }
+        >
+          Logout
+        </Button>
         <Card style={{}}>
           <Card.Content>
             <Text style={{ marginBottom: sp._4 }} variant={'titleMedium'}>
