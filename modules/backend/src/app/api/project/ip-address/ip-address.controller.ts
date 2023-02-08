@@ -55,7 +55,7 @@ export class IpAddressController {
       name: project.config.ipset.name,
       region: project.config.ipset.region
     })
-    const ipAddresses = await awsIpSet.getIpAddressesForIpset()
+    const ipAddresses = await awsIpSet.getCachedIpAddressesForIpset(project.config.ipset.id)
 
     return {
       ipAddresses: projectUser.ipAddresses.map(it => ({
@@ -203,7 +203,7 @@ export class IpAddressController {
       name: project.config.ipset.name,
       region: project.config.ipset.region
     })
-    const ipAddresses = await awsIpSet.getIpAddressesForIpset()
+    const ipAddresses = await awsIpSet.getCachedIpAddressesForIpset(project.config.ipset.id)
     const isWhitelisted = ipAddresses.IPSet.Addresses.some(
       ip => ip.split('/')[0] === query.ipAddress
     )

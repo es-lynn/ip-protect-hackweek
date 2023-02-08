@@ -4611,6 +4611,11 @@ ts-loader@^9.2.3:
     micromatch "^4.0.0"
     semver "^7.3.4"
 
+ts-method-cache@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/ts-method-cache/-/ts-method-cache-3.3.1.tgz#21c204b2c0ca807c90dd58fbda2a554599e7a709"
+  integrity sha512-FVbm7V/8rXo2kPWDIZb/FD4tt3bv2B9jNbjrjgvf8/qukWE36xCFnJQbaSPxcDn2sECvk95RP5t9VxCaypw/uQ==
+
 ts-node@^10.0.0:
   version "10.9.1"
   resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-10.9.1.tgz#e73de9102958af9e1f0b168a6ff320e25adcff4b"

@@ -1,10 +1,13 @@
 import { Logger } from '@nestjs/common'
 import * as AWS from 'aws-sdk'
 import { IPSet, LockToken } from 'aws-sdk/clients/wafv2'
+import { MemoryCache, MethodCacheService } from 'ts-method-cache'
 
 import { arr } from '../../../../../commons/utils/ArrayUtil'
 import { regex } from '../../../../../commons/utils/Regex'
 import { Config } from './aws-ipset.types'
+
+const cacheService = new MethodCacheService()
 
 export class AwsIpSet {
   private readonly client: AWS.WAFV2
@@ -23,6 +26,7 @@ export class AwsIpSet {
     IPSet: IPSet
     LockToken: LockToken
   }> {
+    this.logger.log('[getIpAddressesForIpset] Retrieving IPSet for ' + this.config.name)
     const { IPSet, LockToken } = await this.client
       .getIPSet({
         Name: this.config.name,
@@ -40,6 +44,14 @@ export class AwsIpSet {
     }
   }
 
+  @MemoryCache({ ttl: 60, key: 'getCachedIpAddressesForIpset' })
+  async getCachedIpAddressesForIpset(_cacheKey: string): Promise<{
+    IPSet: IPSet
+    LockToken: LockToken
+  }> {
+    return this.getIpAddressesForIpset()
+  }
+
   async addIpAddressesToIpset(ipAddress: string | string[]): Promise<void> {
     const ipAddresses = formatIpAddress(ipAddress)
     const { LockToken, IPSet } = await this.getIpAddressesForIpset()
@@ -54,6 +66,8 @@ export class AwsIpSet {
         Scope: this.config.region === 'us-east-1' ? 'CLOUDFRONT' : 'REGIONAL'
       })
       .promise()
+    cacheService.clearMemoryKeyCache('getCachedIpAddressesForIpset')
+    this.logger.log(`[addIpAddressesToIpset] Cleared cached for key: getCachedIpAddressesForIpset`)
   }
 
   async removeIpAddressesFromIpset(ipAddress: string | string[]): Promise<void> {
@@ -71,6 +85,11 @@ export class AwsIpSet {
         Scope: this.config.region === 'us-east-1' ? 'CLOUDFRONT' : 'REGIONAL'
       })
       .promise()
+
+    cacheService.clearMemoryKeyCache('getCachedIpAddressesForIpset')
+    this.logger.log(
+      `[removeIpAddressesFromIpset] Cleared cached for key: getCachedIpAddressesForIpset`
+    )
   }
 }
 
