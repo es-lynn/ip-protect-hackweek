@@ -73,6 +73,8 @@ export interface ListResIpAddress {
   id: string
   ip: string
   tag: string
+  /** @format date-time */
+  createdAt: string
   synced: boolean
 }
 
@@ -89,6 +91,8 @@ export interface IpAddress {
   id: string
   ip: string
   tag: string
+  /** @format date-time */
+  createdAt: string
 }
 
 export interface IpAddressAddRes {

@@ -7,6 +7,7 @@ import { AuthUser } from '../../../core/guards/decorators/AuthUser'
 import { UseAuthGuard } from '../../../core/guards/decorators/UseAuthGuard'
 import { ModelService } from '../../../core/model/model.service'
 import { ProjectType } from '../../../core/model/models/project.type'
+import { PrismaService } from '../../../core/prisma/prisma.service'
 import { AwsIpSet } from '../../../core/services/aws/aws-ipset/aws-ipset'
 import {
   IpAddressAddBody,
@@ -37,6 +38,7 @@ export class IpAddressController {
     const project = (await this.db.project.findUniqueOrThrow({
       where: { friendlyId: param.projectFriendlyId }
     })) as ProjectType
+
     const projectUser = await this.db.projectUser.findUniqueOrThrow({
       where: {
         projectId_userId: {
@@ -61,6 +63,7 @@ export class IpAddressController {
         id: it.id,
         ip: it.ipAddress,
         tag: it.tag,
+        createdAt: it.createdAt,
         synced: ipAddresses.IPSet.Addresses.some(ip => ip.split('/')[0] === it.ipAddress)
       }))
     }
@@ -105,7 +108,8 @@ export class IpAddressController {
       ipAddress: {
         ip: ipAddress.ipAddress,
         tag: ipAddress.tag,
-        id: ipAddress.id
+        id: ipAddress.id,
+        createdAt: ipAddress.createdAt
       }
     }
   }
@@ -221,7 +225,8 @@ export class IpAddressController {
       response.ipAddress = {
         ip: projectIpAddress.ipAddress,
         tag: projectIpAddress.tag,
-        id: projectIpAddress.tag
+        id: projectIpAddress.tag,
+        createdAt: projectIpAddress.createdAt
       }
       response.user = {
         id: projectIpAddress.projectUser.user.id,

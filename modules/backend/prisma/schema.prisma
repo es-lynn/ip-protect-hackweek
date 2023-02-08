@@ -72,6 +72,8 @@ model IpAddress {
   projectUser    ProjectUser        @relation(fields: [projectUserId], references: [id])
   projectUserId  String
 
+  createdAt     DateTime    @default(now())
+
   @@unique([ipAddress, projectId])
 }
 
