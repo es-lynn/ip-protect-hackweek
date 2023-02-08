@@ -12,7 +12,17 @@ export const LoginPage = () => {
   return (
     <SafeAreaView>
       <Button onPress={() => Modal.dialog(p => <LoginDialog {...p} />)}>Login</Button>
-      <Button onPress={() => loginWithRedirect()}>Login (Auth0)</Button>
+      <Button
+        onPress={() =>
+          loginWithRedirect({
+            authorizationParams: {
+              prompt: 'login'
+            }
+          })
+        }
+      >
+        Login (Auth0)
+      </Button>
     </SafeAreaView>
   )
 }
