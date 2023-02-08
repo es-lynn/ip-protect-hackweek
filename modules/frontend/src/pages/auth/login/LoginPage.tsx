@@ -13,14 +13,6 @@ export const LoginPage = () => {
     <SafeAreaView>
       <Button onPress={() => Modal.dialog(p => <LoginDialog {...p} />)}>Login</Button>
       <Button onPress={() => loginWithRedirect()}>Login (Auth0)</Button>
-      <Button
-        onPress={() => {
-          loginWithRedirect()
-        }}
-      >
-        Login with state (Auth0)
-      </Button>
-      <Button>Register</Button>
     </SafeAreaView>
   )
 }
