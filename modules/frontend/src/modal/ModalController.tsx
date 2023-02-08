@@ -66,6 +66,7 @@ export class MyModalController extends ModalController {
   confirm2<T>(options: {
     title: string
     body: string
+    confirmText?: string
     onConfirm: () => Promise<any> | any
     onCancel?: () => any
     type: 'info' | 'success' | 'warning' | 'danger'
@@ -79,6 +80,8 @@ export class MyModalController extends ModalController {
           onCancel={options.onCancel}
           type={options.type}
           modalController={modalController}
+          // TODO: Remove default text and always require confirmText
+          confirmText={options.confirmText ?? 'Delete'}
         />
       )
     }, <></>)

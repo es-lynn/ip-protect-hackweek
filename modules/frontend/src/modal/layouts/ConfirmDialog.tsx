@@ -11,6 +11,7 @@ export type ConfirmDialogProps = {
   onCancel?: () => void
   type: 'info' | 'success' | 'warning' | 'danger'
   modalController: ModalControllerProps
+  confirmText: string
 }
 export const ConfirmDialog = ({
   title,
@@ -18,7 +19,8 @@ export const ConfirmDialog = ({
   onConfirm,
   onCancel,
   type,
-  modalController
+  modalController,
+  confirmText
 }: ConfirmDialogProps) => {
   return (
     <AlertDialog
@@ -56,7 +58,7 @@ export const ConfirmDialog = ({
                 modalController.close()
               }}
             >
-              Delete
+              {confirmText}
             </AsyncButton>
           </Button.Group>
         </AlertDialog.Footer>

@@ -17,6 +17,7 @@ export const RedirectPage = () => {
     if (isAuthenticated) {
       const idToken = await getIdTokenClaims()
       if (inviteCode) {
+        sessionStorage.removeItem('inviteCode')
         await api.auth
           .authRegister({ idToken: idToken!.__raw, code: inviteCode })
           .catch(throwToastAPIError)
