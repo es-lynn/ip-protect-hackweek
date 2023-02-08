@@ -27,7 +27,8 @@ export class AwsIpSet {
       .getIPSet({
         Name: this.config.name,
         Id: this.config.id,
-        Scope: 'REGIONAL'
+        // HACK: Missed out this option; hardcoding us-east-1 = CLOUDFRONT
+        Scope: this.config.region === 'us-east-1' ? 'CLOUDFRONT' : 'REGIONAL'
       })
       .promise()
     if (IPSet == null || LockToken == null) {
@@ -48,7 +49,8 @@ export class AwsIpSet {
         Id: this.config.id,
         LockToken: LockToken,
         Name: this.config.name,
-        Scope: 'REGIONAL'
+        // HACK: Missed out this option; hardcoding us-east-1 = CLOUDFRONT
+        Scope: this.config.region === 'us-east-1' ? 'CLOUDFRONT' : 'REGIONAL'
       })
       .promise()
   }
@@ -63,7 +65,8 @@ export class AwsIpSet {
         Id: this.config.id,
         LockToken: LockToken,
         Name: this.config.name,
-        Scope: 'REGIONAL'
+        // HACK: Missed out this option; hardcoding us-east-1 = CLOUDFRONT
+        Scope: this.config.region === 'us-east-1' ? 'CLOUDFRONT' : 'REGIONAL'
       })
       .promise()
   }
