@@ -31,10 +31,22 @@ if (credentials.uid && credentials.password) {
   authorization.setBasic(credentials.uid, credentials.password)
 }
 
+const dateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/
+
+function reviver(key: string, value: string) {
+  if (typeof value === 'string' && dateFormat.test(value)) {
+    return new Date(value)
+  }
+  return value
+}
+
 const api = new Api({
-  baseUrl: Cfg.API_URL,
+  baseURL: Cfg.API_URL,
   securityWorker: securityData => {
     return { headers: { Authorization: authorization.getHeader() } }
+  },
+  transformResponse: data => {
+    return JSON.parse(data, reviver)
   }
 })
 

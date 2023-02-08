@@ -9,6 +9,9 @@ export class IpAddress {
 
   @ApiProperty()
   tag: string
+
+  @ApiProperty()
+  createdAt: Date
 }
 
 export class User {
