@@ -45,6 +45,7 @@ export class AwsIpSet {
     const { LockToken, IPSet } = await this.getIpAddressesForIpset()
     await this.client
       .updateIPSet({
+        Description: IPSet.Description,
         Addresses: [...IPSet.Addresses, ...ipAddresses],
         Id: this.config.id,
         LockToken: LockToken,
@@ -61,6 +62,7 @@ export class AwsIpSet {
     const finalAddresses = arr.difference(IPSet.Addresses, ipAddresses)
     await this.client
       .updateIPSet({
+        Description: IPSet.Description,
         Addresses: finalAddresses,
         Id: this.config.id,
         LockToken: LockToken,
