@@ -27,6 +27,7 @@ describe('UserController', () => {
           awsAccessKey: 'A4G21RE1',
           awsSecret: 'b2b9d07384c5',
           friendlyId: 'doppel-scanner',
+          ipType: 'ipv4',
           projectUsers: {
             create: [
               { userId: user.id, isAdmin: true },
@@ -39,7 +40,8 @@ describe('UserController', () => {
         data: {
           awsAccessKey: 'AM0C6NS03Y',
           awsSecret: '321839484c80',
-          friendlyId: 'squarebox'
+          friendlyId: 'squarebox',
+          ipType: 'ipv4'
         }
       })
     })
