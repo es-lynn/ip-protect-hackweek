@@ -1,9 +1,14 @@
+import { AuthorizationService } from '../../../../core/authorization/authorization.service'
 import { PrismaService } from '../../../../core/prisma/prisma.service'
 import { UserController } from '../user.controller'
 
 describe('UserController', () => {
   const prisma = new PrismaService()
-  const userController = new UserController(prisma)
+  const authorization = new AuthorizationService(prisma)
+  // FIXME: Not the correct way to mock
+  authorization.assertUserIsProjectAdmin = jest.fn()
+  authorization.assertUserBelongsProject = jest.fn()
+  const userController = new UserController(prisma, authorization)
   describe('/list', () => {
     beforeAll(async () => {
       const user = await prisma.user.create({
@@ -47,7 +52,7 @@ describe('UserController', () => {
     })
 
     it('should return a list of users', async () => {
-      const { users } = await userController.list({
+      const { users } = await userController.list(null as any, {
         projectFriendlyId: 'doppel-scanner'
       })
       expect(users.length).toEqual(2)
@@ -68,7 +73,7 @@ describe('UserController', () => {
     })
 
     it('should return an empty list of users', async () => {
-      const { users } = await userController.list({
+      const { users } = await userController.list(null as any, {
         projectFriendlyId: 'squarebox'
       })
       expect(users).toEqual([])
