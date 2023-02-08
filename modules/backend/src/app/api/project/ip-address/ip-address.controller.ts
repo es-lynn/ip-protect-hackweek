@@ -17,19 +17,21 @@ import {
   IpAddressRemoveBody,
   IpAddressRemoveParam,
   IpAddressRemoveRes,
+  IpAddressReportParam,
+  IpAddressReportRes,
   IpAddressWhitelistedParam,
   IpAddressWhitelistedQuery,
   IpAddressWhitelistedRes
 } from './ip-address.dto'
 
 @UseAuthGuard()
-@ApiTags('/project/:projectFriendlyId/user/@me/ip-address')
-@Controller('/project/:projectFriendlyId/user/@me/ip-address')
+@ApiTags('/project/:projectFriendlyId')
+@Controller('/project/:projectFriendlyId')
 export class IpAddressController {
   constructor(private db: ModelService, private cfg: ConfigService) {}
 
   @HttpCode(200)
-  @Get('/list')
+  @Get('/user/@me/ip-address/list')
   async list(
     @Param() param: IpAddressListParam,
     @AuthUser() user: User
@@ -69,7 +71,7 @@ export class IpAddressController {
   }
 
   @HttpCode(201)
-  @Post('/add')
+  @Post('/user/@me/ip-address/add')
   async add(
     @Param() param: IpAddressAddParam,
     @Body() body: IpAddressAddBody,
@@ -136,7 +138,7 @@ export class IpAddressController {
   // }
 
   @HttpCode(200)
-  @Post('/remove')
+  @Post('/user/@me/ip-address/remove')
   async remove(
     @Param() param: IpAddressRemoveParam,
     @Body() body: IpAddressRemoveBody
@@ -186,7 +188,7 @@ export class IpAddressController {
   // FIXME: This function is due for a refactor
   // NOTE: There's an edgecase in there about whether IP address is synced or not
   @HttpCode(200)
-  @Get('/whitelisted')
+  @Get('/user/@me/ip-address/whitelisted')
   async whitelisted(
     @Param() param: IpAddressWhitelistedParam,
     @Query() query: IpAddressWhitelistedQuery,
@@ -236,5 +238,54 @@ export class IpAddressController {
       response.isMyIp = user.id === projectIpAddress.projectUser.user.id
     }
     return response
+  }
+
+  @HttpCode(200)
+  @Get('/ip-address/report')
+  async view(@Param() param: IpAddressReportParam): Promise<IpAddressReportRes> {
+    const project = (await this.db.project.findUniqueOrThrow({
+      where: { friendlyId: param.projectFriendlyId }
+    })) as ProjectType
+    const dbIpAddresses = await this.db.ipAddress.findMany({
+      where: {
+        projectId: project.id
+      },
+      include: {
+        projectUser: {
+          include: {
+            user: true
+          }
+        }
+      }
+    })
+    const awsIpSet = new AwsIpSet({
+      accessKeyId: project.awsAccessKey,
+      secretAccessKey: project.awsSecret,
+      id: project.config.ipset.id,
+      name: project.config.ipset.name,
+      region: project.config.ipset.region
+    })
+    const { IPSet } = await awsIpSet.getCachedIpAddressesForIpset(project.config.ipset.id)
+
+    const report = IPSet.Addresses.map(ip => {
+      const ipAddress = ip.split('/')[0]
+      const dbIpAddress = dbIpAddresses.find(dbIpAddress => dbIpAddress.ipAddress === ipAddress)
+      const user = dbIpAddress?.projectUser.user
+      return {
+        ip: ip.split('/')[0],
+        tag: dbIpAddress?.tag,
+        user: user
+          ? {
+              name: user.name,
+              provider: user.provider,
+              providerId: user.providerId
+            }
+          : undefined
+      }
+    }).sort(it => (it.user ? -1 : 1))
+
+    return {
+      report: report
+    }
   }
 }
