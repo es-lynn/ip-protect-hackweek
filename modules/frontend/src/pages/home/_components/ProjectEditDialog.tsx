@@ -83,6 +83,7 @@ export const ProjectEditDialog = ({ modal, project }: ProjectEditDialogProps<any
           <AsyncButton
             onPress={async () => {
               await api.project.projectEdit(project.friendlyId, {
+                friendlyId: form.friendlyId,
                 awsAccessKey: form.awsAccessKey,
                 awsSecret: form.awsSecret.includes('*') ? undefined : form.awsSecret,
                 ipType: form.ipType,
