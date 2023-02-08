@@ -3,6 +3,7 @@ import React from 'react'
 
 import { AsyncButton } from '../../../../components/AsyncButton'
 import { useFormState } from '../../../../hooks/useFormState'
+import { throwToastAPIError } from '../../../../toast/Toast'
 
 type UserAddDialogProps<T> = {
   modal: { ok: (result?: T) => void; cancel: () => void }
@@ -63,7 +64,11 @@ export const InvitationCreateDialog = ({
           </Button>
           <AsyncButton
             onPress={async () => {
-              const url = await createInviteLink(projectFriendlyId, form.duration, form.email)
+              const url = await createInviteLink(
+                projectFriendlyId,
+                form.duration,
+                form.email
+              ).catch(throwToastAPIError)
               modal.ok(url)
             }}
           >
