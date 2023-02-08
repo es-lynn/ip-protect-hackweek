@@ -256,7 +256,12 @@ export class IpAddressController {
 
   @HttpCode(200)
   @Get('/ip-address/report')
-  async view(@Param() param: IpAddressReportParam): Promise<IpAddressReportRes> {
+  async view(
+    @AuthUser() user: User,
+    @Param() param: IpAddressReportParam
+  ): Promise<IpAddressReportRes> {
+    await this.authorization.assertUserIsProjectAdmin(user, param.projectFriendlyId)
+
     const project = (await this.db.project.findUniqueOrThrow({
       where: { friendlyId: param.projectFriendlyId }
     })) as ProjectType
