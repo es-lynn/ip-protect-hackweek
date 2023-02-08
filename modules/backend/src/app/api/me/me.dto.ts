@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsOptional, IsString } from 'class-validator'
+import { IsIn, IsOptional, IsString } from 'class-validator'
+
+import { IpType, IpTypeArr } from '../../core/types/types'
 
 /*
  {
@@ -26,6 +28,9 @@ export class MeIpAddressRes {
 class Project {
   id: string
   friendlyId: string
+
+  @IsIn(IpTypeArr)
+  ipType: IpType
 }
 export class MeProjectListRes {
   @ApiProperty({ type: Project, isArray: true })

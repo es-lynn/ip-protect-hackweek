@@ -10,7 +10,7 @@
     "start:android": "expo start --android",
     "start:ios": "expo start --ios",
     "start:web": "npx dotenv expo start --web",
-    "build:api-client": "npx swagger-typescript-api -p http://localhost:4000/swagger/docs-json -o ./lib/api",
+    "build:api-client": "swagger-typescript-api -p http://localhost:4000/swagger/docs-json -o ./lib/api",
     "test": "echo 'No tests found'"
   },
   "dependencies": {
@@ -41,7 +41,8 @@
     "@types/react-native": "~0.70.6",
     "dotenv-cli": "^7.0.0",
     "dotenv": "^16.0.3",
-    "eas-cli": "^2.9.0"
+    "eas-cli": "^2.9.0",
+    "swagger-typescript-api": "^12.0.2"
   },
   "private": true
 }

@@ -47,7 +47,8 @@ export class MeController {
     return {
       projects: projects.map(proj => ({
         id: proj.id,
-        friendlyId: proj.friendlyId
+        friendlyId: proj.friendlyId,
+        ipType: proj.ipType
       }))
     }
   }
