@@ -32,6 +32,7 @@ export interface IpSet {
 
 export interface ProjectCreateBody {
   ipset: IpSet
+  ipsetV6: IpSet
   friendlyId: string
   awsAccessKey: string
   awsSecret: string
@@ -53,6 +54,7 @@ export interface ProjectCreateRes {
 
 export interface ProjectEditBody {
   ipset?: IpSet
+  ipsetV6?: IpSet
   friendlyId?: string
   awsAccessKey?: string
   awsSecret?: string

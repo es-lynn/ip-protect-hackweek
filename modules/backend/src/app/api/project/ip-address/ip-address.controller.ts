@@ -1,7 +1,17 @@
-import { Body, Controller, Get, HttpCode, Param, Post, Query } from '@nestjs/common'
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Param,
+  Post,
+  Query
+} from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { User } from '@prisma/client'
 
+import { regex } from '../../../../commons/utils/Regex'
 import { AuthorizationService } from '../../../core/authorization/authorization.service'
 import { ConfigService } from '../../../core/config/config.service'
 import { AuthUser } from '../../../core/guards/decorators/AuthUser'
@@ -57,14 +67,15 @@ export class IpAddressController {
       include: { ipAddresses: true }
     })
 
-    const awsIpSet = new AwsIpSet({
-      accessKeyId: project.awsAccessKey,
-      secretAccessKey: project.awsSecret,
-      id: project.config.ipset.id,
-      name: project.config.ipset.name,
-      region: project.config.ipset.region
-    })
-    const ipAddresses = await awsIpSet.getCachedIpAddressesForIpset(project.config.ipset.id)
+    const awsIpSetV4 = this.getAwsIpSet(project, true)
+    const ipAddressesV4 = await awsIpSetV4.getCachedIpAddressesForIpset(project.config.ipset.id)
+    const ipAddresses = [...ipAddressesV4.IPSet.Addresses]
+
+    if (this.hasIpsetV6Config(project)) {
+      const awsIpSetV6 = this.getAwsIpSet(project, false)
+      const ipAddressesV6 = await awsIpSetV6.getCachedIpAddressesForIpset(project.config.ipsetV6.id)
+      ipAddresses.push(...ipAddressesV6.IPSet.Addresses)
+    }
 
     return {
       ipAddresses: projectUser.ipAddresses.map(it => ({
@@ -72,7 +83,7 @@ export class IpAddressController {
         ip: it.ipAddress,
         tag: it.tag,
         createdAt: it.createdAt,
-        synced: ipAddresses.IPSet.Addresses.some(ip => ip.split('/')[0] === it.ipAddress)
+        synced: ipAddresses.some(ip => ip.split('/')[0] === it.ipAddress)
       }))
     }
   }
@@ -98,13 +109,12 @@ export class IpAddressController {
       }
     })
 
-    const awsIpSet = new AwsIpSet({
-      accessKeyId: project.awsAccessKey,
-      secretAccessKey: project.awsSecret,
-      id: project.config.ipset.id,
-      name: project.config.ipset.name,
-      region: project.config.ipset.region
-    })
+    const isV4 = regex.ipv4.test(body.ip)
+    if (!isV4 && !this.hasIpsetV6Config(project)) {
+      throw new BadRequestException(`Project ${project.friendlyId} does not support IPv6`)
+    }
+
+    const awsIpSet = this.getAwsIpSet(project, isV4)
     await awsIpSet.addIpAddressesToIpset(body.ip)
     const ipAddress = await this.db.ipAddress.create({
       data: {
@@ -158,13 +168,9 @@ export class IpAddressController {
     const project = (await this.db.project.findUniqueOrThrow({
       where: { friendlyId: param.projectFriendlyId }
     })) as ProjectType
-    const awsIpSet = new AwsIpSet({
-      accessKeyId: project.awsAccessKey,
-      secretAccessKey: project.awsSecret,
-      id: project.config.ipset.id,
-      name: project.config.ipset.name,
-      region: project.config.ipset.region
-    })
+
+    const isV4 = regex.ipv4.test(body.ipAddress)
+    const awsIpSet = this.getAwsIpSet(project, isV4)
     await awsIpSet.removeIpAddressesFromIpset(body.ipAddress)
     await this.db.ipAddress.deleteMany({
       where: {
@@ -212,13 +218,15 @@ export class IpAddressController {
       where: { friendlyId: param.projectFriendlyId }
     })) as ProjectType
 
-    const awsIpSet = new AwsIpSet({
-      accessKeyId: project.awsAccessKey,
-      secretAccessKey: project.awsSecret,
-      id: project.config.ipset.id,
-      name: project.config.ipset.name,
-      region: project.config.ipset.region
-    })
+    const isV4 = regex.ipv4.test(query.ipAddress)
+    if (!this.hasIpsetV6Config(project) && !isV4) {
+      // cannot check IPv6
+      return {
+        isWhitelisted: false
+      }
+    }
+
+    const awsIpSet = this.getAwsIpSet(project, isV4)
     const ipAddresses = await awsIpSet.getCachedIpAddressesForIpset(project.config.ipset.id)
     const isWhitelisted = ipAddresses.IPSet.Addresses.some(
       ip => ip.split('/')[0] === query.ipAddress
@@ -277,34 +285,50 @@ export class IpAddressController {
         }
       }
     })
-    const awsIpSet = new AwsIpSet({
-      accessKeyId: project.awsAccessKey,
-      secretAccessKey: project.awsSecret,
-      id: project.config.ipset.id,
-      name: project.config.ipset.name,
-      region: project.config.ipset.region
-    })
-    const { IPSet } = await awsIpSet.getCachedIpAddressesForIpset(project.config.ipset.id)
+    const awsIpSetV4 = this.getAwsIpSet(project, true)
+    const ipAddressesV4 = await awsIpSetV4.getCachedIpAddressesForIpset(project.config.ipset.id)
 
-    const report = IPSet.Addresses.map(ip => {
-      const ipAddress = ip.split('/')[0]
-      const dbIpAddress = dbIpAddresses.find(dbIpAddress => dbIpAddress.ipAddress === ipAddress)
-      const user = dbIpAddress?.projectUser.user
-      return {
-        ip: ip.split('/')[0],
-        tag: dbIpAddress?.tag,
-        user: user
-          ? {
-              name: user.name,
-              provider: user.provider,
-              providerId: user.providerId
-            }
-          : undefined
-      }
-    }).sort(it => (it.user ? -1 : 1))
+    const awsIpSetV6 = this.getAwsIpSet(project, false)
+    const ipAddressesV6 = await awsIpSetV6.getCachedIpAddressesForIpset(project.config.ipsetV6.id)
+
+    const ipAddresses = [...ipAddressesV4.IPSet.Addresses, ...ipAddressesV6.IPSet.Addresses]
+
+    const report = ipAddresses
+      .map(ip => {
+        const ipAddress = ip.split('/')[0]
+        const dbIpAddress = dbIpAddresses.find(dbIpAddress => dbIpAddress.ipAddress === ipAddress)
+        const user = dbIpAddress?.projectUser.user
+        return {
+          ip: ip.split('/')[0],
+          tag: dbIpAddress?.tag,
+          user: user
+            ? {
+                name: user.name,
+                provider: user.provider,
+                providerId: user.providerId
+              }
+            : undefined
+        }
+      })
+      .sort(it => (it.user ? -1 : 1))
 
     return {
       report: report
     }
+  }
+
+  private getAwsIpSet(project: ProjectType, isV4: boolean): AwsIpSet {
+    return new AwsIpSet({
+      accessKeyId: project.awsAccessKey,
+      secretAccessKey: project.awsSecret,
+      id: isV4 ? project.config.ipset.id : project.config.ipsetV6.id,
+      name: isV4 ? project.config.ipset.name : project.config.ipsetV6.name,
+      region: isV4 ? project.config.ipset.region : project.config.ipsetV6.region
+    })
+  }
+
+  private hasIpsetV6Config(project: ProjectType): boolean {
+    const ipsetV6 = project.config?.ipsetV6
+    return !!ipsetV6?.id && !!ipsetV6?.name && !!ipsetV6?.region
   }
 }

@@ -7,5 +7,10 @@ export type ProjectType = Project & {
       name: string
       region: string
     }
+    ipsetV6: {
+      id: string
+      name: string
+      region: string
+    }
   }
 }

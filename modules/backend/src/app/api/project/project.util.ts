@@ -13,6 +13,11 @@ export function mapProjectToRes(project: ProjectType): Project3734 {
       id: project.config.ipset.id,
       name: project.config.ipset.name,
       region: project.config.ipset.region
+    },
+    ipsetV6: {
+      id: project.config.ipsetV6.id,
+      name: project.config.ipsetV6.name,
+      region: project.config.ipsetV6.region
     }
   }
 }

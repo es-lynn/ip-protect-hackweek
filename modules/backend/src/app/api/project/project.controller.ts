@@ -40,6 +40,11 @@ export class ProjectController {
             id: body.ipset.id,
             name: body.ipset.name,
             region: body.ipset.region
+          },
+          ipsetV6: {
+            id: body.ipsetV6.id,
+            name: body.ipsetV6.name,
+            region: body.ipsetV6.region
           }
         }
       }
@@ -66,6 +71,22 @@ export class ProjectController {
   ): Promise<ProjectEditRes> {
     await this.authorization.assertUserIsProjectAdmin(user, param.projectFriendlyId)
 
+    const config = {}
+    if (body.ipset) {
+      config['ipset'] = {
+        id: body.ipset.id,
+        name: body.ipset.name,
+        region: body.ipset.region
+      }
+    }
+    if (body.ipsetV6) {
+      config['ipsetV6'] = {
+        id: body.ipsetV6.id,
+        name: body.ipsetV6.name,
+        region: body.ipsetV6.region
+      }
+    }
+
     const project = (await this.prisma.project.update({
       where: { friendlyId: param.projectFriendlyId },
       data: {
@@ -73,15 +94,7 @@ export class ProjectController {
         awsAccessKey: body.awsAccessKey,
         awsSecret: body.awsSecret,
         ipType: body.ipType,
-        config: body.ipset
-          ? {
-              ipset: {
-                id: body.ipset.id,
-                name: body.ipset.name,
-                region: body.ipset.region
-              }
-            }
-          : undefined
+        config: Object.keys(config).length === 0 ? undefined : config
       }
     })) as ProjectType
 
