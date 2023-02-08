@@ -2,6 +2,7 @@ import { Body, Controller, Get, HttpCode, Param, Patch, Post } from '@nestjs/com
 import { ApiTags } from '@nestjs/swagger'
 import { User } from '@prisma/client'
 
+import { AuthorizationService } from '../../core/authorization/authorization.service'
 import { AuthUser } from '../../core/guards/decorators/AuthUser'
 import { UseAuthGuard } from '../../core/guards/decorators/UseAuthGuard'
 import { ProjectType } from '../../core/model/models/project.type'
@@ -23,7 +24,7 @@ import { mapProjectToRes } from './project.util'
 @ApiTags('/project')
 @Controller('/project')
 export class ProjectController {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private authorization: AuthorizationService) {}
 
   @HttpCode(200)
   @Post('/create')
@@ -59,9 +60,12 @@ export class ProjectController {
   @HttpCode(200)
   @Patch('/:projectFriendlyId/edit')
   async edit(
+    @AuthUser() user: User,
     @Param() param: ProjectEditParam,
     @Body() body: ProjectEditBody
   ): Promise<ProjectEditRes> {
+    await this.authorization.assertUserIsProjectAdmin(user, param.projectFriendlyId)
+
     const project = (await this.prisma.project.update({
       where: { friendlyId: param.projectFriendlyId },
       data: {
@@ -88,7 +92,9 @@ export class ProjectController {
 
   @HttpCode(200)
   @Get('/:projectFriendlyId')
-  async view(@Param() param: ProjectViewParam): Promise<ProjectViewRes> {
+  async view(@AuthUser() user: User, @Param() param: ProjectViewParam): Promise<ProjectViewRes> {
+    await this.authorization.assertUserBelongsProject(user, param.projectFriendlyId)
+
     const project = (await this.prisma.project.findUniqueOrThrow({
       where: { friendlyId: param.projectFriendlyId }
     })) as ProjectType
@@ -100,7 +106,12 @@ export class ProjectController {
 
   @HttpCode(200)
   @Post('/:projectFriendlyId/delete')
-  async delete(@Param() param: ProjectDeleteParam): Promise<ProjectDeleteRes> {
+  async delete(
+    @AuthUser() user: User,
+    @Param() param: ProjectDeleteParam
+  ): Promise<ProjectDeleteRes> {
+    await this.authorization.assertUserIsProjectAdmin(user, param.projectFriendlyId)
+
     await this.prisma.project.delete({
       where: { friendlyId: param.projectFriendlyId },
       include: {

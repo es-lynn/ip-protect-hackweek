@@ -2,6 +2,7 @@ import { Body, Controller, Get, HttpCode, Param, Post, Query } from '@nestjs/com
 import { ApiTags } from '@nestjs/swagger'
 import { User } from '@prisma/client'
 
+import { AuthorizationService } from '../../../core/authorization/authorization.service'
 import { ConfigService } from '../../../core/config/config.service'
 import { AuthUser } from '../../../core/guards/decorators/AuthUser'
 import { UseAuthGuard } from '../../../core/guards/decorators/UseAuthGuard'
@@ -26,7 +27,11 @@ import {
 @ApiTags('/project/:projectFriendlyId/user/@me/ip-address')
 @Controller('/project/:projectFriendlyId/user/@me/ip-address')
 export class IpAddressController {
-  constructor(private db: ModelService, private cfg: ConfigService) {}
+  constructor(
+    private db: ModelService,
+    private cfg: ConfigService,
+    private authorization: AuthorizationService
+  ) {}
 
   @HttpCode(200)
   @Get('/list')
@@ -34,6 +39,8 @@ export class IpAddressController {
     @Param() param: IpAddressListParam,
     @AuthUser() user: User
   ): Promise<IpAddressListRes> {
+    await this.authorization.assertUserBelongsProject(user, param.projectFriendlyId)
+
     const project = (await this.db.project.findUniqueOrThrow({
       where: { friendlyId: param.projectFriendlyId }
     })) as ProjectType
@@ -75,6 +82,8 @@ export class IpAddressController {
     @Body() body: IpAddressAddBody,
     @AuthUser() user: User
   ): Promise<IpAddressAddRes> {
+    await this.authorization.assertUserBelongsProject(user, param.projectFriendlyId)
+
     const project = (await this.db.project.findUniqueOrThrow({
       where: { friendlyId: param.projectFriendlyId }
     })) as ProjectType
@@ -138,9 +147,12 @@ export class IpAddressController {
   @HttpCode(200)
   @Post('/remove')
   async remove(
+    @AuthUser() user: User,
     @Param() param: IpAddressRemoveParam,
     @Body() body: IpAddressRemoveBody
   ): Promise<IpAddressRemoveRes> {
+    await this.authorization.assertUserBelongsProject(user, param.projectFriendlyId)
+
     const project = (await this.db.project.findUniqueOrThrow({
       where: { friendlyId: param.projectFriendlyId }
     })) as ProjectType
@@ -192,6 +204,8 @@ export class IpAddressController {
     @Query() query: IpAddressWhitelistedQuery,
     @AuthUser() user: User
   ): Promise<IpAddressWhitelistedRes> {
+    await this.authorization.assertUserBelongsProject(user, param.projectFriendlyId)
+
     const project = (await this.db.project.findUniqueOrThrow({
       where: { friendlyId: param.projectFriendlyId }
     })) as ProjectType

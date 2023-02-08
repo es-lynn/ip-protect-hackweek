@@ -85,7 +85,7 @@ model Invitation {
 
   project       Project     @relation(fields: [projectId], references: [id])
   projectId     String
-  projectUser    ProjectUser        @relation(fields: [projectUserId], references: [id])
+  projectUser    ProjectUser        @relation(fields: [projectUserId], references: [id], onDelete: Cascade)
   projectUserId  String
 
   createdAt     DateTime    @default(now())
