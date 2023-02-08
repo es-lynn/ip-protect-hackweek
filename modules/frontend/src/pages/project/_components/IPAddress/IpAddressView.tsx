@@ -44,6 +44,7 @@ export const IpAddressView = ({
               <View style={{ flexDirection: 'column', marginLeft: sp._8 }}>
                 <Text>{ipAddress.tag}</Text>
                 <Text>{ipAddress.ip}</Text>
+                <Text>{ipAddress.createdAt.toISOString()}</Text>
               </View>
               <View style={{ marginLeft: 'auto' }}>
                 <Menu

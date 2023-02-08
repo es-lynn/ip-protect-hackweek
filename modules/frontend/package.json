@@ -10,7 +10,7 @@
     "start:android": "expo start --android",
     "start:ios": "expo start --ios",
     "start:web": "npx dotenv expo start --web",
-    "build:api-client": "swagger-typescript-api -p http://localhost:4000/swagger/docs-json -o ./lib/api",
+    "build:api-client": "node ./scripts/build-api-client.js",
     "test": "echo 'No tests found'"
   },
   "dependencies": {
