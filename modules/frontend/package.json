@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "build:web": "cp ./env/.env.dev .env && npx dotenv expo export:web",
+    "build:web": "cp ./env/.env.dev .env && npx dotenv expo export:web && cp ./_redirects ./web-build/_redirects",
     "compile": "tsc --noEmit && eslint . --ext .ts,.tsx",
     "compile:fix": "tsc --noEmit && eslint . --ext .ts,.tsx --fix --plugin unused-imports --fix --rule 'unused-imports/no-unused-imports-ts: warn'",
     "start": "cp ./env/.env.local .env && npx dotenv expo start",
