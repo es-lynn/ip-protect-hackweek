@@ -7,7 +7,10 @@ import { Project } from '../../../lib/api/Api'
 import { AppContext } from '../../App.context'
 import { api } from '../../config/config'
 import { Modal } from '../../modal/ModalController'
+import { nav } from '../../router/nav'
+import { route } from '../../router/route'
 import { sp } from '../../styles/space'
+import { throwToastError } from '../../toast/Toast'
 import { ProjectAddDialog } from './_components/ProjectAddDialog'
 import { ProjectListView } from './_components/ProjectListView/ProjectListView'
 import { formatIpAddress } from './HomePage.util'
@@ -18,10 +21,16 @@ export const HomePage = () => {
   const { ipv4, ipv6 } = useContext(AppContext)
 
   useEffect(() => {
-    api.me.meProjectsList().then(data => {
-      const projects = data.data.projects
-      setProjects(projects)
-    })
+    api.me
+      .meProjectsList()
+      .then(data => {
+        const projects = data.data.projects
+        setProjects(projects)
+      })
+      .catch(err => {
+        nav.navigate(route.auth.login)
+        throwToastError(err)
+      })
   }, [])
 
   // // FIXME: Definitely not my prettiest code
