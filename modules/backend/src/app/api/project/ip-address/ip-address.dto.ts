@@ -104,3 +104,21 @@ export class IpAddressWhitelistedRes {
   ipAddress?: IpAddress
   user?: User
 }
+
+export class IpAddressReportParam {
+  @IsString()
+  @IsNotEmpty()
+  projectFriendlyId: string
+}
+// TODO
+export class IpAddressReportRes {
+  // report: {
+  //   ip: string
+  //   tag?: string
+  //   user?: {
+  //     name: string
+  //     provider: string
+  //     providerId: string
+  //   }
+  // }[]
+}
