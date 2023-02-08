@@ -1,19 +1,26 @@
+import { Box, Spinner } from 'native-base'
 import React from 'react'
-import { ActivityIndicator, FlatList } from 'react-native'
+import { FlatList } from 'react-native'
 import { Text } from 'react-native-paper'
 
 import { Project } from '../../../../../lib/api/Api'
 import { nav } from '../../../../router/nav'
+import { ProjectAccessConsolidated } from '../../HomePage.context'
 import { ProjectCard } from '../ProjectCard'
 
 export type ProjectListViewProps = {
   projects?: Project[]
-  // projectsWhitelist: Record<string, IpAddressWhitelistedRes> // TODO whitelist indicator
+  projectAccess: ProjectAccessConsolidated
 }
-export const ProjectListView = ({ projects }: ProjectListViewProps) => {
-  if (projects === undefined) return <ActivityIndicator size={'large'} />
+export const ProjectListView = ({ projects, projectAccess }: ProjectListViewProps) => {
+  if (projects === undefined) return <Spinner size="lg" />
 
-  if (projects.length === 0) return <Text>You have no projects</Text>
+  if (projects.length === 0)
+    return (
+      <Box rounded="lg" shadow="2" p="4" backgroundColor="white" my="2">
+        <Text>You have no projects</Text>
+      </Box>
+    )
 
   return (
     <FlatList<Project>
@@ -21,7 +28,7 @@ export const ProjectListView = ({ projects }: ProjectListViewProps) => {
       renderItem={({ item: project }) => (
         <ProjectCard
           name={project.friendlyId}
-          access="none" // TODO whitelist indicator
+          access={projectAccess[project.friendlyId]}
           onPress={() =>
             nav.navigate('project/:projectFriendlyId', {
               projectFriendlyId: project.friendlyId
