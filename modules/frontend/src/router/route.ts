@@ -1,4 +1,4 @@
-export const route = {
+export const path = {
   index: 'index',
   auth: {
     index: 'auth/login',

@@ -6,7 +6,7 @@ import { ActivityIndicator, SafeAreaView } from 'react-native'
 import { api, authorization } from '../../../config/config'
 import { useAsyncEffect } from '../../../hooks/useAsyncEffect'
 import { nav } from '../../../router/nav'
-import { route } from '../../../router/route'
+import { path } from '../../../router/route'
 import { throwToastAPIError } from '../../../toast/Toast'
 
 export const RedirectPage = () => {
@@ -23,7 +23,7 @@ export const RedirectPage = () => {
           .catch(throwToastAPIError)
       }
       authorization.setBearer(idToken?.__raw as any)
-      nav.navigate(route.home.index)
+      nav.navigate(path.home.index)
     }
   }, [isAuthenticated])
 
