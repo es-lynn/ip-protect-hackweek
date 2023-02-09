@@ -9,6 +9,18 @@
  * ---------------------------------------------------------------
  */
 
+export interface User {
+  id: string
+  name: string
+  provider: string
+  providerId: string
+  picture: string
+}
+
+export interface MeRes {
+  user: User
+}
+
 export interface MeIpAddressRes {
   ipv4: string
   ipv6?: string
@@ -114,13 +126,6 @@ export interface IpAddressRemoveBody {
 }
 
 export type IpAddressRemoveRes = object
-
-export interface User {
-  id: string
-  name: string
-  provider: string
-  providerId: string
-}
 
 export interface IpAddressWhitelistedRes {
   isWhitelisted: boolean
@@ -377,7 +382,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     meIndex: (params: RequestParams = {}) =>
-      this.request<MeIpAddressRes, any>({
+      this.request<MeRes, any>({
         path: `/me`,
         method: 'GET',
         secure: true,

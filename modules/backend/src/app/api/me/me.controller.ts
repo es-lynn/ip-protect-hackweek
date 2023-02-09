@@ -6,7 +6,7 @@ import { Request } from 'express'
 import { AuthUser } from '../../core/guards/decorators/AuthUser'
 import { UseAuthGuard } from '../../core/guards/decorators/UseAuthGuard'
 import { PrismaService } from '../../core/prisma/prisma.service'
-import { MeIpAddressRes, MeProjectListRes } from './me.dto'
+import { MeIpAddressRes, MeProjectListRes, MeRes } from './me.dto'
 
 @UseAuthGuard()
 @ApiTags('/me')
@@ -16,10 +16,15 @@ export class MeController {
 
   @HttpCode(200)
   @Get()
-  async index(@Req() req: Request): Promise<MeIpAddressRes> {
+  async index(@AuthUser() user: User, @Req() req: Request): Promise<MeRes> {
     return {
-      ipv4: req.ip,
-      ipv6: undefined
+      user: {
+        id: user.id,
+        name: user.name,
+        provider: user.provider,
+        providerId: user.providerId,
+        picture: user.picture ?? undefined
+      }
     }
   }
 

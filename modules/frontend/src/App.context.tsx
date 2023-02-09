@@ -1,17 +1,21 @@
 import React, { createContext, useEffect, useState } from 'react'
 
+import { User } from '../lib/api/Api'
+import { api } from './config/config'
 import { identme } from './services/identme'
 import { expandIPv6 } from './utils/ip.util'
 
 export interface AppContextType {
   ipv4?: string | null
   ipv6?: string | null
+  me?: User
 }
 
 export const AppContext = createContext<AppContextType>(null as any)
 export const AppContextProvider = ({ children, route }: any) => {
   const [ipv4, setIpv4] = useState<string | null>()
   const [ipv6, setIpv6] = useState<string | null>()
+  const [me, setMe] = useState<User>()
 
   useEffect(() => {
     identme.fetchIpAddress().then(
@@ -28,13 +32,15 @@ export const AppContextProvider = ({ children, route }: any) => {
         setIpv6(null)
       }
     )
+    api.me.meIndex().then(data => setMe(data.data.user))
   }, [])
 
   return (
     <AppContext.Provider
       value={{
         ipv4,
-        ipv6
+        ipv6,
+        me
       }}
     >
       {children}

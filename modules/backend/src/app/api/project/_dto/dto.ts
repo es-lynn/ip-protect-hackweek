@@ -26,4 +26,7 @@ export class User {
 
   @ApiProperty()
   providerId: string
+
+  @ApiProperty()
+  picture?: string
 }
