@@ -20,6 +20,7 @@ export const _ProjectPage: React.FC = () => {
     whitelistedV4,
     whitelistedV6,
     access,
+    isAdmin,
     deleteWebpage,
     addWebpage,
     deleteIpAddress,

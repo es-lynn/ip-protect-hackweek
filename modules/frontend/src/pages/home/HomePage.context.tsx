@@ -6,7 +6,6 @@ import { Access } from '../../components/AccessStatusView'
 import { api } from '../../config/config'
 import { nav } from '../../router/nav'
 import { path } from '../../router/route'
-import { throwToastAPIError, throwToastError } from '../../toast/Toast'
 
 interface ProjectAccessStatus {
   [projectId: string]: boolean
