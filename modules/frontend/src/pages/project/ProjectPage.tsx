@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
-import { Box, Text } from 'native-base'
+import { Box } from 'native-base'
 import React, { useContext, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native'
 
