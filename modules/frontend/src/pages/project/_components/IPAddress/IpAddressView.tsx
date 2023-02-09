@@ -114,6 +114,7 @@ export const IpAddressView = ({
               ip={ipAddress.ip}
               name={ipAddress.tag}
               synced={ipAddress['synced']}
+              createdAt={ipAddress.createdAt}
               onDeleteIpAddress={async ip => await deleteIpAddress(projectFriendlyId, ip)}
             />
           )}
