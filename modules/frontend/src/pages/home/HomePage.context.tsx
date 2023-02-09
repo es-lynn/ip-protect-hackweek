@@ -4,6 +4,7 @@ import { Project } from '../../../lib/api/Api'
 import { Access } from '../../components/AccessStatusView'
 import { api } from '../../config/config'
 import { nav } from '../../router/nav'
+import { path } from '../../router/route'
 import { throwToastError } from '../../toast/Toast'
 
 interface ProjectAccessStatus {
@@ -36,7 +37,7 @@ export const HomePageContextProvider = ({ children, route }: any) => {
         setProjects(projects)
       })
       .catch(err => {
-        nav.navigate(route.auth.login)
+        nav.navigate(path.auth.login)
         throwToastError(err)
       })
   }, [])
