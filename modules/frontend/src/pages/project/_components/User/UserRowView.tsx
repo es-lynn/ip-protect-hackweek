@@ -1,18 +1,5 @@
-import {
-  Avatar,
-  Badge,
-  Box,
-  HStack,
-  Icon,
-  IconButton,
-  InfoIcon,
-  Menu,
-  Pressable,
-  Text,
-  VStack
-} from 'native-base'
 import { Ionicons } from '@expo/vector-icons'
-import { Modal } from '../../../../modal/ModalController'
+import { Avatar, Badge, Box, HStack, Icon, IconButton, Menu, Text, VStack } from 'native-base'
 import React from 'react'
 
 interface Props {

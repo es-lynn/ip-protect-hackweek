@@ -43,6 +43,7 @@ export interface Project3734 {
   id: string
   friendlyId: string
   ipset: IpSet
+  ipsetV6: IpSet
   awsAccessKey: string
   awsSecret: string
   ipType: 'ipv4' | 'ipv6'
@@ -120,6 +121,8 @@ export interface IpAddressWhitelistedRes {
   ipAddress?: IpAddress
   user?: User
 }
+
+export type IpAddressReportRes = object
 
 export interface Webpage {
   id: string
@@ -560,6 +563,47 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/project/${projectFriendlyId}/user/@me/ip-address/whitelisted`,
         method: 'GET',
         query: query,
+        secure: true,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * No description
+     *
+     * @tags /project/:projectFriendlyId
+     * @name IpaddressWhitelistedV6
+     * @request GET:/project/{projectFriendlyId}/user/@me/ip-address/v6/whitelisted
+     * @secure
+     */
+    ipaddressWhitelistedV6: (
+      projectFriendlyId: string,
+      query: {
+        ipAddress: string
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<IpAddressWhitelistedRes, any>({
+        path: `/project/${projectFriendlyId}/user/@me/ip-address/v6/whitelisted`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * No description
+     *
+     * @tags /project/:projectFriendlyId
+     * @name IpaddressView
+     * @request GET:/project/{projectFriendlyId}/ip-address/report
+     * @secure
+     */
+    ipaddressView: (projectFriendlyId: string, params: RequestParams = {}) =>
+      this.request<IpAddressReportRes, any>({
+        path: `/project/${projectFriendlyId}/ip-address/report`,
+        method: 'GET',
         secure: true,
         format: 'json',
         ...params

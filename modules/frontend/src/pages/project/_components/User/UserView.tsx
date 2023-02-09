@@ -1,30 +1,16 @@
-import {
-  AddIcon,
-  Box,
-  Button,
-  Center,
-  Divider,
-  Heading,
-  Menu,
-  Pressable,
-  Spinner,
-  ThreeDotsIcon,
-  VStack
-} from 'native-base'
+import { AddIcon, Button, Center, Divider, Heading, Spinner, VStack } from 'native-base'
 import React from 'react'
-import { ActivityIndicator, FlatList, View } from 'react-native'
-import { Chip, Text } from 'react-native-paper'
+import { FlatList, View } from 'react-native'
+import { Text } from 'react-native-paper'
 
 import { ProjectUser } from '../../../../../lib/api/Api'
 import { AsyncButton } from '../../../../components/AsyncButton'
 import { Modal } from '../../../../modal/ModalController'
-import { sp } from '../../../../styles/space'
 import { Role } from '../../../../types/role'
 import { InvitationCreateDialog } from './InvitationCreateDialog'
 import { UserAddDialog } from './UserAddDialog'
 import { UserEditRoleDialog } from './UserEditRoleDialog'
 import { UserRowView } from './UserRowView'
-import { WebpageAddModal } from '../Webpage/WebpageAddModal'
 
 export type UserViewProps = {
   users?: ProjectUser[]

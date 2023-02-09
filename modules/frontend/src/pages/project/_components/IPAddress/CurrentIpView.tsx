@@ -20,10 +20,7 @@ export const CurrentIpView = (props: Props) => {
   const whitelisted = props.whitelisted
 
   useEffect(() => {
-    if (whitelisted)
-      setByOtherUser(
-        whitelisted.isWhitelisted && !whitelisted.isMyIp && whitelisted.ipAddress?.ip === props.ip
-      )
+    if (whitelisted) setByOtherUser(whitelisted.isWhitelisted && !whitelisted.isMyIp)
   }, [whitelisted])
 
   return (
@@ -48,13 +45,13 @@ export const CurrentIpView = (props: Props) => {
           <Text>
             {props.isWhitelisted
               ? byOtherUser
-                ? 'Whitelisted by another user'
+                ? `Whitelisted by ${props.whitelisted?.user?.name ?? 'unknown'}`
                 : 'Whitelisted'
               : 'Not whitelisted'}
           </Text>
         </HStack>
       )}
-      {props.ip && !props.name && (
+      {props.ip && !props.name && whitelisted?.user == null && (
         <Button onPress={() => props.onPressWhitelist(props.ip!)}>Whitelist this IP address</Button>
       )}
     </VStack>
