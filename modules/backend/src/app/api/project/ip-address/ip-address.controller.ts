@@ -218,15 +218,7 @@ export class IpAddressController {
       where: { friendlyId: param.projectFriendlyId }
     })) as ProjectType
 
-    const isV4 = regex.ipv4.test(query.ipAddress)
-    if (!this.hasIpsetV6Config(project) && !isV4) {
-      // cannot check IPv6
-      return {
-        isWhitelisted: false
-      }
-    }
-
-    const awsIpSet = this.getAwsIpSet(project, isV4)
+    const awsIpSet = this.getAwsIpSet(project, true)
     const ipAddresses = await awsIpSet.getCachedIpAddressesForIpset(project.config.ipset.id)
     const isWhitelisted = ipAddresses.IPSet.Addresses.some(
       ip => ip.split('/')[0] === query.ipAddress
@@ -248,7 +240,58 @@ export class IpAddressController {
       response.ipAddress = {
         ip: projectIpAddress.ipAddress,
         tag: projectIpAddress.tag,
-        id: projectIpAddress.tag,
+        id: projectIpAddress.id,
+        createdAt: projectIpAddress.createdAt
+      }
+      response.user = {
+        id: projectIpAddress.projectUser.user.id,
+        name: projectIpAddress.projectUser.user.name,
+        provider: projectIpAddress.projectUser.user.provider,
+        providerId: projectIpAddress.projectUser.user.providerId
+      }
+      response.isMyIp = user.id === projectIpAddress.projectUser.user.id
+    }
+    return response
+  }
+
+  // FIXME: TEMP FUNCTION FOR HACKWEEK DELETE AFTER THIS
+  // NOTE: There's an edgecase in there about whether IP address is synced or not
+  @HttpCode(200)
+  @Get('/user/@me/ip-address/v6/whitelisted')
+  async whitelistedV6(
+    @Param() param: IpAddressWhitelistedParam,
+    @Query() query: IpAddressWhitelistedQuery,
+    @AuthUser() user: User
+  ): Promise<IpAddressWhitelistedRes> {
+    await this.authorization.assertUserBelongsProject(user, param.projectFriendlyId)
+
+    const project = (await this.db.project.findUniqueOrThrow({
+      where: { friendlyId: param.projectFriendlyId }
+    })) as ProjectType
+
+    const awsIpSet = this.getAwsIpSet(project, false)
+    const ipAddresses = await awsIpSet.getCachedIpAddressesForIpset(project.config.ipsetV6.id)
+    const isWhitelisted = ipAddresses.IPSet.Addresses.some(
+      ip => ip.split('/')[0] === query.ipAddress
+    )
+
+    const projectIpAddress = await this.db.ipAddress.findFirst({
+      where: { ipAddress: query.ipAddress, projectId: project.id },
+      include: {
+        projectUser: {
+          include: { user: true }
+        }
+      }
+    })
+
+    const response: IpAddressWhitelistedRes = {
+      isWhitelisted: isWhitelisted
+    }
+    if (projectIpAddress) {
+      response.ipAddress = {
+        ip: projectIpAddress.ipAddress,
+        tag: projectIpAddress.tag,
+        id: projectIpAddress.id,
         createdAt: projectIpAddress.createdAt
       }
       response.user = {

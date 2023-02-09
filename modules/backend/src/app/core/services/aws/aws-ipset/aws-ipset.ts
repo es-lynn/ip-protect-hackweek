@@ -44,7 +44,7 @@ export class AwsIpSet {
     }
   }
 
-  @MemoryCache({ ttl: 5, key: 'getCachedIpAddressesForIpset' })
+  @MemoryCache({ ttl: 60, key: 'getCachedIpAddressesForIpset' })
   async getCachedIpAddressesForIpset(_cacheKey: string): Promise<{
     IPSet: IPSet
     LockToken: LockToken
