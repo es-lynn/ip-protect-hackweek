@@ -1,10 +1,11 @@
-import { AddIcon, Button, Center, Divider, Heading, Spinner, VStack } from 'native-base'
+import { AddIcon, Button, Center, Heading, Spinner, useBreakpointValue, VStack } from 'native-base'
 import React from 'react'
-import { FlatList, View } from 'react-native'
+import { FlatList } from 'react-native'
 import { Text } from 'react-native-paper'
 
 import { ProjectUser } from '../../../../../lib/api/Api'
 import { AsyncButton } from '../../../../components/AsyncButton'
+import { ListDivider } from '../../../../components/ListDivider'
 import { Modal } from '../../../../modal/ModalController'
 import { Role } from '../../../../types/role'
 import { InvitationCreateDialog } from './InvitationCreateDialog'
@@ -30,12 +31,16 @@ export const UserView = ({
   createInviteLink,
   isAdmin
 }: UserViewProps) => {
+  const topPadding = useBreakpointValue({ base: 0, sm: 5 })
+  const rounding = useBreakpointValue({ base: 0, sm: 8 })
+
   return (
-    <View>
+    <VStack mt={topPadding}>
       {users ? (
         <FlatList<ProjectUser>
+          style={{ borderRadius: rounding }}
           data={users}
-          ItemSeparatorComponent={() => <Divider />}
+          ItemSeparatorComponent={() => <ListDivider />}
           ListEmptyComponent={() => (
             <Center mx={4} my={6}>
               <Text>There are no users in this project</Text>
@@ -119,6 +124,6 @@ export const UserView = ({
           </AsyncButton>
         </VStack>
       ]}
-    </View>
+    </VStack>
   )
 }

@@ -16,7 +16,7 @@ export const _HomePage = () => {
   return (
     <SafeAreaView>
       <View bg="primary.700" w="full" h="50px" position="absolute" />
-      <VStack mx={4} space={4}>
+      <VStack mx={4} space={4} maxWidth={480} w="100%" alignSelf="center">
         <ProjectListView projects={projects} projectAccess={projectsAccess} />
         <Button
           leftIcon={<AddIcon />}

@@ -1,9 +1,20 @@
-import { AddIcon, Badge, Box, Button, Divider, HStack, Spinner, Text, View } from 'native-base'
+import {
+  AddIcon,
+  Badge,
+  Box,
+  Button,
+  HStack,
+  Spinner,
+  Text,
+  useBreakpointValue,
+  View
+} from 'native-base'
 import React, { useContext, useEffect, useState } from 'react'
 import { FlatList } from 'react-native'
 
 import { IpAddress, IpAddressWhitelistedRes } from '../../../../../lib/api/Api'
 import { AppContext } from '../../../../App.context'
+import { ListDivider } from '../../../../components/ListDivider'
 import { Modal } from '../../../../modal/ModalController'
 import { CurrentIpView } from './CurrentIpView'
 import { IpAddressAddDialog } from './IpAddressAddDialog'
@@ -29,6 +40,8 @@ export const IpAddressView = ({
 }: IpAddressViewProps) => {
   const { ipv4, ipv6 } = useContext(AppContext)
   const [otherAddresses, setOtherAddresses] = useState<IpAddress[]>()
+
+  const rounding = useBreakpointValue({ base: 0, sm: 8 })
 
   const matchingV4 = ipAddresses?.find(ip => ip.ip === ipv4)
   const matchingV6 = ipAddresses?.find(ip => ip.ip === ipv6)
@@ -57,7 +70,7 @@ export const IpAddressView = ({
       {ipv4 === undefined || ipv6 === undefined ? (
         <Spinner />
       ) : (
-        <Box>
+        <Box rounded={rounding} bg="muted.100">
           <CurrentIpView
             ip={ipv4}
             isV6={false}
@@ -66,7 +79,7 @@ export const IpAddressView = ({
             onPressWhitelist={ip => openAddIpModal(ip)}
             whitelisted={whitelistedV4}
           />
-          <Divider />
+          <ListDivider />
           <CurrentIpView
             ip={ipv6}
             isV6={true}
@@ -88,8 +101,9 @@ export const IpAddressView = ({
       </HStack>
       {otherAddresses ? (
         <FlatList<IpAddress>
+          style={{ borderRadius: rounding }}
           data={otherAddresses}
-          ItemSeparatorComponent={() => <Divider />}
+          ItemSeparatorComponent={() => <ListDivider />}
           ListEmptyComponent={() => (
             <Text mx={4} my={2}>
               There are no other IP addresses

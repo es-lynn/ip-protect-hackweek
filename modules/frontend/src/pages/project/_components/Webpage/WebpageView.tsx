@@ -1,8 +1,9 @@
-import { AddIcon, Button, Center, Divider, Spinner, Text, VStack } from 'native-base'
+import { AddIcon, Button, Center, Spinner, Text, useBreakpointValue, VStack } from 'native-base'
 import React from 'react'
 import { FlatList } from 'react-native'
 
 import { Webpage } from '../../../../../lib/api/Api'
+import { ListDivider } from '../../../../components/ListDivider'
 import { Modal } from '../../../../modal/ModalController'
 import { WebpageAddModal } from './WebpageAddModal'
 import { WebpageRowView } from './WebpageRowView'
@@ -22,12 +23,16 @@ export const WebpageView = ({
   addWebpage,
   isAdmin
 }: WebpageViewProps) => {
+  const topPadding = useBreakpointValue({ base: 0, sm: 5 })
+  const rounding = useBreakpointValue({ base: 0, sm: 8 })
+
   return (
-    <VStack>
+    <VStack mt={topPadding}>
       {webpages ? (
         <FlatList<Webpage>
+          style={{ borderRadius: rounding }}
           data={webpages}
-          ItemSeparatorComponent={() => <Divider />}
+          ItemSeparatorComponent={() => <ListDivider />}
           ListEmptyComponent={() => (
             <Center mx={4} my={6}>
               <Text>There are no websites in this project</Text>
