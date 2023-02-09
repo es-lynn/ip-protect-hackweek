@@ -2,6 +2,10 @@ import { Ionicons } from '@expo/vector-icons'
 import { Avatar, Badge, Box, HStack, Icon, IconButton, Menu, Text, VStack } from 'native-base'
 import React from 'react'
 
+import { colors } from '../../../../components/Avatar'
+import { format } from '../../../../utils/format'
+import { generateRandomNumber } from '../../../../utils/random.util'
+
 interface Props {
   id: string
   name: string
@@ -18,8 +22,8 @@ export const UserRowView = (props: Props) => {
     <Box>
       <VStack p={4} bg="muted.100" space={2}>
         <HStack space={2} alignItems="center" justifyContent="start">
-          <Avatar size="sm" bg="emerald.600">
-            AA
+          <Avatar size="sm" bg={colors[generateRandomNumber(props.name) % colors.length]}>
+            {props.name ? format.initials(props.name) : ''}
           </Avatar>
           <Text fontSize="md" fontWeight={400} color="text.900">
             {props.name}

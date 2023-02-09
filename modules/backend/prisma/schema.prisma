@@ -17,6 +17,7 @@ model User {
   providerId    String
   provider      String
   name          String
+  picture       String?
 
   projectUsers  ProjectUser[]
 
