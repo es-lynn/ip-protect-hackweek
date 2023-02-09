@@ -1,6 +1,6 @@
 import { AddIcon, Button, Center, Divider, Spinner, Text, VStack } from 'native-base'
 import React from 'react'
-import { ActivityIndicator, FlatList } from 'react-native'
+import { FlatList } from 'react-native'
 
 import { Webpage } from '../../../../../lib/api/Api'
 import { Modal } from '../../../../modal/ModalController'
