@@ -9,12 +9,15 @@ interface Props {
   name: string
   synced: boolean
   onDeleteIpAddress: (ipAddress: string) => Promise<void>
+  createdAt: Date
 }
 
 // TODO: edit IP
 // TODO: x days ago
 
 export const OtherIpView = (props: Props) => {
+  const formatter = new Intl.DateTimeFormat()
+
   return (
     <VStack p={4} bg="muted.100" space={2}>
       <Text fontSize="md" fontWeight={400} color="text.900">
@@ -26,7 +29,7 @@ export const OtherIpView = (props: Props) => {
           {props.ip}
         </Text>
         <Text fontSize="xs" color="muted.600">
-          added 2 days ago
+          added {formatter.format(props.createdAt)}
         </Text>
       </HStack>
       {!props.synced && (
