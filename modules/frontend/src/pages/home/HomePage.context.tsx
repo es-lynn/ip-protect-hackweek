@@ -1,8 +1,7 @@
 import { useAuth0 } from '@auth0/auth0-react'
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 
 import { Project } from '../../../lib/api/Api'
-import { AppContext } from '../../App.context'
 import { Access } from '../../components/AccessStatusView'
 import { api } from '../../config/config'
 import { nav } from '../../router/nav'
