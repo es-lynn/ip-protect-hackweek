@@ -4,12 +4,15 @@ import {
   Controller,
   Get,
   HttpCode,
+  Logger,
   Param,
   Post,
-  Query
+  Query,
+  Req
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { User } from '@prisma/client'
+import { Request } from 'express'
 
 import { regex } from '../../../../commons/utils/Regex'
 import { AuthorizationService } from '../../../core/authorization/authorization.service'
@@ -39,6 +42,8 @@ import {
 @ApiTags('/project/:projectFriendlyId')
 @Controller('/project/:projectFriendlyId')
 export class IpAddressController {
+  logger = new Logger(IpAddressController.name)
+
   constructor(
     private db: ModelService,
     private cfg: ConfigService,
@@ -91,11 +96,15 @@ export class IpAddressController {
   @HttpCode(201)
   @Post('/user/@me/ip-address/add')
   async add(
+    @Req() req: Request,
     @Param() param: IpAddressAddParam,
     @Body() body: IpAddressAddBody,
     @AuthUser() user: User
   ): Promise<IpAddressAddRes> {
     await this.authorization.assertUserBelongsProject(user, param.projectFriendlyId)
+    this.logger.log(
+      `[${req['transactionId']}] ${user.providerId} - Adding IP address ${body.ip} to project ${param.projectFriendlyId}`
+    )
 
     const project = (await this.db.project.findUniqueOrThrow({
       where: { friendlyId: param.projectFriendlyId }
@@ -159,11 +168,15 @@ export class IpAddressController {
   @HttpCode(200)
   @Post('/user/@me/ip-address/remove')
   async remove(
+    @Req() req: Request,
     @AuthUser() user: User,
     @Param() param: IpAddressRemoveParam,
     @Body() body: IpAddressRemoveBody
   ): Promise<IpAddressRemoveRes> {
     await this.authorization.assertUserBelongsProject(user, param.projectFriendlyId)
+    this.logger.log(
+      `[${req['transactionId']}] ${user.providerId} - Removing IP address ${body.ipAddress} from project ${param.projectFriendlyId}`
+    )
 
     const project = (await this.db.project.findUniqueOrThrow({
       where: { friendlyId: param.projectFriendlyId }
