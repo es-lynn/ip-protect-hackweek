@@ -3,6 +3,7 @@ export const path = {
   auth: {
     index: 'auth/login',
     login: 'auth/login',
+    debuglogin: 'auth/debuglogin',
     redirect: 'auth/redirect'
   },
   invite: {
