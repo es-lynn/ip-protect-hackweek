@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react'
 import React, { createContext, useEffect, useState } from 'react'
 
 import { User } from '../lib/api/Api'
@@ -17,6 +18,8 @@ export const AppContextProvider = ({ children, route }: any) => {
   const [ipv6, setIpv6] = useState<string | null>()
   const [me, setMe] = useState<User>()
 
+  const { isAuthenticated } = useAuth0()
+
   useEffect(() => {
     identme.fetchIpAddress().then(
       data => {
@@ -32,8 +35,13 @@ export const AppContextProvider = ({ children, route }: any) => {
         setIpv6(null)
       }
     )
-    api.me.meIndex().then(data => setMe(data.data.user))
   }, [])
+
+  useEffect(() => {
+    setTimeout(() => {
+      api.me.meIndex().then(data => setMe(data.data.user))
+    }, 1000)
+  }, [isAuthenticated])
 
   return (
     <AppContext.Provider

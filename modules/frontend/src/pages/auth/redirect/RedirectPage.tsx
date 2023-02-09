@@ -16,18 +16,18 @@ export const RedirectPage = () => {
   useAsyncEffect(async () => {
     if (isAuthenticated) {
       const idToken = await getIdTokenClaims()
+      authorization.setBearer(idToken?.__raw as any)
       if (inviteCode) {
         sessionStorage.removeItem('inviteCode')
         await api.auth
           .authRegister({ idToken: idToken!.__raw, code: inviteCode })
-          .then(data =>
+          .then(data => {
             nav.navigate('project/:projectFriendlyId', {
               projectFriendlyId: data.data.projectId
             })
-          )
+          })
           .catch(throwToastAPIError)
       } else {
-        authorization.setBearer(idToken?.__raw as any)
         nav.navigate(path.home.index)
       }
     }
