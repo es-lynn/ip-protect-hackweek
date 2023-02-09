@@ -15,6 +15,7 @@ export class AuthController {
   }
 
   // FIXME: Refactor this function into a service
+  // FIXME: No honestly this code needs to be refactored
   @HttpCode(200)
   @Post('/register')
   async register(@Body() body: AuthRegisterBody): Promise<AuthRegisterRes> {
@@ -31,19 +32,45 @@ export class AuthController {
         HttpStatus.BAD_REQUEST
       )
     }
-    await this.prisma.user.create({
-      data: {
-        provider: jwtUser.provider,
-        providerId: jwtUser.email, // NOTE: This will not work for non google providers
-        name: jwtUser.name,
-        projectUsers: {
-          create: {
-            projectId: invitation.projectId,
-            isAdmin: false
-          }
+    const user = await this.prisma.user.findUnique({
+      where: {
+        providerId_provider: {
+          providerId: jwtUser.email,
+          provider: jwtUser.provider
         }
+      },
+      include: {
+        projectUsers: true
       }
     })
-    return {}
+    if (!user) {
+      await this.prisma.user.create({
+        data: {
+          provider: jwtUser.provider,
+          providerId: jwtUser.email, // NOTE: This will not work for non google providers
+          name: jwtUser.name,
+          projectUsers: {
+            create: {
+              projectId: invitation.projectId,
+              isAdmin: false
+            }
+          }
+        }
+      })
+    } else if (!user.projectUsers.some(pu => pu.projectId === invitation.projectId)) {
+      await this.prisma.projectUser.create({
+        data: {
+          projectId: invitation.projectId,
+          userId: user.id,
+          isAdmin: false
+        }
+      })
+    }
+    const project = await this.prisma.project.findUniqueOrThrow({
+      where: { id: invitation.projectId }
+    })
+    return {
+      projectId: project.friendlyId
+    }
   }
 }
