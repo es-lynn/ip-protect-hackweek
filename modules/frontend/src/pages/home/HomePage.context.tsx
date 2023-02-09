@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react'
 import React, { createContext, useEffect, useState } from 'react'
 
 import { Project } from '../../../lib/api/Api'
@@ -24,6 +25,7 @@ export const HomePageContext = createContext<HomePageContextType>(null as any)
 export const HomePageContextProvider = ({ children, route }: any) => {
   const [projects, setProjects] = useState<Project[]>()
   const [projectsAccess, setProjectsAccess] = useState<ProjectAccessConsolidated>({})
+  const { logout } = useAuth0()
 
   useEffect(() => {
     fetch()
@@ -61,7 +63,7 @@ export const HomePageContextProvider = ({ children, route }: any) => {
         setProjects(projects)
       })
       .catch(err => {
-        nav.navigate(route.auth.login)
+        logout()
         throwToastError(err)
       })
   }
