@@ -10,7 +10,7 @@ import { HomePage } from '../pages/home/HomePage'
 import { InvitePage } from '../pages/invite/InvitePage'
 import { ProjectPage } from '../pages/project/ProjectPage'
 import { navigationRef } from './nav'
-import { route } from './route'
+import { path } from './route'
 
 const Stack = createNativeStackNavigator()
 
@@ -23,11 +23,11 @@ export const Router = (): React.ReactElement => {
         enabled: true,
         config: {
           screens: {
-            [route.debug.index]: 'debug',
-            [route.auth.login]: 'auth/login',
-            [route.auth.redirect]: 'auth/redirect',
-            [route.home.index]: 'home',
-            [route.invite.index]: 'invite',
+            [path.debug.index]: 'debug',
+            [path.auth.login]: 'auth/login',
+            [path.auth.redirect]: 'auth/redirect',
+            [path.home.index]: 'home',
+            [path.invite.index]: 'invite',
             'project/:projectFriendlyId': 'project/:projectFriendlyId'
           }
         }
@@ -42,14 +42,14 @@ export const Router = (): React.ReactElement => {
         }}
       >
         <Stack.Screen
-          name={route.auth.login}
+          name={path.auth.login}
           component={LoginPage}
           options={{ headerRight: undefined }}
         />
-        <Stack.Screen name={route.auth.redirect} component={RedirectPage} />
-        <Stack.Screen name={route.invite.index} component={InvitePage} />
-        <Stack.Screen name={route.debug.index} component={DebugPage} />
-        <Stack.Screen name={route.home.index} component={HomePage} />
+        <Stack.Screen name={path.auth.redirect} component={RedirectPage} />
+        <Stack.Screen name={path.invite.index} component={InvitePage} />
+        <Stack.Screen name={path.debug.index} component={DebugPage} />
+        <Stack.Screen name={path.home.index} component={HomePage} />
         <Stack.Screen name={'project/:projectFriendlyId'} component={ProjectPage} />
       </Stack.Navigator>
     </NavigationContainer>

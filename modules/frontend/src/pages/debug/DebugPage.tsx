@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native'
 import { Cfg, credentials } from '../../config/config'
 import { useFormState } from '../../hooks/useFormState'
 import { nav } from '../../router/nav'
-import { route } from '../../router/route'
+import { path } from '../../router/route'
 import { sp } from '../../styles/space'
 
 export const DebugPage = () => {
@@ -60,7 +60,7 @@ export const DebugPage = () => {
             credentials.uid = cfgForm.BASIC_AUTH_UID
             Cfg.BASIC_AUTH_PASSWORD = cfgForm.BASIC_AUTH_PASSWORD
             credentials.password = cfgForm.BASIC_AUTH_PASSWORD
-            nav.navigate(route.home.index)
+            nav.navigate(path.home.index)
           }}
         >
           Save

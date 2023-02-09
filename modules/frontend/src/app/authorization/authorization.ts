@@ -6,6 +6,7 @@ export class Authorization {
   }
 
   setBearer(jwt: string): void {
+    sessionStorage.setItem('jwt', jwt)
     this.header = `Bearer ${jwt}`
   }
 

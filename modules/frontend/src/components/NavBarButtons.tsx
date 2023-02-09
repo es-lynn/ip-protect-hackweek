@@ -27,7 +27,10 @@ export const NavBarButtons = (): React.ReactNode => {
               title: 'Logout',
               type: 'danger',
               body: 'Are you sure you wish to logout?',
-              onConfirm: () => logout({ logoutParams: { returnTo: Cfg.APP_DOMAIN } }),
+              onConfirm: () => {
+                sessionStorage.removeItem('jwt') // FIXME Should be in auth service
+                logout({ logoutParams: { returnTo: Cfg.APP_DOMAIN } })
+              },
               confirmText: 'Logout'
             })
           }

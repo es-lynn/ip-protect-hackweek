@@ -4,7 +4,7 @@ import React from 'react'
 import { authorization } from '../../../../config/config'
 import { useFormState } from '../../../../hooks/useFormState'
 import { nav } from '../../../../router/nav'
-import { route } from '../../../../router/route'
+import { path } from '../../../../router/route'
 
 type ProjectAddDialogProps<T> = {
   modal: { ok: (result?: T) => void; cancel: () => void }
@@ -44,7 +44,7 @@ export const LoginDialog = ({ modal }: ProjectAddDialogProps<any>) => {
           <Button
             onPress={() => {
               authorization.setBasic(credentialsForm.uid, credentialsForm.password)
-              nav.navigate(route.home.index)
+              nav.navigate(path.home.index)
               modal.ok()
             }}
           >
