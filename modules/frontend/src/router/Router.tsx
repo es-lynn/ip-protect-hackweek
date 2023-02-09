@@ -72,7 +72,7 @@ export const Router = (): React.ReactElement => {
         <Stack.Screen
           name={path.home.index}
           component={HomePage}
-          options={{ contentStyle: { backgroundColor: '#F5F5F5' } }}
+          options={{ contentStyle: { backgroundColor: '#F5F5F5' }, headerBackVisible: false }}
         />
         <Stack.Screen name={'project/:projectFriendlyId'} component={ProjectPage} />
       </Stack.Navigator>

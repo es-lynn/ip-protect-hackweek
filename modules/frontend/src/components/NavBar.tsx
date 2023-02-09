@@ -8,7 +8,7 @@ export const NavBar = (props: NativeStackHeaderProps) => {
   return (
     <Box bg="primary.700" pt={4}>
       <HStack maxWidth={480} w="100%" alignSelf="center" alignItems="center" minHeight={10}>
-        {props.navigation.canGoBack() && (
+        {props.options.headerBackVisible !== false && props.navigation.canGoBack() && (
           <IconButton
             icon={<ChevronLeftIcon color={props.options.headerTintColor} />}
             rounded="full"
@@ -18,7 +18,7 @@ export const NavBar = (props: NativeStackHeaderProps) => {
           />
         )}
         <Text
-          mx={props.navigation.canGoBack() ? 2 : 4}
+          mx={4}
           textAlign={props.options.headerTitleAlign}
           fontSize={titleSize}
           fontWeight="500"
