@@ -9,7 +9,8 @@ function success(message: string): void {
 function error(message: string): void {
   ToastNativeBase.show({
     title: message,
-    style: { backgroundColor: 'red' }
+    style: { backgroundColor: '#f44336' },
+    placement: 'bottom'
   })
 }
 
@@ -29,7 +30,7 @@ export function throwToastAPIError(e: Error): never {
   const error = e['error'] ?? e
   ToastNativeBase.show({
     title: `${error.name}: ${error.message}`,
-    style: { backgroundColor: '#ff3333' },
+    style: { backgroundColor: '#f44336' },
     placement: 'bottom'
   })
   throw error
@@ -38,7 +39,7 @@ export function throwToastAPIError(e: Error): never {
 export function throwToastError(e: Error): never {
   ToastNativeBase.show({
     title: `${e.name}: ${e.message}`,
-    style: { backgroundColor: '#ff3333' },
+    style: { backgroundColor: '#f44336' },
     placement: 'bottom'
   })
   throw e

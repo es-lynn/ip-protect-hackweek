@@ -2,6 +2,7 @@ import Constants from 'expo-constants'
 
 import { Api } from '../../lib/api/Api'
 import { Authorization } from '../app/authorization/authorization'
+import { throwToastAPIError, Toast } from '../toast/Toast'
 
 const env: any = Constants.expoConfig?.extra?.env ?? {}
 
@@ -47,7 +48,10 @@ const api = new Api({
   securityWorker: securityData => {
     return { headers: { Authorization: authorization.getHeader() } }
   },
-  transformResponse: data => {
+  transformResponse: (data, headers, status) => {
+    if (status === 403) {
+      Toast.error('You are not authorized to perform this action') // FIXME: Handle this more elegantly
+    }
     return JSON.parse(data, reviver)
   }
 })

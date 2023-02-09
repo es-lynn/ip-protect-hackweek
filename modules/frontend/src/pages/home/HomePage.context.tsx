@@ -6,7 +6,7 @@ import { Access } from '../../components/AccessStatusView'
 import { api } from '../../config/config'
 import { nav } from '../../router/nav'
 import { path } from '../../router/route'
-import { throwToastError } from '../../toast/Toast'
+import { throwToastAPIError, throwToastError } from '../../toast/Toast'
 
 interface ProjectAccessStatus {
   [projectId: string]: boolean
@@ -40,7 +40,6 @@ export const HomePageContextProvider = ({ children, route }: any) => {
       })
       .catch(err => {
         nav.navigate(path.auth.login)
-        throwToastError(err)
       })
   }, [])
 
@@ -64,7 +63,6 @@ export const HomePageContextProvider = ({ children, route }: any) => {
       })
       .catch(err => {
         logout()
-        throwToastError(err)
       })
   }
 
