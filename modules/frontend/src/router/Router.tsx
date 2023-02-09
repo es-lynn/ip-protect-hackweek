@@ -2,6 +2,7 @@ import { DefaultTheme, NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
 
+import { NavBar } from '../components/NavBar'
 import { NavBarButtons } from '../components/NavBarButtons'
 import { DebugLoginPage } from '../pages/auth/login/DebugLoginPage'
 import { LoginPage } from '../pages/auth/login/LoginPage'
@@ -47,21 +48,8 @@ export const Router = (): React.ReactElement => {
       <Stack.Navigator
         screenOptions={{
           headerRight: NavBarButtons(),
-          headerStyle: { backgroundColor: '#0E7490' },
           headerTintColor: '#FFFFFF',
-          headerShadowVisible: false,
-          headerTitleStyle: { fontSize: 24 }
-          // header: props => {
-          //   return (
-          //     <Box
-          //       tintColor={props.options.headerTintColor}
-          //       bg={props.options.headerStyle?.['backgroundColor']}
-          //     >
-          //       {props.options.back}
-          //       Hi
-          //     </Box>
-          //   )
-          // }
+          header: NavBar
         }}
       >
         <Stack.Screen

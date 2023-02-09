@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
-import { Box } from 'native-base'
+import { Box, Spinner } from 'native-base'
 import React, { useContext, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native'
 
@@ -51,9 +51,13 @@ export const _ProjectPage: React.FC = () => {
   return (
     <SafeAreaView style={{ backgroundColor: 'white' }}>
       <Box bg="primary.700" w="full" h="50px" position="absolute" />
-      {access && (
-        <Box mb={5} rounded="full" bg="white:alpha.80" alignSelf="center" px={2}>
+      {access ? (
+        <Box mb={6} rounded="full" bg="white:alpha.80" alignSelf="center" px={2}>
           <AccessStatusView access={access} />
+        </Box>
+      ) : (
+        <Box height={42}>
+          <Spinner size="sm" />
         </Box>
       )}
       <Tabs

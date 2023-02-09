@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons'
-import { HStack, Icon, IconButton, InfoIcon, Menu, Pressable, Text, VStack } from 'native-base'
+import { HStack, Icon, IconButton, InfoIcon, Menu, Text, VStack } from 'native-base'
 import React from 'react'
 
 import { Modal } from '../../../../modal/ModalController'
