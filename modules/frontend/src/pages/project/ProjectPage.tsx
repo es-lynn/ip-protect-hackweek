@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native'
-import { Box } from 'native-base'
+import { Box, Spinner } from 'native-base'
 import React, { useContext, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native'
 
 import { AccessStatusView } from '../../components/AccessStatusView'
+import { NavBarButtons } from '../../components/NavBarButtons'
 import { withContext } from '../../hoc/withContext'
 import { IpAddressView } from './_components/IPAddress/IpAddressView'
 import { Tabs } from './_components/Tabs'
@@ -28,22 +29,35 @@ export const _ProjectPage: React.FC = () => {
     editProjectUserRole,
     addProjectUser,
     removeProjectUser,
-    createInviteLink
+    createInviteLink,
+    deleteProject
   } = useContext(ProjectPageContext)
 
   const [selectedTab, setSelectedTab] = useState<string>('ip-address')
   const nav = useNavigation()
 
   useEffect(() => {
-    nav.setOptions({ title: projectFriendlyId, headerTitleAlign: 'center' })
-  }, [nav])
+    nav.setOptions({
+      title: projectFriendlyId,
+      headerTitleAlign: 'center',
+      headerRight: NavBarButtons({
+        isAdmin: isAdmin,
+        onPressDelete: () => deleteProject(projectFriendlyId)
+        // TODO edit
+      })
+    })
+  }, [nav, isAdmin])
 
   return (
     <SafeAreaView style={{ backgroundColor: 'white' }}>
       <Box bg="primary.700" w="full" h="50px" position="absolute" />
-      {access && (
-        <Box mb={5} rounded="full" bg="white:alpha.80" alignSelf="center" px={2}>
+      {access ? (
+        <Box mb={6} rounded="full" bg="white:alpha.80" alignSelf="center" px={2}>
           <AccessStatusView access={access} />
+        </Box>
+      ) : (
+        <Box height={42}>
+          <Spinner size="sm" />
         </Box>
       )}
       <Tabs
@@ -55,37 +69,40 @@ export const _ProjectPage: React.FC = () => {
         selected={selectedTab}
         onPressTab={index => setSelectedTab(index)}
       />
+      <Box maxWidth={480} w="100%" alignSelf="center">
+        {selectedTab === 'ip-address' && (
+          <IpAddressView
+            ipAddresses={ipAddresses}
+            whitelistedV4={whitelistedV4}
+            whitelistedV6={whitelistedV6}
+            projectFriendlyId={projectFriendlyId}
+            deleteIpAddress={deleteIpAddress}
+            addIpAddress={addIpAddress}
+          />
+        )}
 
-      {selectedTab === 'ip-address' && (
-        <IpAddressView
-          ipAddresses={ipAddresses}
-          whitelistedV4={whitelistedV4}
-          whitelistedV6={whitelistedV6}
-          projectFriendlyId={projectFriendlyId}
-          deleteIpAddress={deleteIpAddress}
-          addIpAddress={addIpAddress}
-        />
-      )}
+        {selectedTab === 'websites' && (
+          <WebpageView
+            webpages={webpages}
+            projectFriendlyId={projectFriendlyId}
+            addWebpage={addWebpage}
+            deleteWebpage={deleteWebpage}
+            isAdmin={isAdmin}
+          />
+        )}
 
-      {selectedTab === 'websites' && (
-        <WebpageView
-          webpages={webpages}
-          projectFriendlyId={projectFriendlyId}
-          addWebpage={addWebpage}
-          deleteWebpage={deleteWebpage}
-        />
-      )}
-
-      {selectedTab === 'users' && (
-        <UserView
-          users={users}
-          projectFriendlyId={projectFriendlyId}
-          editProjectUserRole={editProjectUserRole}
-          addProjectUser={addProjectUser}
-          removeProjectUser={removeProjectUser}
-          createInviteLink={createInviteLink}
-        />
-      )}
+        {selectedTab === 'users' && (
+          <UserView
+            users={users}
+            projectFriendlyId={projectFriendlyId}
+            editProjectUserRole={editProjectUserRole}
+            addProjectUser={addProjectUser}
+            removeProjectUser={removeProjectUser}
+            createInviteLink={createInviteLink}
+            isAdmin={isAdmin}
+          />
+        )}
+      </Box>
     </SafeAreaView>
   )
 }

@@ -24,7 +24,13 @@ interface Props {
 
 export const WebpageRowView = (props: Props) => {
   return (
-    <Pressable p={4} bg="muted.100" w="100%" _hover={{ bg: 'muted.200' }}>
+    <Pressable
+      p={4}
+      bg="muted.100"
+      w="100%"
+      _hover={{ bg: 'muted.200' }}
+      _pressed={{ bg: 'muted.300' }}
+    >
       <Link href={props.webpage.url} isExternal>
         <VStack space={2}>
           <Text fontSize="md" fontWeight={400} color="text.900">
@@ -47,8 +53,8 @@ export const WebpageRowView = (props: Props) => {
               borderRadius="full"
               accessibilityLabel="More options menu"
               position="absolute"
-              right={4}
-              top={4}
+              right={2}
+              top={2}
               {...triggerProps}
             />
           )}

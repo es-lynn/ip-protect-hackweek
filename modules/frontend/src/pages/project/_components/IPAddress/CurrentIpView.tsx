@@ -24,7 +24,7 @@ export const CurrentIpView = (props: Props) => {
   }, [whitelisted])
 
   return (
-    <VStack p={4} bg="muted.100" space={2}>
+    <VStack p={4} space={2}>
       <HStack justifyContent="space-between">
         <Heading size="sm">
           IPv{props.isV6 ? '6' : '4'}

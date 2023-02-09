@@ -1,9 +1,8 @@
-import { Ionicons } from '@expo/vector-icons'
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { Icon, Pressable } from 'native-base'
 import React from 'react'
 
+import { NavBar } from '../components/NavBar'
 import { NavBarButtons } from '../components/NavBarButtons'
 import { DebugLoginPage } from '../pages/auth/login/DebugLoginPage'
 import { LoginPage } from '../pages/auth/login/LoginPage'
@@ -12,8 +11,7 @@ import { DebugPage } from '../pages/debug/DebugPage'
 import { HomePage } from '../pages/home/HomePage'
 import { InvitePage } from '../pages/invite/InvitePage'
 import { ProjectPage } from '../pages/project/ProjectPage'
-import { sp } from '../styles/space'
-import { nav, navigationRef } from './nav'
+import { navigationRef } from './nav'
 import { path } from './route'
 
 const Stack = createNativeStackNavigator()
@@ -49,33 +47,9 @@ export const Router = (): React.ReactElement => {
     >
       <Stack.Navigator
         screenOptions={{
-          headerLeft: () => (
-            <Pressable onPress={() => nav.navigate(path.home.index)}>
-              <Icon
-                as={Ionicons}
-                name="home"
-                color="white"
-                size={7}
-                style={{ marginLeft: sp._16 }}
-              />
-            </Pressable>
-          ),
-          headerRight: NavBarButtons,
-          headerStyle: { backgroundColor: '#0E7490' },
+          headerRight: NavBarButtons(),
           headerTintColor: '#FFFFFF',
-          headerShadowVisible: false,
-          headerTitleStyle: { fontSize: 24 }
-          // header: props => {
-          //   return (
-          //     <Box
-          //       tintColor={props.options.headerTintColor}
-          //       bg={props.options.headerStyle?.['backgroundColor']}
-          //     >
-          //       {props.options.back}
-          //       Hi
-          //     </Box>
-          //   )
-          // }
+          header: NavBar
         }}
       >
         <Stack.Screen

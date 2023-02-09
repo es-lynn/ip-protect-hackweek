@@ -1,8 +1,9 @@
-import { AddIcon, Button, Center, Divider, Spinner, Text, VStack } from 'native-base'
+import { AddIcon, Button, Center, Spinner, Text, useBreakpointValue, VStack } from 'native-base'
 import React from 'react'
 import { FlatList } from 'react-native'
 
 import { Webpage } from '../../../../../lib/api/Api'
+import { ListDivider } from '../../../../components/ListDivider'
 import { Modal } from '../../../../modal/ModalController'
 import { WebpageAddModal } from './WebpageAddModal'
 import { WebpageRowView } from './WebpageRowView'
@@ -12,20 +13,26 @@ export type WebpageViewProps = {
   projectFriendlyId: string
   deleteWebpage: (projectFriendlyId: string, webpageId: string) => Promise<void>
   addWebpage: (projectFriendlyId: string, webpage: { url: string; name: string }) => Promise<void>
+  isAdmin: boolean
 }
 
 export const WebpageView = ({
   webpages,
   projectFriendlyId,
   deleteWebpage,
-  addWebpage
+  addWebpage,
+  isAdmin
 }: WebpageViewProps) => {
+  const topPadding = useBreakpointValue({ base: 0, sm: 5 })
+  const rounding = useBreakpointValue({ base: 0, sm: 8 })
+
   return (
-    <VStack>
+    <VStack mt={topPadding}>
       {webpages ? (
         <FlatList<Webpage>
+          style={{ borderRadius: rounding }}
           data={webpages}
-          ItemSeparatorComponent={() => <Divider />}
+          ItemSeparatorComponent={() => <ListDivider />}
           ListEmptyComponent={() => (
             <Center mx={4} my={6}>
               <Text>There are no websites in this project</Text>
@@ -34,7 +41,7 @@ export const WebpageView = ({
           renderItem={({ item: webpage }) => (
             <WebpageRowView
               webpage={webpage}
-              canEdit={true}
+              canEdit={isAdmin}
               onPressDelete={() =>
                 Modal.confirm2({
                   title: 'Delete Webpage',
@@ -50,23 +57,25 @@ export const WebpageView = ({
         <Spinner />
       )}
 
-      <Button
-        m={6}
-        leftIcon={<AddIcon />}
-        alignSelf="start"
-        variant="outline"
-        onPress={() =>
-          Modal.dialog(props => (
-            <WebpageAddModal
-              projectFriendlyId={projectFriendlyId}
-              addWebpage={addWebpage}
-              {...props}
-            />
-          ))
-        }
-      >
-        Add Website
-      </Button>
+      {isAdmin && (
+        <Button
+          m={6}
+          leftIcon={<AddIcon />}
+          alignSelf="start"
+          variant="outline"
+          onPress={() =>
+            Modal.dialog(props => (
+              <WebpageAddModal
+                projectFriendlyId={projectFriendlyId}
+                addWebpage={addWebpage}
+                {...props}
+              />
+            ))
+          }
+        >
+          Add Website
+        </Button>
+      )}
     </VStack>
   )
 }

@@ -47,8 +47,8 @@ export const UserRowView = (props: Props) => {
               borderRadius="full"
               accessibilityLabel="More options menu"
               position="absolute"
-              right={4}
-              top={4}
+              right={2}
+              top={2}
               {...triggerProps}
             />
           )}
