@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native'
 
 import { AccessStatusView } from '../../components/AccessStatusView'
+import { NavBarButtons } from '../../components/NavBarButtons'
 import { withContext } from '../../hoc/withContext'
 import { IpAddressView } from './_components/IPAddress/IpAddressView'
 import { Tabs } from './_components/Tabs'
@@ -28,15 +29,24 @@ export const _ProjectPage: React.FC = () => {
     editProjectUserRole,
     addProjectUser,
     removeProjectUser,
-    createInviteLink
+    createInviteLink,
+    deleteProject
   } = useContext(ProjectPageContext)
 
   const [selectedTab, setSelectedTab] = useState<string>('ip-address')
   const nav = useNavigation()
 
   useEffect(() => {
-    nav.setOptions({ title: projectFriendlyId, headerTitleAlign: 'center' })
-  }, [nav])
+    nav.setOptions({
+      title: projectFriendlyId,
+      headerTitleAlign: 'center',
+      headerRight: NavBarButtons({
+        isAdmin: isAdmin,
+        onPressDelete: () => deleteProject(projectFriendlyId)
+        // TODO edit
+      })
+    })
+  }, [nav, isAdmin])
 
   return (
     <SafeAreaView style={{ backgroundColor: 'white' }}>
@@ -73,6 +83,7 @@ export const _ProjectPage: React.FC = () => {
           projectFriendlyId={projectFriendlyId}
           addWebpage={addWebpage}
           deleteWebpage={deleteWebpage}
+          isAdmin={isAdmin}
         />
       )}
 
@@ -84,6 +95,7 @@ export const _ProjectPage: React.FC = () => {
           addProjectUser={addProjectUser}
           removeProjectUser={removeProjectUser}
           createInviteLink={createInviteLink}
+          isAdmin={isAdmin}
         />
       )}
     </SafeAreaView>

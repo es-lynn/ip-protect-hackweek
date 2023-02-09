@@ -1,7 +1,5 @@
-import { Ionicons } from '@expo/vector-icons'
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { Icon, Pressable } from 'native-base'
 import React from 'react'
 
 import { NavBarButtons } from '../components/NavBarButtons'
@@ -12,8 +10,7 @@ import { DebugPage } from '../pages/debug/DebugPage'
 import { HomePage } from '../pages/home/HomePage'
 import { InvitePage } from '../pages/invite/InvitePage'
 import { ProjectPage } from '../pages/project/ProjectPage'
-import { sp } from '../styles/space'
-import { nav, navigationRef } from './nav'
+import { navigationRef } from './nav'
 import { path } from './route'
 
 const Stack = createNativeStackNavigator()
@@ -49,18 +46,7 @@ export const Router = (): React.ReactElement => {
     >
       <Stack.Navigator
         screenOptions={{
-          headerLeft: () => (
-            <Pressable onPress={() => nav.navigate(path.home.index)}>
-              <Icon
-                as={Ionicons}
-                name="home"
-                color="white"
-                size={7}
-                style={{ marginLeft: sp._16 }}
-              />
-            </Pressable>
-          ),
-          headerRight: NavBarButtons,
+          headerRight: NavBarButtons(),
           headerStyle: { backgroundColor: '#0E7490' },
           headerTintColor: '#FFFFFF',
           headerShadowVisible: false,

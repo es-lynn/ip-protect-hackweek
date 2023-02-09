@@ -33,6 +33,8 @@ export interface ProjectPageContextType {
   removeProjectUser: (projectFriendlyId: string, userId: string) => Promise<void>
 
   createInviteLink: (projectFriendlyId: string, duration: number, email: string) => Promise<string>
+
+  deleteProject: (projectFriendlyId: string) => Promise<void>
 }
 
 export const ProjectPageContext = createContext<ProjectPageContextType>(null as any)
@@ -191,6 +193,10 @@ export const ProjectPageContextProvider = ({ children, route }: any) => {
     return response.data.url
   }
 
+  async function deleteProject(projectFriendlyId: string): Promise<void> {
+    await api.project.projectDelete(projectFriendlyId)
+  }
+
   return (
     <ProjectPageContext.Provider
       value={{
@@ -209,7 +215,8 @@ export const ProjectPageContextProvider = ({ children, route }: any) => {
         editProjectUserRole,
         addProjectUser,
         removeProjectUser,
-        createInviteLink
+        createInviteLink,
+        deleteProject
       }}
     >
       {children}

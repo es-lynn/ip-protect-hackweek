@@ -12,13 +12,15 @@ export type WebpageViewProps = {
   projectFriendlyId: string
   deleteWebpage: (projectFriendlyId: string, webpageId: string) => Promise<void>
   addWebpage: (projectFriendlyId: string, webpage: { url: string; name: string }) => Promise<void>
+  isAdmin: boolean
 }
 
 export const WebpageView = ({
   webpages,
   projectFriendlyId,
   deleteWebpage,
-  addWebpage
+  addWebpage,
+  isAdmin
 }: WebpageViewProps) => {
   return (
     <VStack>
@@ -34,7 +36,7 @@ export const WebpageView = ({
           renderItem={({ item: webpage }) => (
             <WebpageRowView
               webpage={webpage}
-              canEdit={true}
+              canEdit={isAdmin}
               onPressDelete={() =>
                 Modal.confirm2({
                   title: 'Delete Webpage',
@@ -50,23 +52,25 @@ export const WebpageView = ({
         <Spinner />
       )}
 
-      <Button
-        m={6}
-        leftIcon={<AddIcon />}
-        alignSelf="start"
-        variant="outline"
-        onPress={() =>
-          Modal.dialog(props => (
-            <WebpageAddModal
-              projectFriendlyId={projectFriendlyId}
-              addWebpage={addWebpage}
-              {...props}
-            />
-          ))
-        }
-      >
-        Add Website
-      </Button>
+      {isAdmin && (
+        <Button
+          m={6}
+          leftIcon={<AddIcon />}
+          alignSelf="start"
+          variant="outline"
+          onPress={() =>
+            Modal.dialog(props => (
+              <WebpageAddModal
+                projectFriendlyId={projectFriendlyId}
+                addWebpage={addWebpage}
+                {...props}
+              />
+            ))
+          }
+        >
+          Add Website
+        </Button>
+      )}
     </VStack>
   )
 }
