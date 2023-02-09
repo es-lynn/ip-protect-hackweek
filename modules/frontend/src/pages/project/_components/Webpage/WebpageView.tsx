@@ -1,14 +1,11 @@
-import { A } from '@expo/html-elements'
-import { Button, Menu, Pressable, ThreeDotsIcon } from 'native-base'
+import { AddIcon, Button, Center, Divider, Text, VStack } from 'native-base'
 import React from 'react'
-import { ActivityIndicator, FlatList, View } from 'react-native'
-import { Text } from 'react-native-paper'
+import { ActivityIndicator, FlatList } from 'react-native'
 
 import { Webpage } from '../../../../../lib/api/Api'
 import { Modal } from '../../../../modal/ModalController'
-import { sp } from '../../../../styles/space'
-import { ProjectPageDeleteModal } from './ProjectPageDeleteModal'
 import { WebpageAddModal } from './WebpageAddModal'
+import { WebpageRowView } from './WebpageRowView'
 
 export type WebpageViewProps = {
   webpages?: Webpage[]
@@ -16,6 +13,7 @@ export type WebpageViewProps = {
   deleteWebpage: (projectFriendlyId: string, webpageId: string) => Promise<void>
   addWebpage: (projectFriendlyId: string, webpage: { url: string; name: string }) => Promise<void>
 }
+
 export const WebpageView = ({
   webpages,
   projectFriendlyId,
@@ -23,57 +21,40 @@ export const WebpageView = ({
   addWebpage
 }: WebpageViewProps) => {
   return (
-    <View>
+    <VStack>
       {webpages ? (
         <FlatList<Webpage>
           data={webpages}
+          ItemSeparatorComponent={() => <Divider />}
+          ListEmptyComponent={() => (
+            <Center mx={4} my={6}>
+              <Text>There are no websites in this project</Text>
+            </Center>
+          )}
           renderItem={({ item: webpage }) => (
-            <View
-              key={webpage.id}
-              style={{
-                padding: sp._8,
-                flexDirection: 'row',
-                width: '100%',
-                alignItems: 'center'
-              }}
-            >
-              <A href={webpage.url}>
-                <View style={{ flexDirection: 'column' }}>
-                  <Text>{webpage.name}</Text>
-                  <Text>{webpage.url}</Text>
-                </View>
-              </A>
-              <View style={{ marginLeft: 'auto' }}>
-                <Menu
-                  trigger={triggerProps => (
-                    <Pressable accessibilityLabel="More options menu" {...triggerProps}>
-                      <ThreeDotsIcon />
-                    </Pressable>
-                  )}
-                >
-                  <Menu.Item
-                    onPress={() =>
-                      Modal.confirm(props => (
-                        <ProjectPageDeleteModal
-                          projectFriendlyId={projectFriendlyId}
-                          webpage={webpage}
-                          onDelete={async () => await deleteWebpage(projectFriendlyId, webpage.id)}
-                          {...props}
-                        />
-                      ))
-                    }
-                  >
-                    Delete
-                  </Menu.Item>
-                </Menu>
-              </View>
-            </View>
+            <WebpageRowView
+              webpage={webpage}
+              canEdit={true}
+              onPressDelete={() =>
+                Modal.confirm2({
+                  title: 'Delete Webpage',
+                  body: `This will remove ${webpage.name} (${webpage.url}) from the project: ${projectFriendlyId}`,
+                  type: 'danger',
+                  onConfirm: async () => await deleteWebpage(projectFriendlyId, webpage.id)
+                })
+              }
+            />
           )}
         />
       ) : (
         <ActivityIndicator size={'large'} />
       )}
+
       <Button
+        m={6}
+        leftIcon={<AddIcon />}
+        alignSelf="start"
+        variant="outline"
         onPress={() =>
           Modal.dialog(props => (
             <WebpageAddModal
@@ -84,8 +65,8 @@ export const WebpageView = ({
           ))
         }
       >
-        Add Webpage
+        Add Website
       </Button>
-    </View>
+    </VStack>
   )
 }

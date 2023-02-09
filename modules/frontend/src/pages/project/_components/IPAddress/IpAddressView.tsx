@@ -83,6 +83,11 @@ export const IpAddressView = ({
         <FlatList<IpAddress>
           data={ipAddresses}
           ItemSeparatorComponent={() => <Divider />}
+          ListEmptyComponent={() => (
+            <Text mx={4} my={2}>
+              There are no other IP addresses
+            </Text>
+          )}
           renderItem={({ item: ipAddress }) => (
             <OtherIpView
               ip={ipAddress.ip}

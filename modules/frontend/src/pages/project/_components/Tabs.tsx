@@ -27,7 +27,7 @@ export const Tabs: React.FC<Props> = ({ labels, selected, onPressTab }: Props) =
             <Center>
               <HStack space={1}>
                 <Text fontWeight={400}>{label.label}</Text>
-                {label.badge && (
+                {label.badge !== undefined && (
                   <Badge rounded="full" variant="subtle" colorScheme="coolGray">
                     {label.badge}
                   </Badge>
