@@ -16,7 +16,7 @@ export class MeController {
 
   @HttpCode(200)
   @Get()
-  async index(@AuthUser() user: User, @Req() req: Request): Promise<MeRes> {
+  async index(@AuthUser() user: User): Promise<MeRes> {
     return {
       user: {
         id: user.id,
