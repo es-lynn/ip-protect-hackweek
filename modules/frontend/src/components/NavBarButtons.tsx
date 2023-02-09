@@ -1,5 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react'
-import { Avatar, Box, Image, Menu, Pressable, Text } from 'native-base'
+import { Avatar, Box, Menu, Pressable, Text } from 'native-base'
 import React, { useContext } from 'react'
 
 import { AppContext } from '../App.context'
