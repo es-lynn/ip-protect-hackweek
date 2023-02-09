@@ -56,7 +56,7 @@ export const WebpageRowView = (props: Props) => {
           <Menu.Item onPress={() => props.onPressDelete(props.webpage.id)}>Delete</Menu.Item>
         </Menu>
       ) : (
-        <ChevronRightIcon color="muted.500" size={5} />
+        <ChevronRightIcon color="muted.500" size={5} position="absolute" right={4} top={5} />
       )}
     </Pressable>
   )

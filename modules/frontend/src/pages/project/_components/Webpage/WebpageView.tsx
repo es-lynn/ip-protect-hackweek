@@ -1,4 +1,4 @@
-import { AddIcon, Button, Center, Divider, Text, VStack } from 'native-base'
+import { AddIcon, Button, Center, Divider, Spinner, Text, VStack } from 'native-base'
 import React from 'react'
 import { ActivityIndicator, FlatList } from 'react-native'
 
@@ -47,7 +47,7 @@ export const WebpageView = ({
           )}
         />
       ) : (
-        <ActivityIndicator size={'large'} />
+        <Spinner />
       )}
 
       <Button
