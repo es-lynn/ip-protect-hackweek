@@ -1,5 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react'
-import { Avatar, Box, Menu, Pressable, Text } from 'native-base'
+import { Ionicons } from '@expo/vector-icons'
+import { Avatar, HStack, Icon, IconButton, Menu, Pressable, Text } from 'native-base'
 import React, { useContext } from 'react'
 
 import { AppContext } from '../App.context'
@@ -9,14 +10,46 @@ import { format } from '../utils/format'
 import { generateRandomNumber } from '../utils/random.util'
 import { colors } from './Avatar'
 
-// TODO get user initials
-// TODO admin [...] button on projects screen
-export const NavBarButtons = (): React.ReactNode => {
+interface Props {
+  isAdmin: boolean
+  onPressDelete: () => void
+  onPressEdit?: () => void
+}
+
+export const NavBarButtons = (props?: Props) => (): React.ReactNode => {
   const { logout } = useAuth0()
   const { me } = useContext(AppContext)
 
   return (
-    <Box px={4}>
+    <HStack px={4} alignItems="center" space={2}>
+      {props?.isAdmin && (
+        <Menu
+          trigger={triggerProps => (
+            <IconButton
+              icon={<Icon as={Ionicons} name="ellipsis-vertical" color="white" size={5} />}
+              borderRadius="full"
+              accessibilityLabel="Manage project options"
+              {...triggerProps}
+            />
+          )}
+        >
+          {props?.onPressEdit && <Menu.Item onPress={() => props?.onPressEdit?.()}>Edit</Menu.Item>}
+          <Menu.Item
+            onPress={() =>
+              Modal.confirm2({
+                title: 'Delete project',
+                type: 'danger',
+                body: `Are you sure you want to delete the project?`,
+                onConfirm: () => props?.onPressDelete(),
+                confirmText: 'Delete'
+              })
+            }
+          >
+            Delete
+          </Menu.Item>
+        </Menu>
+      )}
+
       <Menu
         trigger={triggerProps => (
           <Pressable {...triggerProps}>
@@ -48,6 +81,6 @@ export const NavBarButtons = (): React.ReactNode => {
           Log out
         </Menu.Item>
       </Menu>
-    </Box>
+    </HStack>
   )
 }

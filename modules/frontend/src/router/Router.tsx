@@ -46,7 +46,7 @@ export const Router = (): React.ReactElement => {
     >
       <Stack.Navigator
         screenOptions={{
-          headerRight: NavBarButtons,
+          headerRight: NavBarButtons(),
           headerStyle: { backgroundColor: '#0E7490' },
           headerTintColor: '#FFFFFF',
           headerShadowVisible: false,
