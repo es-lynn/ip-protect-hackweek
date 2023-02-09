@@ -16,6 +16,13 @@ export class Project3734 {
   ipType: string
 }
 
+export class Project5239 {
+  id: string
+  friendlyId: string
+  @IsIn(IpTypeArr)
+  ipType: string
+}
+
 export class IpSet {
   @IsString()
   @IsNotEmpty()
@@ -105,7 +112,8 @@ export class ProjectViewParam {
 }
 
 export class ProjectViewRes {
-  project: Project3734
+  project: Project5239
+  isAdmin: boolean
 }
 
 export class ProjectDeleteParam {

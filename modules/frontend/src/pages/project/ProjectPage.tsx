@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
-import { Box } from 'native-base'
+import { Box, Text } from 'native-base'
 import React, { useContext, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native'
 
@@ -20,6 +20,7 @@ export const _ProjectPage: React.FC = () => {
     whitelistedV4,
     whitelistedV6,
     access,
+    isAdmin,
     deleteWebpage,
     addWebpage,
     deleteIpAddress,

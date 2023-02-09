@@ -66,8 +66,15 @@ export interface ProjectEditRes {
   project: Project3734
 }
 
+export interface Project5239 {
+  id: string
+  friendlyId: string
+  ipType: 'ipv4' | 'ipv6'
+}
+
 export interface ProjectViewRes {
-  project: Project3734
+  project: Project5239
+  isAdmin: boolean
 }
 
 export type ProjectDeleteRes = object

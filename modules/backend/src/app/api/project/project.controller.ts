@@ -106,14 +106,22 @@ export class ProjectController {
   @HttpCode(200)
   @Get('/:projectFriendlyId')
   async view(@AuthUser() user: User, @Param() param: ProjectViewParam): Promise<ProjectViewRes> {
-    await this.authorization.assertUserBelongsProject(user, param.projectFriendlyId)
+    const projUser = await this.authorization.assertUserBelongsProject(
+      user,
+      param.projectFriendlyId
+    )
 
     const project = (await this.prisma.project.findUniqueOrThrow({
       where: { friendlyId: param.projectFriendlyId }
     })) as ProjectType
 
     return {
-      project: mapProjectToRes(project)
+      project: {
+        id: project.id,
+        friendlyId: project.friendlyId,
+        ipType: project.ipType
+      },
+      isAdmin: projUser.isAdmin
     }
   }
 

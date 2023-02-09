@@ -16,6 +16,7 @@ export interface ProjectPageContextType {
   ipAddresses?: IpAddress[]
   webpages?: Webpage[]
   users?: ProjectUser[]
+  isAdmin: boolean
   projectFriendlyId: string
   whitelistedV4?: IpAddressWhitelistedRes
   whitelistedV6?: IpAddressWhitelistedRes
@@ -44,6 +45,7 @@ export const ProjectPageContextProvider = ({ children, route }: any) => {
   const [whitelistedV4, setWhitelistedV4] = useState<IpAddressWhitelistedRes>()
   const [whitelistedV6, setWhitelistedV6] = useState<IpAddressWhitelistedRes>()
   const [access, setAccess] = useState<Access>()
+  const [isAdmin, setIsAdmin] = useState<boolean>(false)
 
   useEffect(() => {
     fetch()
@@ -74,6 +76,7 @@ export const ProjectPageContextProvider = ({ children, route }: any) => {
     api.project.ipaddressList(projectFriendlyId).then(data => setIpAddresses(data.data.ipAddresses))
     api.project.webpageList(projectFriendlyId).then(data => setWebpages(data.data.webpages))
     api.project.userList(projectFriendlyId).then(data => setUsers(data.data.users))
+    api.project.projectView(projectFriendlyId).then(data => setIsAdmin(data.data.isAdmin))
   }
 
   function fetchIPv4(): void {
@@ -198,6 +201,7 @@ export const ProjectPageContextProvider = ({ children, route }: any) => {
         whitelistedV4,
         whitelistedV6,
         access,
+        isAdmin,
         deleteWebpage,
         addWebpage,
         deleteIpAddress,
