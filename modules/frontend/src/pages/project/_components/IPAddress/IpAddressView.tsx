@@ -1,5 +1,5 @@
 import { AddIcon, Badge, Box, Button, Divider, HStack, Spinner, Text, View } from 'native-base'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FlatList } from 'react-native'
 
 import { IpAddress, IpAddressWhitelistedRes } from '../../../../../lib/api/Api'
@@ -28,8 +28,15 @@ export const IpAddressView = ({
   whitelistedV6
 }: IpAddressViewProps) => {
   const { ipv4, ipv6 } = useContext(AppContext)
+  const [otherAddresses, setOtherAddresses] = useState<IpAddress[]>()
+
   const matchingV4 = ipAddresses?.find(ip => ip.ip === ipv4)
   const matchingV6 = ipAddresses?.find(ip => ip.ip === ipv6)
+
+  useEffect(() => {
+    if (!ipAddresses) return
+    setOtherAddresses(ipAddresses.filter(ip => ip.ip != ipv4 && ip.ip != ipv6))
+  }, [ipAddresses])
 
   const openAddIpModal = (ip?: string, tag?: string) =>
     Modal.dialog(props => (
@@ -76,12 +83,12 @@ export const IpAddressView = ({
           Others
         </Text>
         <Badge rounded="full" variant="subtle" colorScheme="coolGray">
-          {ipAddresses?.length ?? 0}
+          {otherAddresses?.length ?? 0}
         </Badge>
       </HStack>
-      {ipAddresses ? (
+      {otherAddresses ? (
         <FlatList<IpAddress>
-          data={ipAddresses}
+          data={otherAddresses}
           ItemSeparatorComponent={() => <Divider />}
           ListEmptyComponent={() => (
             <Text mx={4} my={2}>

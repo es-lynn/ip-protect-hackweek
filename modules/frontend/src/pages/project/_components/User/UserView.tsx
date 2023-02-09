@@ -1,4 +1,16 @@
-import { Button, Menu, Pressable, ThreeDotsIcon } from 'native-base'
+import {
+  AddIcon,
+  Box,
+  Button,
+  Center,
+  Divider,
+  Heading,
+  Menu,
+  Pressable,
+  Spinner,
+  ThreeDotsIcon,
+  VStack
+} from 'native-base'
 import React from 'react'
 import { ActivityIndicator, FlatList, View } from 'react-native'
 import { Chip, Text } from 'react-native-paper'
@@ -11,6 +23,8 @@ import { Role } from '../../../../types/role'
 import { InvitationCreateDialog } from './InvitationCreateDialog'
 import { UserAddDialog } from './UserAddDialog'
 import { UserEditRoleDialog } from './UserEditRoleDialog'
+import { UserRowView } from './UserRowView'
+import { WebpageAddModal } from '../Webpage/WebpageAddModal'
 
 export type UserViewProps = {
   users?: ProjectUser[]
@@ -33,68 +47,50 @@ export const UserView = ({
       {users ? (
         <FlatList<ProjectUser>
           data={users}
+          ItemSeparatorComponent={() => <Divider />}
+          ListEmptyComponent={() => (
+            <Center mx={4} my={6}>
+              <Text>There are no users in this project</Text>
+            </Center>
+          )}
           renderItem={({ item: user }) => (
-            <View
-              key={user.id}
-              style={{
-                padding: sp._8,
-                flexDirection: 'row',
-                width: '100%',
-                alignItems: 'center'
+            <UserRowView
+              id={user.id}
+              name={user.name}
+              provider={user.provider}
+              providerId={user.providerId}
+              isAdmin={user.isAdmin}
+              canEdit={true}
+              onPressEditRole={() => {
+                Modal.dialog(props => (
+                  <UserEditRoleDialog
+                    editProjectUserRole={editProjectUserRole}
+                    projectFriendlyId={projectFriendlyId}
+                    projectUser={user}
+                    {...props}
+                  />
+                ))
               }}
-            >
-              <View style={{ flexDirection: 'column' }}>
-                <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                  <Text>{user.name}</Text>
-                  {user.isAdmin && <Chip style={{ marginLeft: sp._8 }}>Admin</Chip>}
-                </View>
-                <Text>
-                  [{user.provider}] {user.providerId}
-                </Text>
-              </View>
-              <View style={{ marginLeft: 'auto' }}>
-                <Menu
-                  trigger={triggerProps => (
-                    <Pressable accessibilityLabel="More options menu" {...triggerProps}>
-                      <ThreeDotsIcon />
-                    </Pressable>
-                  )}
-                >
-                  <Menu.Item
-                    onPress={() => {
-                      Modal.dialog(props => (
-                        <UserEditRoleDialog
-                          editProjectUserRole={editProjectUserRole}
-                          projectFriendlyId={projectFriendlyId}
-                          projectUser={user}
-                          {...props}
-                        />
-                      ))
-                    }}
-                  >
-                    Edit Role
-                  </Menu.Item>
-                  <Menu.Item
-                    onPress={() =>
-                      Modal.confirm2({
-                        type: 'danger',
-                        title: 'Remove User',
-                        body: `Are you sure you wish to remove ${user.name} from this project?`,
-                        onConfirm: async () => await removeProjectUser(projectFriendlyId, user.id)
-                      })
-                    }
-                  >
-                    Delete
-                  </Menu.Item>
-                </Menu>
-              </View>
-            </View>
+              onPressDelete={() =>
+                Modal.confirm2({
+                  type: 'danger',
+                  title: 'Remove User',
+                  body: `Are you sure you wish to remove ${user.name} from this project?`,
+                  onConfirm: async () => await removeProjectUser(projectFriendlyId, user.id)
+                })
+              }
+            />
           )}
         />
       ) : (
-        <ActivityIndicator size={'large'} />
+        <Spinner />
       )}
+
       <Button
+        m={6}
+        leftIcon={<AddIcon />}
+        alignSelf="start"
+        variant="outline"
         onPress={() =>
           Modal.dialog(props => (
             <UserAddDialog
@@ -105,22 +101,34 @@ export const UserView = ({
           ))
         }
       >
-        Add User
+        Add existing user
       </Button>
-      <AsyncButton
-        onPress={async () => {
-          const url = await Modal.dialog<string>(props => (
-            <InvitationCreateDialog
-              projectFriendlyId={projectFriendlyId}
-              createInviteLink={createInviteLink}
-              {...props}
-            />
-          ))
-          prompt('Invitation link', url)
-        }}
-      >
-        Create Invite Link
-      </AsyncButton>
+
+      <VStack p={6} space={1} bg="lightBlue.100" borderTopColor="info.300" borderTopWidth="2">
+        <Heading size="xs">Need to give temporary access?</Heading>
+        <Text>
+          Send an invitation link to allow anyone or a specific email address to access your project
+          temporarily.
+        </Text>
+        <AsyncButton
+          mt={3}
+          alignSelf="start"
+          variant="outline"
+          bg="white"
+          onPress={async () => {
+            const url = await Modal.dialog<string>(props => (
+              <InvitationCreateDialog
+                projectFriendlyId={projectFriendlyId}
+                createInviteLink={createInviteLink}
+                {...props}
+              />
+            ))
+            prompt('Invitation link', url)
+          }}
+        >
+          Create invitation link
+        </AsyncButton>
+      </VStack>
     </View>
   )
 }

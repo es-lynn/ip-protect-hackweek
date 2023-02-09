@@ -52,7 +52,7 @@ export const OtherIpView = (props: Props) => {
       </HStack>
       {!props.synced && (
         <HStack space="2" bg="muted.200" rounded="8" p="2">
-          <InfoIcon flexShrink={false} mt={1} />
+          <InfoIcon flexShrink={0} mt={1} />
           <VStack flexShrink={1}>
             <Text color="muted.800" fontWeight={600}>
               IP address not found
