@@ -10,4 +10,6 @@ export class AuthRegisterBody {
   idToken: string
 }
 
-export class AuthRegisterRes {}
+export class AuthRegisterRes {
+  projectId: string
+}

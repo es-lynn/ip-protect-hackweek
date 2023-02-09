@@ -171,7 +171,9 @@ export interface AuthRegisterBody {
   idToken: string
 }
 
-export type AuthRegisterRes = object
+export interface AuthRegisterRes {
+  projectId: string
+}
 
 export interface UserSearchRes {
   users: User[]
