@@ -49,6 +49,7 @@ export const Router = (): React.ReactElement => {
         screenOptions={{
           headerRight: NavBarButtons(),
           headerTintColor: '#FFFFFF',
+          headerBackVisible: false,
           header: NavBar
         }}
       >
@@ -72,9 +73,13 @@ export const Router = (): React.ReactElement => {
         <Stack.Screen
           name={path.home.index}
           component={HomePage}
-          options={{ contentStyle: { backgroundColor: '#F5F5F5' }, headerBackVisible: false }}
+          options={{ contentStyle: { backgroundColor: '#F5F5F5' } }}
         />
-        <Stack.Screen name={'project/:projectFriendlyId'} component={ProjectPage} />
+        <Stack.Screen
+          name={'project/:projectFriendlyId'}
+          component={ProjectPage}
+          options={{ headerBackVisible: true }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   )
