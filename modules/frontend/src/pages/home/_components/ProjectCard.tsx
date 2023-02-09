@@ -19,7 +19,7 @@ export const ProjectCard = (props: Props): JSX.Element => {
       backgroundColor="white"
       my="2"
       _hover={{ bg: 'muted.50', shadow: '3' }}
-      _pressed={{ bg: 'muted.50', shadow: '4' }}
+      _pressed={{ bg: 'muted.100', shadow: '4' }}
       onPress={props.onPress}
     >
       {/*<VStack space={2} alignItems="start">*/}
