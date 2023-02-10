@@ -49,7 +49,7 @@ export const InvitationCreateDialog = ({
           <VStack space={6}>
             <Text>Scan this QR code</Text>
             <Box alignSelf="center" borderColor="muted.200" borderWidth={2} rounded="xl" p={4}>
-              <SvgQRCode value={url} size={240} />
+              <SvgQRCode value={url} size={160} />
             </Box>
             <Divider />
             <Text>Or share this invitation link.</Text>
