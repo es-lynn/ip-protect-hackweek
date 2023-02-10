@@ -51,7 +51,7 @@ export const Router = (): React.ReactElement => {
           headerTintColor: '#FFFFFF',
           headerBackVisible: false,
           headerShown: false,
-          header: NavBar
+          header: NavBar()
         }}
       >
         <Stack.Screen name={path.auth.login} component={LoginPage} />

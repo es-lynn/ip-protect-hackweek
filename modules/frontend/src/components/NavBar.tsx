@@ -1,11 +1,12 @@
 import { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import { Box, ChevronLeftIcon, HStack, IconButton, Text } from 'native-base'
+import { Box, ChevronLeftIcon, HStack, IconButton, Spinner, Text } from 'native-base'
 import React from 'react'
 
 import { nav } from '../router/nav'
 import { path } from '../router/route'
+import { Access, AccessStatusView } from './AccessStatusView'
 
-export const NavBar = (props: NativeStackHeaderProps) => {
+export const NavBar = (access?: Access) => (props: NativeStackHeaderProps) => {
   const titleSize = 'xl'
 
   return (
@@ -39,6 +40,17 @@ export const NavBar = (props: NativeStackHeaderProps) => {
           </Box>
         )}
       </HStack>
+
+      {props.options.headerBackVisible && // very hacky way to check if on "projects" page
+        (access ? (
+          <Box mb={6} rounded="full" bg="white:alpha.80" alignSelf="center" px={2}>
+            <AccessStatusView access={access} />
+          </Box>
+        ) : (
+          <Box height={42}>
+            <Spinner size="sm" />
+          </Box>
+        ))}
     </Box>
   )
 }
