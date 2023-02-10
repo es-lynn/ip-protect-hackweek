@@ -1,7 +1,7 @@
 import { useAuth0 } from '@auth0/auth0-react'
-import { Text, View } from 'native-base'
+import { Spinner, Text, View } from 'native-base'
 import React from 'react'
-import { ActivityIndicator, SafeAreaView } from 'react-native'
+import { SafeAreaView } from 'react-native'
 
 import { api, authorization } from '../../../config/config'
 import { useAsyncEffect } from '../../../hooks/useAsyncEffect'
@@ -36,7 +36,7 @@ export const RedirectPage = () => {
   return (
     <SafeAreaView>
       {isLoading ? (
-        <ActivityIndicator size={'large'} />
+        <Spinner size="lg" mt={32} />
       ) : (
         <View>
           {isAuthenticated && (

@@ -50,35 +50,24 @@ export const Router = (): React.ReactElement => {
           headerRight: NavBarButtons(),
           headerTintColor: '#FFFFFF',
           headerBackVisible: false,
+          headerShown: false,
           header: NavBar
         }}
       >
-        <Stack.Screen
-          name={path.auth.login}
-          component={LoginPage}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name={path.auth.debuglogin}
-          component={DebugLoginPage}
-          options={{ headerRight: undefined }}
-        />
+        <Stack.Screen name={path.auth.login} component={LoginPage} />
+        <Stack.Screen name={path.auth.debuglogin} component={DebugLoginPage} />
         <Stack.Screen name={path.auth.redirect} component={RedirectPage} />
-        <Stack.Screen
-          name={path.invite.index}
-          component={InvitePage}
-          options={{ headerShown: false }}
-        />
+        <Stack.Screen name={path.invite.index} component={InvitePage} />
         <Stack.Screen name={path.debug.index} component={DebugPage} />
         <Stack.Screen
           name={path.home.index}
           component={HomePage}
-          options={{ contentStyle: { backgroundColor: '#F5F5F5' } }}
+          options={{ headerShown: true, contentStyle: { backgroundColor: '#F5F5F5' } }}
         />
         <Stack.Screen
           name={'project/:projectFriendlyId'}
           component={ProjectPage}
-          options={{ headerBackVisible: true }}
+          options={{ headerShown: true, headerBackVisible: true }}
         />
       </Stack.Navigator>
     </NavigationContainer>

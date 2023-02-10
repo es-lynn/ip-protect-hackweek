@@ -13,18 +13,16 @@ export type ProjectListViewProps = {
   projectAccess: ProjectAccessConsolidated
 }
 export const ProjectListView = ({ projects, projectAccess }: ProjectListViewProps) => {
-  if (projects === undefined) return <Spinner size="lg" />
-
-  if (projects.length === 0)
-    return (
-      <Box rounded="lg" shadow="2" p="4" backgroundColor="white" my="2">
-        <Text>You have no projects</Text>
-      </Box>
-    )
+  if (projects === undefined) return <Spinner size="lg" mt={20} />
 
   return (
     <FlatList<Project>
       data={projects}
+      ListEmptyComponent={() => (
+        <Box rounded="lg" shadow="2" p="4" backgroundColor="white" my="2">
+          <Text>You have no projects</Text>
+        </Box>
+      )}
       renderItem={({ item: project }) => (
         <ProjectCard
           name={project.friendlyId}
