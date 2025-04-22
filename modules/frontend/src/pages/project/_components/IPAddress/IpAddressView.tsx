@@ -39,17 +39,13 @@ export const IpAddressView = ({
   whitelistedV6
 }: IpAddressViewProps) => {
   const { ipv4, ipv6 } = useContext(AppContext)
-  const [otherAddresses, setOtherAddresses] = useState<IpAddress[]>()
 
   const rounding = useBreakpointValue({ base: 0, sm: 8 })
 
   const matchingV4 = ipAddresses?.find(ip => ip.ip === ipv4)
   const matchingV6 = ipAddresses?.find(ip => ip.ip === ipv6)
-
-  useEffect(() => {
-    if (!ipAddresses) return
-    setOtherAddresses(ipAddresses.filter(ip => ip.ip != ipv4 && ip.ip != ipv6))
-  }, [ipAddresses])
+  const otherAddresses: IpAddress[] =
+    ipAddresses?.filter(ip => ip.ip != ipv4 && ip.ip != ipv6) ?? []
 
   const openAddIpModal = (ip?: string, tag?: string) =>
     Modal.dialog(props => (

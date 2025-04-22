@@ -8,6 +8,7 @@ import { ProjectModule } from './project/project.module'
 import { UserModule as ProjectUserModule } from './project/user/user.module'
 import { WebpageModule } from './project/webpage/webpage.module'
 import { UserModule } from './user/user.module'
+import { WhitelistModule } from './whitelist/whitelist.module'
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { UserModule } from './user/user.module'
     AuthModule,
     UserModule,
     ProjectUserModule,
-    InvitationModule
+    InvitationModule,
+    WhitelistModule
   ],
   controllers: []
 })
