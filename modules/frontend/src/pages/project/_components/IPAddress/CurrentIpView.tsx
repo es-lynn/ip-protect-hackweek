@@ -1,8 +1,9 @@
 import { Ionicons } from '@expo/vector-icons'
-import { Button, Heading, HStack, Icon, Text, VStack } from 'native-base'
+import { Button, Heading, HStack, Icon, IconButton, Menu, Text, VStack } from 'native-base'
 import React, { useEffect, useState } from 'react'
 
 import { IpAddressWhitelistedRes } from '../../../../../lib/api/Api'
+import { Modal } from '../../../../modal/ModalController'
 
 interface Props {
   ip?: string | null
@@ -10,6 +11,7 @@ interface Props {
   name?: string
   isWhitelisted?: boolean
   onPressWhitelist: (ip: string) => void
+  onDeleteIpAddress: (ipAddress: string) => Promise<void>
   whitelisted?: IpAddressWhitelistedRes
 }
 
@@ -30,7 +32,6 @@ export const CurrentIpView = (props: Props) => {
           IPv{props.isV6 ? '6' : '4'}
           {props.name && ': ' + props.name}
         </Heading>
-        {props.name && <Icon as={Ionicons} name="ellipsis-vertical" color="muted.500" size={5} />}
       </HStack>
       <Text fontSize="xs" color="muted.600">
         {props.ip ?? 'N/A'}
@@ -53,6 +54,35 @@ export const CurrentIpView = (props: Props) => {
       )}
       {props.ip && !props.name && whitelisted?.user == null && (
         <Button onPress={() => props.onPressWhitelist(props.ip!)}>Whitelist this IP address</Button>
+      )}
+
+      {props.isWhitelisted && props.ip && (
+        <Menu
+          trigger={triggerProps => (
+            <IconButton
+              icon={<Icon as={Ionicons} name="ellipsis-vertical" color="muted.500" size={5} />}
+              borderRadius="full"
+              accessibilityLabel="More options menu"
+              position="absolute"
+              right={2}
+              top={2}
+              {...triggerProps}
+            />
+          )}
+        >
+          <Menu.Item
+            onPress={() =>
+              Modal.confirm2({
+                title: 'Delete IP Address',
+                body: `Are you sure you wish to delete ${props.name}?`,
+                type: 'danger',
+                onConfirm: async () => await props.onDeleteIpAddress(props.ip!)
+              })
+            }
+          >
+            Delete
+          </Menu.Item>
+        </Menu>
       )}
     </VStack>
   )

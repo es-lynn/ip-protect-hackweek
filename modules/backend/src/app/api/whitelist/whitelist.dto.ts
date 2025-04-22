@@ -1,7 +1,5 @@
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator'
 
-import { User } from '../project/_dto/dto'
-
 export class WhitelistProjectQuery {
   @IsOptional()
   @IsString()

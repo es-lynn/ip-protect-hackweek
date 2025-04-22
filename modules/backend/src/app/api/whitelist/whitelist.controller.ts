@@ -1,12 +1,4 @@
-import {
-  BadRequestException,
-  Controller,
-  Get,
-  HttpCode,
-  Param,
-  Query,
-  UnauthorizedException
-} from '@nestjs/common'
+import { BadRequestException, Controller, Get, HttpCode, Param, Query } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
 import { ProjectType } from '../../core/model/models/project.type'
