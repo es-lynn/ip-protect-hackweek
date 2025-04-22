@@ -36,3 +36,21 @@ Whenever you make changes to the API on the backend, the interface on the fronte
 3. Test your API and ensure it's running correctly
 4. Navigate to `modules/frontend` and run `yarn build:api-client`
 5. The frontend API client should contain the new endpoint
+
+# Configuring new project
+
+- You must manually seed the first user
+```json
+{
+   "id": "uuidv4",
+   "providerId": "iprotect@gmail.com",
+   "provider": "google-oauth2",
+   "name": "IProtect"
+}
+```
+
+1. AWS WAF > IPSets
+2. Create an IPSet for both IPv4 & IPv6
+3. You must enter a description
+4. Copy / paste both `name` and `id` into project creation
+5. Create a new IAM user and enter AWS key / secret

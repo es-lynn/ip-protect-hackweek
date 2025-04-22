@@ -1,9 +1,9 @@
 import { useNavigation } from '@react-navigation/native'
-import { Box, Spinner } from 'native-base'
+import { Box } from 'native-base'
 import React, { useContext, useEffect, useState } from 'react'
 import { SafeAreaView, ScrollView } from 'react-native'
 
-import { AccessStatusView } from '../../components/AccessStatusView'
+import { NavBar } from '../../components/NavBar'
 import { NavBarButtons } from '../../components/NavBarButtons'
 import { withContext } from '../../hoc/withContext'
 import { IpAddressView } from './_components/IPAddress/IpAddressView'
@@ -11,7 +11,6 @@ import { Tabs } from './_components/Tabs'
 import { UserView } from './_components/User/UserView'
 import { WebpageView } from './_components/Webpage/WebpageView'
 import { ProjectPageContext, ProjectPageContextProvider } from './ProjectPage.context'
-import { NavBar } from '../../components/NavBar'
 
 export const _ProjectPage: React.FC = () => {
   const {

@@ -9,7 +9,7 @@ import {
   useBreakpointValue,
   View
 } from 'native-base'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import { FlatList } from 'react-native'
 
 import { IpAddress, IpAddressWhitelistedRes } from '../../../../../lib/api/Api'
@@ -39,17 +39,13 @@ export const IpAddressView = ({
   whitelistedV6
 }: IpAddressViewProps) => {
   const { ipv4, ipv6 } = useContext(AppContext)
-  const [otherAddresses, setOtherAddresses] = useState<IpAddress[]>()
 
   const rounding = useBreakpointValue({ base: 0, sm: 8 })
 
   const matchingV4 = ipAddresses?.find(ip => ip.ip === ipv4)
   const matchingV6 = ipAddresses?.find(ip => ip.ip === ipv6)
-
-  useEffect(() => {
-    if (!ipAddresses) return
-    setOtherAddresses(ipAddresses.filter(ip => ip.ip != ipv4 && ip.ip != ipv6))
-  }, [ipAddresses])
+  const otherAddresses: IpAddress[] =
+    ipAddresses?.filter(ip => ip.ip != ipv4 && ip.ip != ipv6) ?? []
 
   const openAddIpModal = (ip?: string, tag?: string) =>
     Modal.dialog(props => (
@@ -77,6 +73,7 @@ export const IpAddressView = ({
             isWhitelisted={!!matchingV4 || whitelistedV4?.isWhitelisted}
             name={matchingV4?.tag}
             onPressWhitelist={ip => openAddIpModal(ip)}
+            onDeleteIpAddress={ip => deleteIpAddress(projectFriendlyId, ip)}
             whitelisted={whitelistedV4}
           />
           <ListDivider />
@@ -86,6 +83,7 @@ export const IpAddressView = ({
             isWhitelisted={!!matchingV6 || whitelistedV6?.isWhitelisted}
             name={matchingV6?.tag}
             onPressWhitelist={ip => openAddIpModal(ip)}
+            onDeleteIpAddress={ip => deleteIpAddress(projectFriendlyId, ip)}
             whitelisted={whitelistedV6}
           />
         </Box>
